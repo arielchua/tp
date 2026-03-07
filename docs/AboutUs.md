@@ -28,15 +28,14 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Code Quality / Integration Supervisor
 
-### Jane Doe
+### Hyder
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/amir-hyder.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/amir-hyder)]
 
-* Role: Team Lead
-* Responsibilities: UI
+* Role: Developer
+* Responsibilities: Testing
 
 ### Johnny Doe
 
