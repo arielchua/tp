@@ -299,8 +299,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-**Use case: Delete a person**
-**Actor:** User
+**Use case: Delete a person**<br>
+**Actor:** User<br>
 **MSS**
 
 1.  User requests to list persons
@@ -319,8 +319,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3a1. AddressBook shows an error message.
     * Use case ends.
 
-**Use Case: UC05 – Mark Attendance**
-**Actor:** User
+**Use Case: UC05 – Mark Attendance**<br>
+**Actor:** User<br>
 **MSS:**
 
 1. User selects a tutorial session.
@@ -330,8 +330,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 5. TeachAssist confirms the attendance record.
 6. Use case ends.
 
-**Use Case: UC06 – Add Academic Notes**
-**Actor:** User
+**Use Case: UC06 – Add Academic Notes**<br>
+**Actor:** User<br>
 **MSS:**
 
 1. User selects a student.
@@ -342,8 +342,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 6. TeachAssist confirms the addition.
 7. Use case ends.
  
-**Use Case: UC09 – View Student History**
-**Actor:** User
+**Use Case: UC09 – View Student History**<br>
+**Actor:** User<br>
 **MSS:**
 
 1. User selects a student.
@@ -364,8 +364,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 5a6. TeachAssist displays confirmation.
     * Use case ends.
 
-**Use Case: UC10 – View Help Command**
-**Actor:** User
+**Use Case: UC10 – View Help Command** <br>
+**Actor:** User <br>
 **MSS:**
 
 1. User enters the help command.
@@ -374,8 +374,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 4. User reviews the available commands.
 5. Use case ends
 
-**Use Case: UC11 – Delete Student**
-**Actor:** User
+**Use Case: UC11 – Delete Student** <br>
+**Actor:** User <br>
 **MSS:**
 
 1. User enters the command to delete a student.
@@ -393,8 +393,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2a1. TeachAssist informs the user that the student record cannot be found.
     * Use case ends.
  
-**Use Case: UC12 – View Student List**
-**Actor:** User
+**Use Case: UC12 – View Student List** <br>
+**Actor:** User <br>
 **MSS:**
 
 1.User enters the command to view all students.
@@ -402,8 +402,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 3. TeachAssist displays the list of students.
 4. Use case ends.
 
-**Use Case: UC13 – Clear Student Filters**
-**Actor:** User
+**Use Case: UC13 – Clear Student Filters** <br>
+**Actor:** User <br>
 **MSS:**
 
 1.User enters the command to clear the current filter.
