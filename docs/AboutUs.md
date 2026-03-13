@@ -11,51 +11,46 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
-### John Doe
+### Isha Sovasaria
+<img src="images/isha-sovasaria.png" width="200px">
+[[github](https://github.com/Isha-Sovasaria)]
 
-<img src="images/johndoe.png" width="200px">
 
-[[homepage](http://www.comp.nus.edu.sg/~damithch)]
-[[github](https://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+* Role: Team lead
 
-* Role: Project Advisor
+* Responsibilities:In-charge of Deliverables and Deadlines , Scheduling and tracking , Git expert
 
-### Jane Doe
+### Chen Guanyou
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/guanyouu.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](https://github.com/guanyouu)]
 
-* Role: Team Lead
-* Responsibilities: UI
+* Role: Code Quality / Integration Supervisor
 
-### Johnny Doe
+### Hyder
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/amir-hyder.png" width="200px">
 
-[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
+[[github](http://github.com/amir-hyder)]
 
 * Role: Developer
-* Responsibilities: Data
+* Responsibilities: Testing
 
-### Jean Doe
+### Ashutosh Menon Rajeev
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/poaoaooa.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Developer
-* Responsibilities: Dev Ops + Threading
-
-### James Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](https://github.com/poaoaooa)]
 
 * Role: Developer
-* Responsibilities: UI
+* Responsibilities: Developer's Guide
+
+### Ariel Chua
+
+<img src="images/arielchua.png" width="200px">
+
+[[github](http://github.com/arielchua)]
+
+* Role: Developer
+* Responsibilities: Documentation and User Guide

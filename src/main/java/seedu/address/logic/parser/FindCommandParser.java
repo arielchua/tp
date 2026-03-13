@@ -24,6 +24,9 @@ public class FindCommandParser implements Parser<FindCommand> {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
+        if (!trimmedArgs.matches("[A-Za-z]+(\\s+[A-Za-z]+)*")) {
+            throw new ParseException("Student name must contain letters or spaces only.");
+        }
 
         String[] nameKeywords = trimmedArgs.split("\\s+");
 
