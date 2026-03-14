@@ -1,0 +1,257 @@
+[33m7cddf3a7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32madd-command[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m Merge branch 'AY2526S2-CS2103T-F10-3:master' into master
+[33m55e068b3[m Merge pull request #47 from Isha-Sovasaria/findcommand-enhancements
+[33mea584635[m Enforce letter-only name format in FindCommandParser
+[33ma849a97e[m Enable prefix-based matching for FindCommand
+[33m82bb73ac[m Merge pull request #25 from poaoaooa/DGAsh
+[33m60f693d8[m Merge pull request #30 from arielchua/arielchua-update-readme-1
+[33md752fd52[m Update DeveloperGuide.md
+[33m6a1fd4ab[m[33m ([m[1;31morigin/tutorial-adding-command[m[33m, [m[1;32mtutorial-adding-command[m[33m)[m add tutorial-adding-command
+[33mea3761df[m Update README to reflect TeachAssist project details
+[33mcdaa1093[m Add updated mockup
+[33me02037d6[m Update DeveloperGuide.md
+[33mc62289f3[m Update DeveloperGuide.md
+[33m8422a541[m Merge pull request #24 from Isha-Sovasaria/update-personal-info
+[33mc86c68ca[m Merge pull request #16 from poaoaooa/AshAbout
+[33mb8ef8bd2[m Merge branch 'master' into AshAbout
+[33mdde85b92[m Merge pull request #20 from amir-hyder/update-aboutus-hyder
+[33m508dbf74[m Merge branch 'master' into update-aboutus-hyder
+[33mff97c0aa[m Add image on About Us page
+[33m98c0234f[m Merge pull request #19 from Isha-Sovasaria/update-personal-info
+[33m3cf394fe[m Merge branch 'master' into update-personal-info
+[33mac4da886[m Merge pull request #15 from guanyouu/update-AboutUS
+[33m3c95e90e[m Update About Us page
+[33m189251d5[m Update info on About Us page
+[33me81786c7[m Merge pull request #14 from AY2526S2-CS2103T-F10-3/arielchua-patch-2
+[33m25671d7d[m[33m ([m[1;31morigin/update-AboutUS[m[33m)[m Update team member name from John Doe to Chen Guanyou
+[33mb07803ed[m update AboutUs
+[33m2af25ab5[m Update team member details for Ariel Chua
+[33mfeb3cf85[m Update AboutUs.md with info
+[33m510f4c41[m Merge pull request #12 from amir-hyder/add-hyder-photo
+[33m39d29bfb[m Merge pull request #9 from poaoaooa/master
+[33me11f093c[m Merge pull request #8 from guanyouu/add-photo
+[33mc1f0d9a4[m Merge pull request #10 from Isha-Sovasaria/add-photo
+[33ma7d56bed[m Merge pull request #11 from arielchua/add-ariel-photo
+[33mee791477[m Add Hyder's photo
+[33m86bb119a[m Add Ariel's photo
+[33m7d0285f7[m Add photo
+[33m8711b232[m[33m ([m[1;31morigin/add-photo[m[33m)[m Add files via upload
+[33m3527f69b[m Add Ash's image
+[33md35ad7e6[m Merge pull request #1 from CS2103T-F10-3/switch-docs-to-markbind
+[33mbd6718b2[m Update Checkstyle version to 11.0.0
+[33m14707458[m[33m ([m[1;31morigin/switch-docs-to-markbind[m[33m)[m Bump MarkBind version to 6.0.2
+[33m28d73b94[m Remove tutorials from the site nav
+[33m44ed2759[m docs.yml: Bump MarkBind and Java versions
+[33m1caef199[m Reduce font size for printing
+[33m116b201e[m Add a Home button in the top NavBar
+[33m5cd2b589[m Bump MarkBind version
+[33m1119792c[m Migrate docs to MarkBind
+[33m8133099f[m Bump nokogiri from 1.16.5 to 1.18.8 in /docs
+[33md8f4cf53[m DeveloperGuide.md: Add missing 'are'
+[33m982921c4[m UserGuide.md: Fix typo explaning -> explaining
+[33mc6b37cab[m DevOps.md: Fix typo creat -> create
+[33m9b277513[m Bump webrick from 1.8.1 to 1.8.2 in /docs (#226)
+[33mff4daccd[m Bump rexml from 3.3.6 to 3.3.9 in /docs (#224)
+[33m16df06bc[m SettingUp.md: Fixed links to AB3 tutorials on SE-EDU/guides
+[33m849c7d0b[m UG: Advise Mac users to install a specific JDK
+[33m4eb130f3[m Bump rexml from 3.3.3 to 3.3.6 in /docs
+[33m2b1e60be[m Add 'if any' to log message on ‘unsupported JavaFX config’
+[33m49859dc3[m Bump rexml from 3.2.8 to 3.3.3 in /docs
+[33m93e00db7[m Update Codecov Action to v4
+[33m4209f9c5[m Update setup-java action to v4
+[33m6f002728[m Update Gradle Wrapper Validation Action to v3
+[33m351d006f[m README.md: Fix typo in SE-EDU link
+[33m885a5abb[m Remove AB3 tutorials
+[33m5af1c6d1[m UG: Add help window known issue
+[33m3da04ac9[m UserGuide.md: Make JAR download step generic (#28)
+[33m82598c13[m Revert TLS workaround after upgrading to JDK17
+[33m87a13195[m AboutUs.md: Change http -> https
+[33m934f7408[m MainApp.java: Fix typo Address Book -> AddressBook
+[33ma736a752[m DG: Fix typo addressbook.commons -> address.commons
+[33mfe805d85[m Migrate to Java 17
+[33md925b35c[m Fix double-space between index and name
+[33m6c19411c[m Bump rexml from 3.2.5 to 3.2.8 in /docs
+[33mbb3a1737[m Bump nokogiri from 1.16.2 to 1.16.5 in /docs
+[33mb896eb01[m Merge branch 'master' of https://github.com/se-edu/addressbook-level3
+[33mb68489d2[m Bump nokogiri from 1.15.2 to 1.16.2 in /docs
+[33mf0c164d5[m UG: Caution user about incorrect updates to the data file
+[33m3d77cc45[m DG: Split sequence diagram of undo feature
+[33m5dd21a60[m DG: Tweak object names in delete-person sequence diagram
+[33m80e11028[m DG: Replace OS-X -> MacOS
+[33meb2953d0[m DG: Mention simplification in delete-person sequence diagram
+[33m59f927d2[m DG: Tweak phrasing 'reaches' -> 'continues till'
+[33m1d257529[m DG Logic class diagram: Show Parser classes as a box
+[33ma281d2f4[m DG: Use <<keyword>> notation for dependencies
+[33m517b7857[m Add puml files for tutorial class diagrams
+[33m07778d9f[m Limit Codecov upload to Linux only
+[33m7cd044b7[m Update gradle.yml to use Codecov action@v3
+[33meb0af9cc[m UG: Add a 'Known issues' section
+[33macfcef7d[m UG: Caution users to backup data file before editing it
+[33mafed9405[m Tweak the DG's design details for readability
+[33m32039966[m Bump activesupport from 7.0.5 to 7.0.7.2 in /docs
+[33mdc554766[m Adjust log initialization position in MainApp
+[33mcd47f1a5[m Add examples of lower-level log messages
+[33m04e25f16[m Update version to v0.2.2ea
+[33m08fe6e3f[m Bump commonmarker from 0.23.9 to 0.23.10 in /docs
+[33m83b10b01[m Upgrade JavaFX to ver 17
+[33m3dbe70e9[m Exempt main method from javadoc requirement
+[33me9f1ca7d[m PersonCard: remove #equals(object)
+[33m15b62ac8[m Add tests for #equals(Object) implementations
+[33m136b5776[m Standardize #equals(Object) implementations
+[33m38922aa8[m Remove unused PlantUML diagrams
+[33mef75f680[m Update UML diagrams to resolve rendering issues
+[33ma976ec98[m Remove support for repeated parameters in commands
+[33m45923632[m Fix loggers not following config.json
+[33mbd48d597[m Improve logs msg for command related exception
+[33mc07fb9e7[m Improve error message if no write permission
+[33md98c36e1[m Move Messages class into the logic package
+[33mc9c95125[m UG: Caution users about copying multi-line commands
+[33m0a8d2fb9[m Refactor client code handling IOException
+[33m0e18ef41[m Rename DataConversionException -> DataLoadingException
+[33m9356ae9b[m Prefix#toString(): annotate with `@Override`
+[33m8e5261bb[m UniquePersonList: implement toString()
+[33m6f584bf2[m Messages: add format(Person) for formatting a Person for display
+[33mb1c0a303[m Adopt a uniform toString() format for value classes
+[33mf0e90698[m Fix Jekyll server crash on newer versions of Ruby (#185)
+[33m2215c938[m Bump JavaFx to 11.0.2 to prevent crashing on Linux (#177)
+[33m481a3d92[m Add a null check to LogCenter.getLogger(Class<T>)
+[33mb5812766[m Git ignore crash logs generated by the JVM
+[33ma3f7c826[m Make file-related log messages more informative
+[33m4acffdd8[m Make file-creation logs not resemble errors
+[33m1e05fef5[m JsonAdaptedPerson: Change JSON property name tagged -> tags
+[33md547e3c1[m JsonAdaptedPerson: Change variable name tagged -> tags
+[33mf0c68612[m Bump nokogiri from 1.13.10 to 1.14.3 in /docs (#161)
+[33m4cb27310[m Bump activesupport from 6.0.6 to 6.0.6.1 in /docs (#155)
+[33m928f1466[m Allow CI to pass if Codecov fails
+[33m412b5ed0[m DevOps.md: Mention how to relax Codecov requirement
+[33m3fbaeab6[m DevOps.md: Remove extra '<'
+[33me7d4e825[m DG: Remove incorrect composition symbol
+[33m94538d81[m UG: Make example commands formatting PDF-friendly
+[33ma7a59d9a[m UG: Ask to run the jar file using the command line
+[33m76022eec[m Bump nokogiri from 1.13.9 to 1.13.10 in /docs (#151)
+[33m2dbe1e43[m Fix typo in custom-styles.scss order -> border (#150)
+[33mcf6359b8[m Bump nokogiri from 1.13.6 to 1.13.9 in /docs (#146)
+[33mecf75ba6[m Fix typo in DevOps guide testes -> tests (#144)
+[33m77a32bf6[m Bump tzinfo from 1.2.7 to 1.2.10 in /docs (#141)
+[33ma464dde6[m Update Checkstyle checks
+[33ma7c730f3[m Update check comments
+[33me726a5b2[m Update coding standard link and description
+[33m538483c1[m Upgrade Checkstyle to 10.2
+[33m1fde5d71[m Upgrade to Gradle 7.4.2
+[33m45a4e35e[m Upgrade to Gradle 6.9.2
+[33m0f842d88[m Upgrade Codecov GitHub Action to v2 (#128)
+[33m43064650[m Delete legacy Travis scripts (#132)
+[33m1e8df7c1[m Bump nokogiri from 1.12.5 to 1.13.6 in /docs (#136)
+[33m865de625[m CommandParserTestUtil: Replace raw type in method signatures (#121)
+[33m4f7660a2[m DevOps.md: Add more details on CodeCov set up
+[33m8d5b66e1[m Revert "Fix font issue on M1 Mac Big Sur (#106)" (#119)
+[33med013616[m Update class diagrams to use non-italics for <<interfaces>> (#115)
+[33m0f5f6543[m Update Ui of Help Window to dark theme (#116)
+[33mb54745ec[m Fix inaccurate links in Tutorial: Adding a command (#117)
+[33mde8d71e4[m Bump nokogiri from 1.11.5 to 1.12.5 in /docs (#113)
+[33mc09fcae5[m Remove unnecessary super() calls in *Manager classes (#118)
+[33mba53b8ce[m DevOps.md: Fix typo shadow -> shadowJar
+[33m15a51085[m Update version number to v0.2.0ea
+[33m9a46153d[m Fix font issue on M1 Mac Big Sur (#106)
+[33md41caad2[m docs/tutorials/RemovingFields.md: Tweak text
+[33mdad46cb5[m docs/tutorials/AddRemark.md: Tweak text
+[33m38ba1999[m SettingUp.md: Change the tutorial order
+[33m798ab641[m Tweak the 'Tracing code' tutorial
+[33mabacbe80[m Merge branch 'tweak-dg'
+[33me1445f35[m DG: Tweak the explanation of the proposed undo/redo feature
+[33m5fba3c5d[m DG: Tweak the 'Storage component' section
+[33mda7aca00[m DG: Tweak the 'Model component' section
+[33mb8eccd59[m DG: Tweak the 'Logic component' section
+[33mff572e97[m DG: Tweak the 'UI component' section
+[33m087a766a[m DG: Tweak the 'Architecture' section
+[33md6fb70ef[m Docmentation.md: Mention soft-wrapping when using Intellij
+[33m4018a430[m Documentation.md: Give more info on adapting to a different project
+[33m895fbbe6[m johndoe.md: Lower the heading level
+[33m7522abc4[m DG: Add an Acknowledgements section
+[33m97941aad[m Document the dependency from Storage to Model (#103)
+[33m1de4e803[m Improve validity check of email addresses #71 (#78)
+[33m3da28664[m Bump addressable from 2.7.0 to 2.8.0 in /docs (#104)
+[33m013bcea1[m DG: show Storage --> Model dependency (#102)
+[33m4b892b5e[m Bump nokogiri from 1.11.2 to 1.11.5 in /docs (#101)
+[33m07a9c198[m Bump nokogiri from 1.10.9 to 1.11.2 in /docs (#87)
+[33m092c3955[m  DG: Storage class diagram: change dependencies to associations (#95)
+[33m16e139d2[m DG: Model class diagram: add <<interface>> to ReadOnlyUserPrefs (#97)
+[33meccb717d[m DG: Add missing inheritances in Storage class diagram (#91)
+[33mf741ba43[m DG: Update Storage component class diagram to fix typos (#88)
+[33m571faba8[m DG: Add Logic-->Storage arrow in Logic class diagram (#85)
+[33mc36220c2[m UG: Add 'Details coming soon' for future features
+[33med34e35a[m UG: Document how users can edit the data file
+[33m063450a5[m UG: Explain the behavior for repeated parameters in a command
+[33ma8e72f51[m UG: Document the behavior of ignoring extra parameters (#82)
+[33mb0cee534[m Model class diagram: show 'filtered list' as an association role (#64)
+[33m4ecc39b4[m Omit the top navigation menu when a page is printed
+[33ma41235f7[m Prevent page breaks cutting through content when converting to PDF (#76)
+[33m1fe37e19[m Update isSamePerson() equality for Person class
+[33m96954ffe[m Remove outdated references in test case comments (#63)
+[33me077bd6d[m AddRemark.md: Fix typo an -> a
+[33m1eb3f613[m CommitActivityDiagram.puml: Fix typo redunant -> redundant
+[33m9a69a056[m Update Checkout action default branch
+[33mfb67d1f4[m Person: Remove 'Tags: ' if there are no tags
+[33m18889bb5[m Person: Add delimiters to result message
+[33m1644999a[m CommandBox: update handleCommandEntered() for empty strings
+[33mb3e3b78b[m docs/SettingUp.md: Rectify link to IDEA guide (#50)
+[33m6389d855[m Add Codecov support
+[33m292f90ab[m Docs: Add GitHub link to top navbar (#48)
+[33m86f65cc7[m Add tutorial about adding a new command
+[33m4eafb67e[m docs/DevOps.md: Document repo-wide checks
+[33m81e0ef29[m Set <title> in documentation pages (#45)
+[33m74995c8c[m Documentation.md: Add link to PlantUML guide
+[33mb68ee5b1[m Documentation.md: Move setting-up info to the top
+[33m4e89cece[m AboutUs.md: Add a generic contact email
+[33mc5272f69[m AboutUs.md: Use a placeholder image instead of real photos
+[33me90e56a0[m Reintroduce repo-wide checks (#42)
+[33m53a4c2de[m Logging.md: Refer to se-edu/guides for logging level definitions
+[33med764e87[m DG: Extract Configuration guide into a separate page
+[33m75b0edb6[m DG: Simplify documentation guide by referring to se-edu/guides
+[33m2cf2b452[m Use sentence case for headings
+[33m5408a75a[m DG: extract logging as a separate page
+[33m435b91aa[m DeveloperGuide.md: adjust diagrams size to match main text
+[33m46785ad9[m Fix broken links to se-edu/guides pages
+[33mb2cd30d8[m SettingUp.md: simplify by reusing se-edu/guides references
+[33me6c2dc46[m Update checkstyle version to v8.32 (#41)
+[33m4886f81a[m DeveloperGuide.md: fix typo: over => to
+[33m54a184aa[m Remove docs/UsingNetlify.md
+[33m882b35f5[m Remove docs/UsingPlantUml.md
+[33md7e33ec7[m build.gradle: generate JAR into the default destination
+[33m1d02f780[m Simplify UsingGradle.md to reduce duplication
+[33m3248876e[m Remove docs/UsingCheckstyle.md
+[33m1299a7a0[m Delete orphaned images and scripts (#39)
+[33mda264c4e[m Add missing return arrow to the ArchitectureSequenceDiagram (#33)
+[33m0be83b24[m Migrate to Jekyll, GitHub Actions
+[33medad5526[m Merge pull request #22 from j-lum/tutorial-remove-address
+[33m540ffb24[m Add tutorial on how to remove a field
+[33m4f268d81[m Merge pull request #28 from j-lum/fix-help-window
+[33mf77cfc99[m Prevent HelpWindow from maximizing
+[33m3c4a75e0[m Merge pull request #23 from j-lum/tutorial-code-trace
+[33m6202ca3b[m Add tutorial on tracing code
+[33mf594ed06[m Merge pull request #27 from j-lum/remove-webview
+[33mebbb7131[m Remove dependencies on WebView
+[33m9acaf048[m Merge AB-4 "Migrate to PlantUML from PowerPoint"
+[33m5272d589[m Migrate to PlantUML from PowerPoint
+[33m7b674c7a[m Merge AB-4 'Developer Guide: Remove GetStartedProgramming'
+[33m4a8e46c3[m Developer Guide: Remove GetStartedProgramming
+[33m9aaee4db[m Merge AB-4 'Fix regressions caused by PR #1018'
+[33ma391d823[m Fix regressions caused by PR #1018 (#1019)
+[33m9ba6eefc[m Developer Guide: Remove anchor for Testing
+[33mac47d7cf[m Developer Guide: Optimize reading experience
+[33ma6d2b4b9[m Developer Guide: Specify the label for inter-document xref
+[33meebddcb8[m Developer Guide: Fix broken link
+[33m3ae36799[m Merge AB-4 'Refactor documentation to make it easier for students to maintain'
+[33m22f1ee92[m  Refactor documentation to make it easier for students to maintain (#1018)
+[33m02f0a599[m Extract section on dev ops into a separate document
+[33m0a29ea77[m Extract section on testing into a separate document
+[33me80a0b64[m Extract section on documentation into a separate document
+[33m9ab83e3b[m Extract section on setting up into a separate document
+[33mb4538d6e[m Convert this repo into AB-3 (#19)
+[33mfd6d7224[m Replace all references to AB3.5 with AB3
+[33mad9a7059[m template header: replace AB-3's nav item with AB-3.5
+[33mbd5b3a28[m Update Ui.png to match the current UI
+[33mc2b43e9a[m docs: tell readers that the screenshots are meant for AB-4
+[33m8db6e88d[m Merge AB-4 'Change travis build to use OpenJDK instead of Oracle'
+[33mbd81b7f8[m Change travis build to use OpenJDK instead of Oracle
+[33me870cad1[m LO-OCP: update to match the current codebase
+[33m540e7858[m LO-DI: update to match the current codebase
