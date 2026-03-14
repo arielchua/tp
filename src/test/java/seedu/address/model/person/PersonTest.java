@@ -1,101 +1,175 @@
-// package seedu.address.model.person;
+package seedu.address.model.person;
 
-// import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.junit.jupiter.api.Assertions.assertFalse;
-// import static org.junit.jupiter.api.Assertions.assertTrue;
-// import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
-// import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
-// import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
-// import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-// import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
-// import static seedu.address.testutil.Assert.assertThrows;
-// import static seedu.address.testutil.TypicalPersons.ALICE;
-// import static seedu.address.testutil.TypicalPersons.BOB;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.testutil.Assert.assertThrows;
 
-// import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 
-// import seedu.address.testutil.PersonBuilder;
+public class PersonTest {
 
-// public class PersonTest {
+    private final Name validName = new Name("Alex Tan");
+    private final CourseId validCourseId = new CourseId("CS2030S");
+    private final Email validEmail = new Email("alextan@u.nus.edu");
+    private final StudentId validStudentId = new StudentId("A1234567X");
+    private final TGroup validTGroup = new TGroup("T01");
+    private final Tele validTele = new Tele("alextan");
 
-//     @Test
-//     public void asObservableList_modifyList_throwsUnsupportedOperationException() {
-//         Person person = new PersonBuilder().build();
-//         assertThrows(UnsupportedOperationException.class, () -> person.getTags().remove(0));
-//     }
+    private final Person person = new Person(
+            validName, validCourseId, validEmail, validStudentId, validTGroup, validTele);
 
-//     @Test
-//     public void isSamePerson() {
-//         // same object -> returns true
-//         assertTrue(ALICE.isSamePerson(ALICE));
+    /**
+     * Tests if any input is null.
+     * Assuming all fields compulsory in Person constructor.
+     */
+    @Test
+    public void constructor_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () ->
+                new Person(null, validCourseId, validEmail, validStudentId, validTGroup, validTele));
+        assertThrows(NullPointerException.class, () ->
+                new Person(validName, null, validEmail, validStudentId, validTGroup, validTele));
+        assertThrows(NullPointerException.class, () ->
+                new Person(validName, validCourseId, null, validStudentId, validTGroup, validTele));
+        assertThrows(NullPointerException.class, () ->
+                new Person(validName, validCourseId, validEmail, null, validTGroup, validTele));
+        assertThrows(NullPointerException.class, () ->
+                new Person(validName, validCourseId, validEmail, validStudentId, null, validTele));
+        assertThrows(NullPointerException.class, () ->
+                new Person(validName, validCourseId, validEmail, validStudentId, validTGroup, null));
+    }
 
-//         // null -> returns false
-//         assertFalse(ALICE.isSamePerson(null));
+    /** 
+     * Checks if 2 people are the same person if they have the same studentId.
+     */
+    @Test
+    public void isSamePerson() {
+        Person person = new Person(
+            new Name("Alex Tan"),
+            new CourseId("CS2030S"),
+            new Email("alextan@u.nus.edu"),
+            new StudentId("A1234567X"),
+            new TGroup("T01"),
+            new Tele("alextan"));
 
-//         // same name, all other attributes different -> returns true
-//         Person editedAlice = new PersonBuilder(ALICE).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB)
-//                 .withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND).build();
-//         assertTrue(ALICE.isSamePerson(editedAlice));
+        // same object -> returns true
+        assertTrue(person.isSamePerson(person));
 
-//         // different name, all other attributes same -> returns false
-//         editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB).build();
-//         assertFalse(ALICE.isSamePerson(editedAlice));
+        // null -> returns false
+        assertFalse(person.isSamePerson(null));
 
-//         // name differs in case, all other attributes same -> returns false
-//         Person editedBob = new PersonBuilder(BOB).withName(VALID_NAME_BOB.toLowerCase()).build();
-//         assertFalse(BOB.isSamePerson(editedBob));
+        // same studentId, all other attributes different -> returns true
+        Person editedPerson = new Person(
+                new Name("Bob Lim"),
+                new CourseId("CS2040S"),
+                new Email("boblim@u.nus.edu"),
+                new StudentId("A1234567X"),
+                new TGroup("T02"),
+                new Tele("boblim"));
+        assertTrue(person.isSamePerson(editedPerson));
 
-//         // name has trailing spaces, all other attributes same -> returns false
-//         String nameWithTrailingSpaces = VALID_NAME_BOB + " ";
-//         editedBob = new PersonBuilder(BOB).withName(nameWithTrailingSpaces).build();
-//         assertFalse(BOB.isSamePerson(editedBob));
-//     }
+        // different studentId, all other attributes same -> returns false
+        editedPerson = new Person(
+                new Name("Alex Tan"),
+                new CourseId("CS2030S"),
+                new Email("alextan@u.nus.edu"),
+                new StudentId("B1234567X"),
+                new TGroup("T01"),
+                new Tele("alextan"));
+        assertFalse(person.isSamePerson(editedPerson));
+    }
 
-//     @Test
-//     public void equals() {
-//         // same values -> returns true
-//         Person aliceCopy = new PersonBuilder(ALICE).build();
-//         assertTrue(ALICE.equals(aliceCopy));
+    @Test
+    public void equals() {
+        // same values -> returns true
+        Person samePerson = new Person(
+                new Name("Alex Tan"),
+                new CourseId("CS2030S"),
+                new Email("alextan@u.nus.edu"),
+                new StudentId("A1234567X"),
+                new TGroup("T01"),
+                new Tele("alextan"));
+        assertTrue(person.equals(samePerson));
 
-//         // same object -> returns true
-//         assertTrue(ALICE.equals(ALICE));
+        // same object -> returns true
+        assertTrue(person.equals(person));
 
-//         // null -> returns false
-//         assertFalse(ALICE.equals(null));
+        // null -> returns false
+        assertFalse(person.equals(null));
 
-//         // different type -> returns false
-//         assertFalse(ALICE.equals(5));
+        // different type -> returns false
+        assertFalse(person.equals(5));
 
-//         // different person -> returns false
-//         assertFalse(ALICE.equals(BOB));
+        // different email -> returns false
+        Person editedPerson = new Person(
+                validName,
+                validCourseId,
+                new Email("other@u.nus.edu"),
+                validStudentId,
+                validTGroup,
+                validTele);
+        assertFalse(person.equals(editedPerson));
 
-//         // different name -> returns false
-//         Person editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB).build();
-//         assertFalse(ALICE.equals(editedAlice));
+        // different studentId -> returns false
+        editedPerson = new Person(
+                validName,
+                validCourseId,
+                validEmail,
+                new StudentId("B1234567X"),
+                validTGroup,
+                validTele);
+        assertFalse(person.equals(editedPerson));
 
-//         // different phone -> returns false
-//         editedAlice = new PersonBuilder(ALICE).withPhone(VALID_PHONE_BOB).build();
-//         assertFalse(ALICE.equals(editedAlice));
+        // different tele -> returns false
+        editedPerson = new Person(
+                validName,
+                validCourseId,
+                validEmail,
+                validStudentId,
+                validTGroup,
+                new Tele("otheruser"));
+        assertFalse(person.equals(editedPerson));
 
-//         // different email -> returns false
-//         editedAlice = new PersonBuilder(ALICE).withEmail(VALID_EMAIL_BOB).build();
-//         assertFalse(ALICE.equals(editedAlice));
+        // different name, same email/studentId/tele -> returns true
+        editedPerson = new Person(
+                new Name("Bob Tan"),
+                validCourseId,
+                validEmail,
+                validStudentId,
+                validTGroup,
+                validTele);
+        assertTrue(person.equals(editedPerson));
 
-//         // different address -> returns false
-//         editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).build();
-//         assertFalse(ALICE.equals(editedAlice));
+        // different courseId, same email/studentId/tele -> returns true
+        editedPerson = new Person(
+                validName,
+                new CourseId("CS2040S"),
+                validEmail,
+                validStudentId,
+                validTGroup,
+                validTele);
+        assertTrue(person.equals(editedPerson));
 
-//         // different tags -> returns false
-//         editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
-//         assertFalse(ALICE.equals(editedAlice));
-//     }
+        // different tGroup, same email/studentId/tele -> returns true
+        editedPerson = new Person(
+                validName,
+                validCourseId,
+                validEmail,
+                validStudentId,
+                new TGroup("T02"),
+                validTele);
+        assertTrue(person.equals(editedPerson));
+    }
 
-//     @Test
-//     public void toStringMethod() {
-//         String expected = Person.class.getCanonicalName()
-//                  + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
-//                  + ", email=" + ALICE.getEmail() + ", address="
-//                  + ALICE.getAddress() + ", tags=" + ALICE.getTags() + "}";
-//         assertEquals(expected, ALICE.toString());
-//     }
-// }
+    @Test
+    public void toStringMethod() {
+        String expected = Person.class.getCanonicalName()
+                + "{name=" + person.getName()
+                + ", courseId=" + person.getCourseId()
+                + ", email=" + person.getEmail()
+                + ", studentId=" + person.getStudentId()
+                + ", tGroup=" + person.getTGroup()
+                + ", tele=" + person.getTele() + "}";
+        assertEquals(expected, person.toString());
+    }
+}
