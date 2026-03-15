@@ -10,6 +10,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 
 /**
@@ -27,10 +28,11 @@ public class DeleteCommand extends Command {
 
     public static final String MESSAGE_DELETE_STUDENT_SUCCESS = "Deleted Student: %1$s";
 
-    public static final String MESSAGE_PERSON_NOT_FOUND_BY_NAME = "No student with the name \"%1$s\" found on the list.";
+    public static final String MESSAGE_PERSON_NOT_FOUND_BY_NAME =
+            "No student with the name \"%1$s\" found on the list.";
 
     private final Index targetIndex;
-    private final String targetName;
+    private final Name targetName;
 
     /**
      * Creates a DeleteCommand to delete a student by displayed index.
@@ -47,7 +49,7 @@ public class DeleteCommand extends Command {
      *
      * @param targetName Name of the student to delete.
      */
-    public DeleteCommand(String targetName) {
+    public DeleteCommand(Name targetName) {
         this.targetIndex = null;
         this.targetName = targetName;
     }
@@ -55,7 +57,7 @@ public class DeleteCommand extends Command {
     /**
      * Deletes a student from the address book, identified either by the displayed list index
      * or by an exact full name match in the currently displayed student list.
-     */    
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
@@ -73,11 +75,11 @@ public class DeleteCommand extends Command {
                 throw new CommandException("Please provide a full student name.");
             }
             studentToDelete = lastShownList.stream()
-                    .filter(p -> p.getName().fullName.equals(targetName))
+                    .filter(p -> p.getName().equals(targetName))
                     .findFirst()
                     .orElse(null);
             if (studentToDelete == null) {
-                throw new CommandException(String.format(MESSAGE_PERSON_NOT_FOUND_BY_NAME, targetName));
+                throw new CommandException(String.format(MESSAGE_PERSON_NOT_FOUND_BY_NAME, targetName.toString()));
             }
         }
 

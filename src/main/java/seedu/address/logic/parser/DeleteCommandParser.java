@@ -1,11 +1,11 @@
 package seedu.address.logic.parser;
-import seedu.address.model.person.Name;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Name;
 
 /**
  * Parses input arguments and creates a new DeleteCommand object
@@ -22,7 +22,7 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
         String trimmedInput = args.trim();
         if (trimmedInput.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
-        } 
+        }
         if (trimmedInput.matches("[1-9]\\d*")) { // allows non-0 positive numbers
             try {
                 Index index = ParserUtil.parseIndex(trimmedInput);
@@ -40,15 +40,5 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), npe);
             }
         }
-        
-                // try {
-            
-        //     Index index = ParserUtil.parseIndex(args);
-        //     return new DeleteCommand(index);
-        // } catch (ParseException pe) {
-        //     throw new ParseException(
-        //             String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), pe);
-        // }
     }
-
 }
