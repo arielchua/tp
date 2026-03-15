@@ -169,7 +169,7 @@ public class PersonTest {
                 + ", email=" + person.getEmail()
                 + ", studentId=" + person.getStudentId()
                 + ", tGroup=" + person.getTGroup()
-                + ", tele=" + person.getTele() + "}";
+                + ", tele=" + (person.getTele() == null ? "-" : person.getTele()) + "}";
         assertEquals(expected, person.toString());
     }
 }

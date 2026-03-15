@@ -52,6 +52,6 @@ public class PersonCard extends UiPart<Region> {
         courseId.setText(person.getCourseId().value);
         tGroup.setText(person.getTGroup().value);
         email.setText(person.getEmail().value);
-        tele.setText(person.getTele().value);
+        tele.setText(person.getTele() == null ? "-" : person.getTele().value);
     }
 }
