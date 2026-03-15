@@ -86,8 +86,8 @@ public class Person {
 
         Person otherPerson = (Person) other;
         return studentId.equals(otherPerson.studentId)
-                || (otherPerson.getTele().equals(getTele()))
-                || otherPerson.getEmail().equals(getEmail());
+                && (otherPerson.getTele().equals(getTele()))
+                && otherPerson.getEmail().equals(getEmail());
     }
 
     @Override
