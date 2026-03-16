@@ -10,8 +10,8 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class CourseId {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Course ID should only contain alphanumeric characters and should not be blank";
-    public static final String VALIDATION_REGEX = "\\p{Alnum}+";
+            "Course ID should start with a letter or digit and can contain letters, digits, spaces, /, : or -.";
+    public static final String VALIDATION_REGEX = "[A-Za-z0-9][A-Za-z0-9 /:-]*";
     public final String value;
 
     /**
