@@ -26,17 +26,19 @@ public class CourseIdTest {
 
         // invalid course IDs
         assertFalse(CourseId.isValidCourseId("")); // empty string
-        assertFalse(CourseId.isValidCourseId(" ")); // spaces only
-        assertFalse(CourseId.isValidCourseId("CS 2030S")); // contains spaces
-        assertFalse(CourseId.isValidCourseId("CS2030S!")); // contains special character
-        assertFalse(CourseId.isValidCourseId("CS2030-S")); // contains hyphen
-        assertFalse(CourseId.isValidCourseId("CS2030_S")); // contains underscore
+        assertFalse(CourseId.isValidCourseId(" ")); // spaces only (must start with letter/digit)
+        assertFalse(CourseId.isValidCourseId("CS2030S!")); // special character not allowed
+        assertFalse(CourseId.isValidCourseId("CS2030_S")); // underscore not allowed
 
         // valid course IDs
         assertTrue(CourseId.isValidCourseId("CS2030S"));
         assertTrue(CourseId.isValidCourseId("cs2030s"));
         assertTrue(CourseId.isValidCourseId("12345"));
         assertTrue(CourseId.isValidCourseId("A1B2C3"));
+        assertTrue(CourseId.isValidCourseId("CS 2030S")); // space allowed
+        assertTrue(CourseId.isValidCourseId("CS2030-S")); // hyphen allowed
+        assertTrue(CourseId.isValidCourseId("CS2030/S")); // slash allowed
+        assertTrue(CourseId.isValidCourseId("CS2030:S")); // colon allowed
     }
 
     @Test
