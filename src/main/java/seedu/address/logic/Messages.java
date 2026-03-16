@@ -46,7 +46,7 @@ public class Messages {
                 .append("; TGroup: ")
                 .append(person.getTGroup())
                 .append("; Tele: ")
-                .append(person.getTele());
+                .append(person.getTele() == null ? "-" : person.getTele());
 
         return builder.toString();
     }

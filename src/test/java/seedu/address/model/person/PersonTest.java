@@ -35,8 +35,6 @@ public class PersonTest {
                 new Person(validName, validCourseId, validEmail, null, validTGroup, validTele));
         assertThrows(NullPointerException.class, () ->
                 new Person(validName, validCourseId, validEmail, validStudentId, null, validTele));
-        assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, validEmail, validStudentId, validTGroup, null));
     }
 
     /**
@@ -169,7 +167,7 @@ public class PersonTest {
                 + ", email=" + person.getEmail()
                 + ", studentId=" + person.getStudentId()
                 + ", tGroup=" + person.getTGroup()
-                + ", tele=" + person.getTele() + "}";
+                + ", tele=" + (person.getTele() == null ? "-" : person.getTele()) + "}";
         assertEquals(expected, person.toString());
     }
 }

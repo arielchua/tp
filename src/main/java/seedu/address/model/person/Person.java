@@ -23,7 +23,7 @@ public class Person {
      * Every field must be present and not null.
      */
     public Person(Name name, CourseId courseId, Email email, StudentId studentId, TGroup tGroup, Tele tele) {
-        requireAllNonNull(name, courseId, email, studentId, tGroup, tele);
+        requireAllNonNull(name, courseId, email, studentId, tGroup);
         this.name = name;
         this.courseId = courseId;
         this.email = email;
@@ -86,7 +86,7 @@ public class Person {
 
         Person otherPerson = (Person) other;
         return studentId.equals(otherPerson.studentId)
-                && (otherPerson.getTele().equals(getTele()))
+                && Objects.equals(otherPerson.getTele(), getTele())
                 && otherPerson.getEmail().equals(getEmail());
     }
 

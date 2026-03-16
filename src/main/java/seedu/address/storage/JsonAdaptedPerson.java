@@ -53,7 +53,7 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         studentId = source.getStudentId().value;
         tGroup = source.getTGroup().value;
-        tele = source.getTele().value;
+        tele = source.getTele() == null ? null : source.getTele().value;
     }
 
     /**
@@ -106,14 +106,13 @@ class JsonAdaptedPerson {
         }
         final TGroup modelTGroup = new TGroup(tGroup);
 
-        if (tele == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
-                    Tele.class.getSimpleName()));
+        Tele modelTele = null;
+        if (tele != null) {
+            if (!Tele.isValidTele(tele)) {
+                throw new IllegalValueException(Tele.MESSAGE_CONSTRAINTS);
+            }
+            modelTele = new Tele(tele);
         }
-        if (!Tele.isValidTele(tele)) {
-            throw new IllegalValueException(Tele.MESSAGE_CONSTRAINTS);
-        }
-        final Tele modelTele = new Tele(tele);
         return new Person(modelName, modelCourseId, modelEmail,
                 modelStudentId, modelTGroup, modelTele);
     }
