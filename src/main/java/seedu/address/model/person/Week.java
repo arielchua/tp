@@ -4,11 +4,19 @@ package seedu.address.model.person;
  * Represents a student's attendance status for a single week.
  */
 public class Week implements WeeklyAttendance {
-    public static final String MESSAGE_CONSTRAINTS = "Week status must be Y or N";
-    public static final int WEEK_DIFFERENCE = 2;
+    public static final String MESSAGE_CONSTRAINTS = "Week status must be Y, A or N";
+
+    /**
+     * use Letters to represent Status of each Week
+     */
+    public enum Status {
+        Y, // Attended
+        A, // Absent
+        N // Not marked
+    }
 
     private final int weekNo;
-    private boolean isAttended;
+    private Status status;
 
     /**
      * Constructs a {@code Week} with the specified week number.
@@ -19,28 +27,28 @@ public class Week implements WeeklyAttendance {
         assert weekNo > 0 : "Invalid week number";
         assert weekNo <= WeekList.NUMBER_OF_WEEKS : "Week number exceeded maximum allowed";
         this.weekNo = weekNo;
-        this.isAttended = false;
+        this.status = Status.N;
     }
 
     @Override
     public void markAsAttended() throws IllegalStateException {
-        if (isAttended) {
+        if (status == Status.Y) {
             throw new IllegalStateException("Week attendance has already been marked as attended");
         }
-        isAttended = true;
+        status = Status.Y;
     }
 
     @Override
     public void markAsAbsent() {
-        if (!isAttended) {
+        if (status == Status.A) {
             throw new IllegalStateException("Week attendance has already been marked as absent");
         }
-        isAttended = false;
+        status = Status.A;
     }
 
     @Override
     public boolean isAttended() {
-        return isAttended;
+        return status == Status.Y;
     }
 
     @Override
@@ -52,9 +60,10 @@ public class Week implements WeeklyAttendance {
      * Returns:
      * Y = attended
      * A = absent
+     * N = default
      */
     public String getStatus() {
-        return isAttended ? "Y" : "A";
+        return status.name();
     }
 
     @Override
@@ -68,8 +77,8 @@ public class Week implements WeeklyAttendance {
         }
 
         Week otherWeek = (Week) other;
-        return this.isAttended == otherWeek.isAttended
-                && this.weekNo == otherWeek.weekNo;
+        return this.weekNo == otherWeek.weekNo
+                && this.status == otherWeek.status;
     }
 
     @Override

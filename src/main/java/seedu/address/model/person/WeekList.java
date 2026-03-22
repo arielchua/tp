@@ -9,7 +9,7 @@ import java.util.List;
 public class WeekList implements WeeklyAttendanceList {
     public static final int NUMBER_OF_WEEKS = 13;
     public static final String MESSAGE_CONSTRAINTS =
-            "Week attendance list should be in the format 'W1: Y/N ... W10: Y/N'";
+            "Week attendance list should be in the format 'W1: Y/N ... W13: Y/N'";
     private final WeeklyAttendance[] weeks;
 
     /**
@@ -103,7 +103,6 @@ public class WeekList implements WeeklyAttendanceList {
 
         String trimmed = weekListString.trim();
         String[] parts = trimmed.split("\\s+");
-
         if (parts.length != NUMBER_OF_WEEKS * 2) {
             return false;
         }
