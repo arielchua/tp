@@ -8,6 +8,7 @@ import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Progress;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
@@ -25,6 +26,7 @@ class JsonAdaptedPerson {
     private final String studentId;
     private final String tGroup;
     private final String tele;
+    private final String progress;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -35,13 +37,15 @@ class JsonAdaptedPerson {
             @JsonProperty("email") String email,
             @JsonProperty("studentId") String studentId,
             @JsonProperty("tGroup") String tGroup,
-            @JsonProperty("tele") String tele) {
+            @JsonProperty("tele") String tele,
+            @JsonProperty("progress") String progress) {
         this.name = name;
         this.courseId = courseId;
         this.email = email;
         this.studentId = studentId;
         this.tGroup = tGroup;
         this.tele = tele;
+        this.progress = progress;
     }
 
     /**
@@ -54,6 +58,7 @@ class JsonAdaptedPerson {
         studentId = source.getStudentId().value;
         tGroup = source.getTGroup().value;
         tele = source.getTele() == null ? null : source.getTele().value;
+        progress = source.getProgress().name();
     }
 
     /**
@@ -113,8 +118,18 @@ class JsonAdaptedPerson {
             }
             modelTele = new Tele(tele);
         }
+
+        Progress modelProgress = Progress.NOT_SET;
+        if (progress != null) {
+            try {
+                modelProgress = Progress.valueOf(progress);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalValueException("Invalid progress value: " + progress);
+            }
+        }
+
         return new Person(modelName, modelCourseId, modelEmail,
-                modelStudentId, modelTGroup, modelTele);
+                modelStudentId, modelTGroup, modelTele, modelProgress);
     }
 
 }
