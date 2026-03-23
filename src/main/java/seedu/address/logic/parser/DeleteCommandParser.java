@@ -43,9 +43,7 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
         if (trimmedInput.matches("-?\\d+(\\.\\d+)?")) {
             throw new ParseException(DeleteCommand.MESSAGE_INVALID_INDEX
                     + "\n" + DeleteCommand.MESSAGE_USAGE);
-        }
-
-        else {
+        } else {
             try {
                 Name name = ParserUtil.parseName(trimmedInput);
                 return new DeleteCommand(name);

@@ -35,7 +35,7 @@ public class PersonTest {
                 new Person(validName, validCourseId, validEmail, null, validTGroup, validTele, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
                 new Person(validName, validCourseId, validEmail, validStudentId, null, validTele, Progress.NOT_SET));
-        assertThrows(NullPointerException.class, () -> 
+        assertThrows(NullPointerException.class, () ->
                 new Person(validName, validCourseId, validEmail, validStudentId, validTGroup, validTele, null));
     }
 

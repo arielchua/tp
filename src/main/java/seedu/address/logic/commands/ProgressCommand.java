@@ -6,7 +6,6 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDE
 import java.util.List;
 
 import seedu.address.commons.core.index.Index;
-import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.CourseId;
@@ -98,8 +97,7 @@ public class ProgressCommand extends Command {
 
         Person editedPerson = createEditedPerson(personToEdit, progress);
 
-        model.setPerson(personToEdit, editedPerson); 
-
+        model.setPerson(personToEdit, editedPerson);
         if (progress == Progress.NOT_SET) {
             return new CommandResult(String.format(
                     MESSAGE_CLEAR_PROGRESS_SUCCESS, editedPerson.getName()));

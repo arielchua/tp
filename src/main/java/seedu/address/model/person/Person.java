@@ -23,7 +23,8 @@ public class Person {
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, CourseId courseId, Email email, StudentId studentId, TGroup tGroup, Tele tele, Progress progress) {
+    public Person(Name name, CourseId courseId, Email email, StudentId studentId, TGroup tGroup,
+        Tele tele, Progress progress) {
         requireAllNonNull(name, courseId, email, studentId, tGroup, progress);
         this.name = name;
         this.courseId = courseId;
