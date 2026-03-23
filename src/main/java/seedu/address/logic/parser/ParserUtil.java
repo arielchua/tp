@@ -8,6 +8,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Progress;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
@@ -118,5 +119,31 @@ public class ParserUtil {
             throw new ParseException(Tele.MESSAGE_CONSTRAINTS);
         }
         return new Tele(trimmedTele);
+    }
+
+    /**
+     * Parses a {@code String progress} into a {@code Progress}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code progress} is invalid.
+     */
+    public static Progress parseProgress(String progress) throws ParseException {
+        requireNonNull(progress);
+        String normalizedProgress = progress.trim().toLowerCase();
+
+        switch (normalizedProgress) {
+        case "on_track":
+            return Progress.ON_TRACK;
+        case "needs_attention":
+            return Progress.NEEDS_ATTENTION;
+        case "at_risk":
+            return Progress.AT_RISK;
+        case "clear":
+        case "not_set":
+            return Progress.NOT_SET;
+        default:
+            throw new ParseException(
+                    "Invalid progress value. Allowed values are: on_track, needs_attention, at_risk, clear.");
+        }
     }
 }

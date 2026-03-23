@@ -33,7 +33,8 @@ public class ProgressCommand extends Command {
             + "Format 2: " + COMMAND_WORD + " id/STUDENT_ID crs/COURSE_ID tg/TGROUP p/PROGRESS\n"
             + "Example: " + COMMAND_WORD + " id/A0301200M crs/CS2103 tg/T01 p/on_track";
 
-    public static final String MESSAGE_UPDATE_PROGRESS_SUCCESS = "Updated progress for student: %1$s";
+    public static final String MESSAGE_UPDATE_PROGRESS_SUCCESS = "Updated progress for student: %1$s to %2$s";
+    public static final String MESSAGE_CLEAR_PROGRESS_SUCCESS = "Cleared progress for student: %1$s";
     public static final String MESSAGE_STUDENT_NOT_FOUND =
             "No student found with the given student ID, course ID, and tutorial group.";
 
@@ -99,7 +100,13 @@ public class ProgressCommand extends Command {
 
         model.setPerson(personToEdit, editedPerson); 
 
-        return new CommandResult(String.format(MESSAGE_UPDATE_PROGRESS_SUCCESS, editedPerson));
+        if (progress == Progress.NOT_SET) {
+            return new CommandResult(String.format(
+                    MESSAGE_CLEAR_PROGRESS_SUCCESS, editedPerson.getName()));
+        }
+
+        return new CommandResult(String.format(
+                MESSAGE_UPDATE_PROGRESS_SUCCESS, editedPerson.getName(), editedPerson.getProgress()));
     }
 
     /**
