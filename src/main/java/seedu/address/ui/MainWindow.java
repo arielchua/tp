@@ -16,6 +16,7 @@ import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Person;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -24,6 +25,16 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
+
+    // messages for deletion
+    private static final String MESSAGE_CONFIRM_DELETE =
+            "Are you sure you want to delete %s? Type 'yes' to confirm or 'no' to cancel.";
+
+    private static final String MESSAGE_DELETE_CANCELLED =
+            "Delete operation cancelled.";
+
+    private static final String MESSAGE_INVALID_CONFIRMATION_RESPONSE =
+            "Please type 'yes' to confirm deletion or 'no' to cancel.";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -54,16 +65,6 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane statusbarPlaceholder;
-
-    // messages for deletion
-    private static final String MESSAGE_CONFIRM_DELETE =
-            "Are you sure you want to delete this student? Type 'yes' to confirm or 'no' to cancel.";
-
-    private static final String MESSAGE_DELETE_CANCELLED =
-            "Delete operation cancelled.";
-
-    private static final String MESSAGE_INVALID_CONFIRMATION_RESPONSE =
-            "Please type 'yes' to confirm deletion or 'no' to cancel.";
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
@@ -207,14 +208,18 @@ public class MainWindow extends UiPart<Stage> {
                 } else {
                     commandResult = new CommandResult(MESSAGE_INVALID_CONFIRMATION_RESPONSE);
                 }
+
             // case 2: delete action requested and is fully valid
-            } else if (logic.canShowDeleteConfirmation(commandText)) {
-                isAwaitingDeleteConfirmation = true;
-                pendingDeleteCommandText = commandText;
-                commandResult = new CommandResult(MESSAGE_CONFIRM_DELETE);
-            // case 3: all other commands
             } else {
-                commandResult = logic.execute(commandText);
+                Person personToDelete = logic.getPersonToDelete(commandText);
+
+                if (personToDelete != null) {
+                    isAwaitingDeleteConfirmation = true;
+                    pendingDeleteCommandText = commandText;
+                    commandResult = new CommandResult(String.format(MESSAGE_CONFIRM_DELETE, personToDelete.getName()));
+                } else {
+                    commandResult = logic.execute(commandText);
+                }
             }
 
             logger.info("Result: " + commandResult.getFeedbackToUser());

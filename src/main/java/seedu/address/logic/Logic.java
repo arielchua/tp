@@ -53,4 +53,10 @@ public interface Logic {
      * and a target that exists in the current filtered person list.
      */
     boolean canShowDeleteConfirmation(String commandText);
+
+    /**
+     * Returns the person to be deleted if the given command text is a fully valid delete command
+     * against the current displayed list, or null otherwise.
+     */
+    Person getPersonToDelete(String commandText);
 }

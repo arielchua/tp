@@ -118,4 +118,41 @@ public class LogicManager implements Logic {
             return false;
         }
     }
+
+    @Override
+    public Person getPersonToDelete(String commandText) {
+        String trimmedCommand = commandText.trim();
+
+        if (!(trimmedCommand.equals(DeleteCommand.COMMAND_WORD)
+                || trimmedCommand.startsWith(DeleteCommand.COMMAND_WORD + " "))) {
+            return null;
+        }
+
+        String arguments = trimmedCommand.substring(DeleteCommand.COMMAND_WORD.length());
+
+        try {
+            DeleteCommand deleteCommand = new DeleteCommandParser().parse(arguments);
+            List<Person> filteredPersonList = model.getFilteredPersonList();
+
+            if (deleteCommand.isDeleteByIndex()) {
+                int zeroBasedIndex = deleteCommand.getTargetIndex().getZeroBased();
+
+                if (zeroBasedIndex < 0 || zeroBasedIndex >= filteredPersonList.size()) {
+                    return null;
+                }
+
+                return filteredPersonList.get(zeroBasedIndex);
+            }
+
+            return filteredPersonList.stream()
+                    .filter(person -> person.getStudentId().equals(deleteCommand.getTargetStudentId())
+                            && person.getCourseId().equals(deleteCommand.getTargetCourseId())
+                            && person.getTGroup().equals(deleteCommand.getTargetTGroup()))
+                    .findFirst()
+                    .orElse(null);
+
+        } catch (ParseException e) {
+            return null;
+        }
+    }
 }
