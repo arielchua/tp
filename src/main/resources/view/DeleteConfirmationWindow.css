@@ -1,0 +1,22 @@
+#deleteConfirmationContainer {
+    -fx-background-color: #f5f5f5;
+}
+
+#confirmationMessage {
+    -fx-text-fill: #1a1a1a;
+    -fx-font-size: 14px;
+}
+
+#okButton, #cancelButton {
+    -fx-text-fill: #1a1a1a;
+    -fx-background-color: #e8e8e8;
+    -fx-border-color: #c8c8c8;
+}
+
+#okButton:hover, #cancelButton:hover {
+    -fx-background-color: #d8d8d8;
+}
+
+#okButton:armed, #cancelButton:armed {
+    -fx-background-color: #c8c8c8;
+}

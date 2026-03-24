@@ -5,7 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.parser.DeleteCommandParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -42,6 +44,15 @@ public class CommandBox extends UiPart<Region> {
         }
 
         try {
+            // handle UI when delete command is trying to be executed
+            if (isValidDeleteCommand(commandText)) {
+                boolean confirmed = showDeleteConfirmationPopup();
+
+                if (!confirmed) {
+                    return;
+                }
+            }
+
             commandExecutor.execute(commandText);
             commandTextField.setText("");
         } catch (CommandException | ParseException e) {
@@ -82,4 +93,35 @@ public class CommandBox extends UiPart<Region> {
         CommandResult execute(String commandText) throws CommandException, ParseException;
     }
 
+    /**
+     * Returns true if the given command text is a valid delete command.
+     */
+    private boolean isValidDeleteCommand(String commandText) {
+        String trimmedCommand = commandText.trim();
+
+        if (!(trimmedCommand.equals(DeleteCommand.COMMAND_WORD)
+            || trimmedCommand.startsWith(DeleteCommand.COMMAND_WORD + " "))) {
+            return false;
+        }
+
+        String remainder = trimmedCommand.substring(DeleteCommand.COMMAND_WORD.length()).trim();
+
+        try {
+            new DeleteCommandParser().parse(remainder);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Shows a confirmation popup for delete command.
+     *
+     * @return true if user clicks OK, false otherwise.
+     */
+    private boolean showDeleteConfirmationPopup() {
+        DeleteConfirmationWindow deleteConfirmationWindow = new DeleteConfirmationWindow();
+        deleteConfirmationWindow.setMessage("Are you sure you want to delete this student?");
+        return deleteConfirmationWindow.showAndWait();
+    }
 }
