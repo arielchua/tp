@@ -4,7 +4,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
-import javafx.stage.Stage;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -18,7 +17,6 @@ public class CommandBox extends UiPart<Region> {
     private static final String FXML = "CommandBox.fxml";
 
     private final CommandExecutor commandExecutor;
-    private final DeleteConfirmationChecker deleteConfirmationChecker;
 
     @FXML
     private TextField commandTextField;
@@ -26,21 +24,10 @@ public class CommandBox extends UiPart<Region> {
     /**
      * Creates a {@code CommandBox} with the given {@code CommandExecutor}.
      */
-    public CommandBox(CommandExecutor commandExecutor,
-                    DeleteConfirmationChecker deleteConfirmationChecker) {
+    public CommandBox(CommandExecutor commandExecutor) {
         super(FXML);
         this.commandExecutor = commandExecutor;
-        this.deleteConfirmationChecker = deleteConfirmationChecker;
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
-    }
-
-    /**
-     * Returns true if the given command text is a delete command that should show
-     * the confirmation popup.
-     */
-    @FunctionalInterface
-    public interface DeleteConfirmationChecker {
-        boolean canShowDeleteConfirmation(String commandText);
     }
 
     /**
@@ -55,16 +42,6 @@ public class CommandBox extends UiPart<Region> {
         }
 
         try {
-            boolean shouldShowPopup = deleteConfirmationChecker.canShowDeleteConfirmation(commandText);
-
-            if (shouldShowPopup) {
-                boolean confirmed = showDeleteConfirmationPopup();
-
-                if (!confirmed) {
-                    return;
-                }
-            }
-
             commandExecutor.execute(commandText);
             commandTextField.setText("");
         } catch (CommandException | ParseException e) {
@@ -103,17 +80,5 @@ public class CommandBox extends UiPart<Region> {
          * @see seedu.address.logic.Logic#execute(String)
          */
         CommandResult execute(String commandText) throws CommandException, ParseException;
-    }
-
-    /**
-     * Shows a confirmation popup for delete command.
-     *
-     * @return true if user clicks OK, false otherwise.
-     */
-    private boolean showDeleteConfirmationPopup() {
-        Stage owner = (Stage) commandTextField.getScene().getWindow();
-        DeleteConfirmationWindow deleteConfirmationWindow = new DeleteConfirmationWindow(owner);
-        deleteConfirmationWindow.setMessage("Are you sure you want to delete this student?");
-        return deleteConfirmationWindow.showAndWait();
     }
 }

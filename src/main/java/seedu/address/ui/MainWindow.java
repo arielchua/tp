@@ -36,6 +36,10 @@ public class MainWindow extends UiPart<Stage> {
     private HelpWindow helpWindow;
     private CommandBox commandBox;
 
+    // stores the deleting state
+    private String pendingDeleteCommandText;
+    private boolean isAwaitingDeleteConfirmation = false;
+
     @FXML
     private StackPane commandBoxPlaceholder;
 
@@ -50,6 +54,16 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
+    // messages for deletion
+    private static final String MESSAGE_CONFIRM_DELETE =
+            "Are you sure you want to delete this student? Type 'yes' to confirm or 'no' to cancel.";
+
+    private static final String MESSAGE_DELETE_CANCELLED =
+            "Delete operation cancelled.";
+
+    private static final String MESSAGE_INVALID_CONFIRMATION_RESPONSE =
+            "Please type 'yes' to confirm deletion or 'no' to cancel.";
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
@@ -120,7 +134,7 @@ public class MainWindow extends UiPart<Stage> {
         StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getAddressBookFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
-        commandBox = new CommandBox(this::executeCommand, logic::canShowDeleteConfirmation);
+        commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
     }
 
@@ -175,7 +189,34 @@ public class MainWindow extends UiPart<Stage> {
      */
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
         try {
-            CommandResult commandResult = logic.execute(commandText);
+            CommandResult commandResult;
+
+            // case 1: awaiting yes/no confirmation message from user
+            if (isAwaitingDeleteConfirmation) {
+                String trimmedCommand = commandText.trim().toLowerCase();
+
+                if (trimmedCommand.equals("yes")) {
+                    isAwaitingDeleteConfirmation = false;
+                    String deleteCommandToExecute = pendingDeleteCommandText;
+                    pendingDeleteCommandText = null;
+                    commandResult = logic.execute(deleteCommandToExecute);
+                } else if (trimmedCommand.equals("no")) {
+                    isAwaitingDeleteConfirmation = false;
+                    pendingDeleteCommandText = null;
+                    commandResult = new CommandResult(MESSAGE_DELETE_CANCELLED);
+                } else {
+                    commandResult = new CommandResult(MESSAGE_INVALID_CONFIRMATION_RESPONSE);
+                }
+            // case 2: delete action requested and is fully valid
+            } else if (logic.canShowDeleteConfirmation(commandText)) {
+                isAwaitingDeleteConfirmation = true;
+                pendingDeleteCommandText = commandText;
+                commandResult = new CommandResult(MESSAGE_CONFIRM_DELETE);
+            // case 3: all other commands
+            } else {
+                commandResult = logic.execute(commandText);
+            }
+
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
