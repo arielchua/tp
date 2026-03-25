@@ -50,6 +50,7 @@ public class MainWindow extends UiPart<Stage> {
     // stores the deleting state
     private String pendingDeleteCommandText;
     private boolean isAwaitingDeleteConfirmation = false;
+    private ViewWindow viewWindow;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -82,8 +83,12 @@ public class MainWindow extends UiPart<Stage> {
         setAccelerators();
 
         helpWindow = new HelpWindow();
+        viewWindow = new ViewWindow();
     }
 
+    /**
+     * Returns the primary stage of the application.
+     */
     public Stage getPrimaryStage() {
         return primaryStage;
     }
@@ -94,6 +99,8 @@ public class MainWindow extends UiPart<Stage> {
 
     /**
      * Sets the accelerator of a MenuItem.
+     *
+     * @param menuItem       the menu item to configure
      * @param keyCombination the KeyCombination value of the accelerator
      */
     private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
@@ -163,6 +170,25 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
+    /**
+     * Opens the view window with the specified person's details,
+     * or focuses on it if it is already opened.
+     *
+     * @param person the person to display
+     */
+    @FXML
+    public void handleView(Person person) {
+        viewWindow.setPerson(person);
+        if (!viewWindow.isShowing()) {
+            viewWindow.show();
+        } else {
+            viewWindow.focus();
+        }
+    }
+
+    /**
+     * Shows this main window.
+     */
     void show() {
         primaryStage.show();
     }
@@ -176,9 +202,13 @@ public class MainWindow extends UiPart<Stage> {
                 (int) primaryStage.getX(), (int) primaryStage.getY());
         logic.setGuiSettings(guiSettings);
         helpWindow.hide();
+        viewWindow.hide();
         primaryStage.hide();
     }
 
+    /**
+     * Returns the person list panel displayed in this window.
+     */
     public PersonListPanel getPersonListPanel() {
         return personListPanel;
     }
@@ -225,6 +255,10 @@ public class MainWindow extends UiPart<Stage> {
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
+            if (commandResult.isShowView()) {
+                handleView(commandResult.getPersonToView());
+            }
+
             if (commandResult.isShowHelp()) {
                 handleHelp();
             }
@@ -232,7 +266,14 @@ public class MainWindow extends UiPart<Stage> {
             if (commandResult.isExit()) {
                 handleExit();
             }
-
+            if (viewWindow.isShowing()) {
+                // Find the updated version of the person from the logic/model
+                // and pass it to the viewWindow again.
+                logic.getFilteredPersonList().stream()
+                        .filter(p -> viewWindow.isViewing(p))
+                        .findFirst()
+                        .ifPresent(updatedPerson -> viewWindow.setPerson(updatedPerson));
+            }
             return commandResult;
         } catch (CommandException | ParseException e) {
             logger.info("An error occurred while executing command: " + commandText);

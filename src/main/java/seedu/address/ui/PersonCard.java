@@ -1,11 +1,16 @@
 package seedu.address.ui;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Progress;
+import seedu.address.model.person.Week;
+import seedu.address.model.person.WeekList;
 
 /**
  * An UI component that displays information of a {@code Person}.
@@ -41,6 +46,8 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label tele;
     @FXML
+    private FlowPane weekAttendance;
+    @FXML
     private Label progress;
 
     /**
@@ -56,7 +63,14 @@ public class PersonCard extends UiPart<Region> {
         tGroup.setText(person.getTGroup().value);
         email.setText(person.getEmail().value);
         tele.setText(person.getTele() == null ? "-" : person.getTele().value);
+        renderProgress();
+        renderWeekAttendance(weekAttendance, (WeekList) person.getWeeklyAttendanceList());
+    }
 
+    /**
+     * Render the Progress tag
+     */
+    public void renderProgress() {
         // clear old style classes
         progress.getStyleClass().removeAll("progress-on-track", "progress-needs-attention", "progress-at-risk");
 
@@ -84,5 +98,58 @@ public class PersonCard extends UiPart<Region> {
                 break;
             }
         }
+    }
+
+    /**
+     * Render a Trackable attendance list as colored squares in a FlowPane.
+     *
+     * @param weekPane The FlowPane to render into.
+     * @param weekList The WeekList to render.
+     */
+    private void renderWeekAttendance(FlowPane weekPane, WeekList weekList) {
+        weekPane.getChildren().clear(); // clear old boxes
+
+        // Loop through all weeks
+        for (int i = 0; i < WeekList.NUMBER_OF_WEEKS; i++) {
+            Week week = (Week) weekList.getWeeks()[i];
+
+            // Week number label
+            Label weekLabel = new Label("W" + (i + 1));
+            weekLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: black; -fx-font-weight: bold;");
+            weekLabel.setMaxWidth(Double.MAX_VALUE);
+            weekLabel.setAlignment(Pos.CENTER);
+
+            // Colored square
+            Label weekSquare = new Label();
+            weekSquare.setPrefSize(16, 16);
+            weekSquare.setMinSize(16, 16);
+            weekSquare.setMaxSize(16, 16);
+
+            // Assign color based on status
+            switch (week.getStatus()) {
+            case "Y" -> weekSquare.getStyleClass().add("week-green");
+            case "A" -> weekSquare.getStyleClass().add("week-red");
+            default -> weekSquare.getStyleClass().add("week-grey");
+            }
+
+            // Wrap in VBox
+            VBox weekVBox = new VBox(4);
+            weekVBox.setAlignment(Pos.CENTER);
+            weekVBox.setPrefWidth(30);
+            weekVBox.getChildren().addAll(weekLabel, weekSquare);
+            // Add to FlowPane
+            weekPane.getChildren().add(weekVBox);
+        }
+
+        // Center all weeks
+        weekPane.setAlignment(Pos.CENTER);
+        weekPane.setHgap(5); // optional spacing
+    }
+
+    /**
+     * Call this in the update method for the card:
+     */
+    public void updateWeekAttendance(Person person) {
+        renderWeekAttendance(weekAttendance, (WeekList) person.getWeeklyAttendanceList());
     }
 }

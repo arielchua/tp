@@ -10,8 +10,9 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class CourseId {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Course ID should follow the format used in the app, e.g. CS2103.";
-    public static final String VALIDATION_REGEX = "[A-Za-z0-9][A-Za-z0-9 /:-]*";
+            "Course ID should follow the format used in the app, with no spaces"
+            + " or special characters: e.g. CS2103.";
+    public static final String VALIDATION_REGEX = "[A-Za-z0-9][A-Za-z0-9]*";
     public final String value;
 
     /**
@@ -22,7 +23,7 @@ public class CourseId {
     public CourseId(String courseId) {
         requireNonNull(courseId);
         checkArgument(isValidCourseId(courseId), MESSAGE_CONSTRAINTS);
-        value = courseId;
+        value = courseId.toUpperCase();
     }
 
     /**

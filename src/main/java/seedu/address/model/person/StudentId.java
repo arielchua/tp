@@ -10,7 +10,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class StudentId {
 
     public static final String MESSAGE_CONSTRAINTS = "Student ID should be a 9 characters long, alphanumeric";
-    public static final String VALIDATION_REGEX = "[A-Za-z0-9]{9}";
+    public static final String VALIDATION_REGEX = "[A-Za-z][0-9]{7}[A-Za-z]";
     public final String value;
 
     /**

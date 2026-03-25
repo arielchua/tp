@@ -12,6 +12,11 @@ public class CliSyntax {
     public static final Prefix PREFIX_STUDENTID = new Prefix("id/");
     public static final Prefix PREFIX_TGROUP = new Prefix("tg/");
     public static final Prefix PREFIX_TELE = new Prefix("tel/");
+    public static final Prefix PREFIX_WEEK = new Prefix("week/");
+    public static final Prefix PREFIX_STATUS = new Prefix("sta/");
     public static final Prefix PREFIX_PROGRESS = new Prefix("p/");
+    public static final Prefix PREFIX_ABSENCE = new Prefix("abs/");
+    public static final Prefix PREFIX_REMARK = new Prefix("txt/");
+    public static final Prefix PREFIX_UNREMARK = new Prefix("r/");
 
 }

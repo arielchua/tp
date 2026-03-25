@@ -1,103 +1,108 @@
 package seedu.address.logic.commands;
 
-import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalPersons.CARL;
+import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javafx.collections.ObservableList;
-import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.Model;
-import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.ModelManager;
+import seedu.address.model.UserPrefs;
 import seedu.address.model.person.CourseId;
 import seedu.address.model.person.FilterMatchesPredicate;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.TGroup;
-import seedu.address.testutil.PersonBuilder;
 
+/**
+ * Contains integration tests (interaction with the Model) for {@code FilterCommand}.
+ */
 public class FilterCommandTest {
 
-    @Test
-    public void execute_filterByCourseId_success() throws Exception {
-        Person personWithMatchingCourse = new PersonBuilder().withCourseId("CS2103T").build();
-        Person personWithDifferentCourse = new PersonBuilder().withCourseId("CS2101").build();
+    private Model model;
+    private Model expectedModel;
 
-        ModelStubWithPersons modelStub = new ModelStubWithPersons(personWithMatchingCourse, personWithDifferentCourse);
-        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("CS2103T")), Optional.empty());
-        FilterCommand filterCommand = new FilterCommand(predicate);
-
-        CommandResult commandResult = filterCommand.execute(modelStub);
-
-        assertEquals("There are 1 students matching this filter.", commandResult.getFeedbackToUser());
-        assertEquals(List.of(personWithMatchingCourse), modelStub.filteredPersons);
+    @BeforeEach
+    public void setUp() {
+        // Uses the data defined in TypicalPersons
+        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     }
 
     @Test
-    public void execute_filterByTGroup_success() throws Exception {
-        Person personWithMatchingTGroup = new PersonBuilder().withTGroup("T01").build();
-        Person personWithDifferentTGroup = new PersonBuilder().withTGroup("T02").build();
-
-        ModelStubWithPersons modelStub = new ModelStubWithPersons(personWithMatchingTGroup, personWithDifferentTGroup);
+    public void execute_filterByCourse_success() {
+        // Alice is in CS2103T
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.empty(), Optional.of(new TGroup("T01")));
-        FilterCommand filterCommand = new FilterCommand(predicate);
+                Optional.of(ALICE.getCourseId()),
+                Optional.empty(), Optional.empty(), Optional.empty());
 
-        CommandResult commandResult = filterCommand.execute(modelStub);
+        FilterCommand command = new FilterCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
 
-        assertEquals("There are 1 students matching this filter.", commandResult.getFeedbackToUser());
-        assertEquals(List.of(personWithMatchingTGroup), modelStub.filteredPersons);
+        assertCommandSuccess(command, model,
+                String.format(FilterCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
+                expectedModel);
     }
 
     @Test
-    public void execute_filterByBoth_success() throws Exception {
-        Person personMatchingBoth = new PersonBuilder().withCourseId("CS2103T").withTGroup("T01").build();
-        Person personMatchingCourseOnly = new PersonBuilder().withCourseId("CS2103T").withTGroup("T02").build();
-        Person personMatchingTGroupOnly = new PersonBuilder().withCourseId("CS2101").withTGroup("T01").build();
-
-        ModelStubWithPersons modelStub = new ModelStubWithPersons(
-                personMatchingBoth, personMatchingCourseOnly, personMatchingTGroupOnly);
+    public void execute_filterByTGroup_success() {
+        // Benson is in T09
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("CS2103T")), Optional.of(new TGroup("T01")));
-        FilterCommand filterCommand = new FilterCommand(predicate);
+                Optional.empty(),
+                Optional.of(BENSON.getTGroup()),
+                Optional.empty(), Optional.empty());
 
-        CommandResult commandResult = filterCommand.execute(modelStub);
+        FilterCommand command = new FilterCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
 
-        assertEquals("There are 1 students matching this filter.", commandResult.getFeedbackToUser());
-        assertEquals(List.of(personMatchingBoth), modelStub.filteredPersons);
+        assertCommandSuccess(command, model,
+                String.format(FilterCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
+                expectedModel);
     }
 
     @Test
-    public void execute_zeroMatches_success() throws Exception {
-        Person personWithDifferentCourse = new PersonBuilder().withCourseId("CS2101").build();
-
-        ModelStubWithPersons modelStub = new ModelStubWithPersons(personWithDifferentCourse);
+    public void execute_filterByProgress_success() {
+        // Carl is NEEDS_ATTENTION
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("NONEXISTENT")), Optional.empty());
-        FilterCommand filterCommand = new FilterCommand(predicate);
+                Optional.empty(), Optional.empty(),
+                Optional.of(CARL.getProgress()),
+                Optional.empty());
 
-        CommandResult commandResult = filterCommand.execute(modelStub);
+        FilterCommand command = new FilterCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
 
-        assertEquals("There are 0 students matching this filter.", commandResult.getFeedbackToUser());
-        assertEquals(List.of(), modelStub.filteredPersons);
+        assertCommandSuccess(command, model,
+                String.format(FilterCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
+                expectedModel);
+    }
+
+    @Test
+    public void execute_noMatches_success() {
+        // Use a CourseId that definitely doesn't exist in TypicalPersons
+        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
+                Optional.of(new CourseId("EMPTY999")),
+                Optional.empty(), Optional.empty(), Optional.empty());
+
+        FilterCommand command = new FilterCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+
+        assertCommandSuccess(command, model,
+                String.format(FilterCommand.MESSAGE_SUCCESS, 0),
+                expectedModel);
     }
 
     @Test
     public void equals() {
         FilterMatchesPredicate firstPredicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("CS2103T")), Optional.empty());
+                Optional.of(ALICE.getCourseId()), Optional.empty(), Optional.empty(), Optional.empty());
         FilterMatchesPredicate secondPredicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("CS2101")), Optional.empty());
+                Optional.of(BENSON.getCourseId()), Optional.empty(), Optional.empty(), Optional.empty());
 
         FilterCommand filterFirstCommand = new FilterCommand(firstPredicate);
         FilterCommand filterSecondCommand = new FilterCommand(secondPredicate);
@@ -118,120 +123,72 @@ public class FilterCommandTest {
         // different predicate -> returns false
         assertFalse(filterFirstCommand.equals(filterSecondCommand));
     }
+    @Test
+    public void execute_filterByAbsenceCount_success() {
+        // Assume Alice has 0 absences and we filter for >= 0
+        FilterMatchesPredicate zeroPredicate = new FilterMatchesPredicate(
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(0));
 
+        FilterCommand zeroCommand = new FilterCommand(zeroPredicate);
+        expectedModel.updateFilteredPersonList(zeroPredicate);
+        assertCommandSuccess(zeroCommand, model,
+                String.format(FilterCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
+                expectedModel);
+
+        // Filter for a high absence count that likely matches no one in TypicalPersons
+        FilterMatchesPredicate highAbsencePredicate = new FilterMatchesPredicate(
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(10));
+
+        FilterCommand highAbsenceCommand = new FilterCommand(highAbsencePredicate);
+        expectedModel.updateFilteredPersonList(highAbsencePredicate);
+        assertCommandSuccess(highAbsenceCommand, model,
+                String.format(FilterCommand.MESSAGE_SUCCESS, 0),
+                expectedModel);
+    }
+
+    @Test
+    public void execute_filterByMultipleFields_success() {
+        // Filter by both CourseId and Absence Count
+        // Alice: CourseId=CS2103T, Absences=0 (assumed)
+        FilterMatchesPredicate multiPredicate = new FilterMatchesPredicate(
+                Optional.of(ALICE.getCourseId()),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of(0));
+
+        FilterCommand command = new FilterCommand(multiPredicate);
+        expectedModel.updateFilteredPersonList(multiPredicate);
+
+        assertCommandSuccess(command, model,
+                String.format(FilterCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
+                expectedModel);
+
+        // Ensure Alice is actually in the filtered results
+        assertTrue(expectedModel.getFilteredPersonList().contains(ALICE));
+    }
+
+    @Test
+    public void execute_allFieldsEmpty_success() {
+        // Empty predicate should show everyone (matching your FilterMatchesPredicate logic)
+        FilterMatchesPredicate emptyPredicate = new FilterMatchesPredicate(
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        FilterCommand command = new FilterCommand(emptyPredicate);
+        expectedModel.updateFilteredPersonList(emptyPredicate);
+
+        assertCommandSuccess(command, model,
+                String.format(FilterCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
+                expectedModel);
+
+        assertEquals(model.getAddressBook().getPersonList().size(),
+                expectedModel.getFilteredPersonList().size());
+    }
     @Test
     public void toStringMethod() {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("CS2103T")), Optional.empty());
+                Optional.of(ALICE.getCourseId()), Optional.empty(), Optional.empty(), Optional.empty());
         FilterCommand filterCommand = new FilterCommand(predicate);
         String expected = FilterCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
         assertEquals(expected, filterCommand.toString());
-    }
-
-    /**
-     * A default model stub that have all of the methods failing.
-     */
-    private class ModelStub implements Model {
-        @Override
-        public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public ReadOnlyUserPrefs getUserPrefs() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public GuiSettings getGuiSettings() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setGuiSettings(GuiSettings guiSettings) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public Path getAddressBookFilePath() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setAddressBookFilePath(Path addressBookFilePath) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void addPerson(Person person) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setAddressBook(ReadOnlyAddressBook newData) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public ReadOnlyAddressBook getAddressBook() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public boolean hasPerson(Person person) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void deletePerson(Person target) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setPerson(Person target, Person editedPerson) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public ObservableList<Person> getFilteredPersonList() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void updateFilteredPersonList(Predicate<Person> predicate) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void updateSortedPersonList(Comparator<Person> comparator, Predicate<Person> predicateShowAllPersons) {
-            throw new AssertionError("This method should not be called.");
-        }
-    }
-
-    /**
-     * A Model stub that contains a list of persons and tracks filtered results.
-     */
-    private class ModelStubWithPersons extends ModelStub {
-        private final List<Person> persons;
-        private List<Person> filteredPersons;
-
-        ModelStubWithPersons(Person... persons) {
-            this.persons = List.of(persons);
-            this.filteredPersons = new ArrayList<>();
-        }
-
-        @Override
-        public ObservableList<Person> getFilteredPersonList() {
-            // Return a simple ObservableList implementation for testing
-            return javafx.collections.FXCollections.observableArrayList(filteredPersons);
-        }
-
-        @Override
-        public void updateFilteredPersonList(Predicate<Person> predicate) {
-            requireNonNull(predicate);
-            filteredPersons = persons.stream()
-                    .filter(predicate)
-                    .toList();
-        }
     }
 }

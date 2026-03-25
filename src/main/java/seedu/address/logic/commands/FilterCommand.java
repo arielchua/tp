@@ -16,10 +16,12 @@ public class FilterCommand extends Command {
 
     public static final String COMMAND_WORD = "filter";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filters students by course and/or tutorial group.\n"
-            + "Parameters: [crs/COURSE_ID] [tg/TUTORIAL_ID]\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Filters students by course, tutorial group, and/or progress.\n"
+            + "Parameters: [crs/COURSE_ID] [tg/TUTORIAL_ID] [p/PROGRESS]\n"
             + "At least one parameter must be provided.\n"
-            + "Example: " + COMMAND_WORD + " crs/CS2103T tg/T01";
+            + "Example: " + COMMAND_WORD + " crs/CS2103T tg/T01 p/ON_TRACK";
+
 
     public static final String MESSAGE_SUCCESS = "There are %d students matching this filter.";
 

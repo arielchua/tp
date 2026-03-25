@@ -11,7 +11,7 @@ public class TGroup {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Tutorial ID should follow the format used in the app, e.g. T03.";
-    public static final String VALIDATION_REGEX = "\\p{Alnum}+";
+    public static final String VALIDATION_REGEX = "[A-Za-z0-9]+";
     public final String value;
 
     /**
@@ -22,7 +22,7 @@ public class TGroup {
     public TGroup(String tGroup) {
         requireNonNull(tGroup);
         checkArgument(isValidTGroup(tGroup), MESSAGE_CONSTRAINTS);
-        value = tGroup;
+        value = tGroup.toUpperCase();
     }
 
     /**

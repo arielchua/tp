@@ -19,7 +19,7 @@ import seedu.address.model.person.TGroup;
  */
 public class ProgressCommand extends Command {
 
-    public static final String COMMAND_WORD = "progress";
+    public static final String COMMAND_WORD = "updateprogress";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Updates the progress of a student.\n"
             + "Progress values:\n"
@@ -136,6 +136,7 @@ public class ProgressCommand extends Command {
                 personToEdit.getStudentId(),
                 personToEdit.getTGroup(),
                 personToEdit.getTele(),
+                personToEdit.getWeeklyAttendanceList(),
                 updatedProgress);
     }
 

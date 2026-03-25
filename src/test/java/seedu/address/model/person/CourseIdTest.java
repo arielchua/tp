@@ -33,12 +33,8 @@ public class CourseIdTest {
         // valid course IDs
         assertTrue(CourseId.isValidCourseId("CS2030S"));
         assertTrue(CourseId.isValidCourseId("cs2030s"));
-        assertTrue(CourseId.isValidCourseId("12345"));
         assertTrue(CourseId.isValidCourseId("A1B2C3"));
-        assertTrue(CourseId.isValidCourseId("CS 2030S")); // space allowed
-        assertTrue(CourseId.isValidCourseId("CS2030-S")); // hyphen allowed
-        assertTrue(CourseId.isValidCourseId("CS2030/S")); // slash allowed
-        assertTrue(CourseId.isValidCourseId("CS2030:S")); // colon allowed
+
     }
 
     @Test

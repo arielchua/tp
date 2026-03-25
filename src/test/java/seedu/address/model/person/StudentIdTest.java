@@ -39,7 +39,6 @@ public class StudentIdTest {
         // valid student IDs
         assertTrue(StudentId.isValidStudentId("A1234567X"));
         assertTrue(StudentId.isValidStudentId("a1234567x"));
-        assertTrue(StudentId.isValidStudentId("123456789"));
     }
 
     @Test

@@ -12,6 +12,7 @@ import seedu.address.model.person.Progress;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
+import seedu.address.model.person.Week;
 
 
 /**
@@ -122,6 +123,67 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String} into an {@code Week.Status}.
+     *
+     * @throws ParseException if the input is invalid
+     */
+    public static Week.Status parseAttendanceStatus(String status)
+            throws ParseException {
+        requireNonNull(status);
+        String trimmed = status.trim().toUpperCase();
+
+        try {
+            return Week.Status.fromString(trimmed);
+        } catch (IllegalArgumentException e) {
+            throw new ParseException("Status must be Y, A, or N");
+        }
+    }
+
+    /**
+     * Parses a {@code String} into an {@code Index} representing a week number.
+     *
+     * @param input The input string, e.g., "1" for week 1.
+     * @return Index corresponding to the week number.
+     * @throws ParseException if the input is not a positive integer.
+     */
+    public static Index parseWeekIndex(String input) throws ParseException {
+        requireNonNull(input);
+        try {
+            int value = Integer.parseInt(input.trim());
+            if (value <= 0) {
+                throw new ParseException("Week index must be a positive integer.");
+            }
+            return Index.fromOneBased(value);
+        } catch (NumberFormatException e) {
+            throw new ParseException("Week index must be a positive integer.", e);
+        }
+    }
+
+    /**
+     * Parses a {@code String} into a {@code Week.Status}.
+     *
+     * Accepts "y" = attended, "a" = absent, "n" = not marked.
+     *
+     * @param input The input string representing attendance status.
+     * @return Week.Status corresponding to the input.
+     * @throws ParseException if the input is invalid.
+     */
+    public static Week.Status parseWeekStatus(String input) throws ParseException {
+        requireNonNull(input);
+        String trimmed = input.trim().toUpperCase();
+
+        switch (trimmed) {
+        case "Y":
+            return Week.Status.Y;
+        case "A":
+            return Week.Status.A;
+        case "N":
+            return Week.Status.N;
+        default:
+            throw new ParseException("Week status must be 'Y' (attended), 'A' (absent), or 'N' (not marked).");
+        }
+    }
+    /**
      * Parses a {@code String progress} into a {@code Progress}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -145,5 +207,20 @@ public class ParserUtil {
             throw new ParseException(
                     "Invalid progress value. Allowed values are: on_track, needs_attention, at_risk, clear.");
         }
+    }
+    /**
+     * Parses {@code stringAbsenceCount} into an {@code Integer} absence count threshold.
+     *
+     * @throws ParseException if the given string is not a non-negative integer
+     */
+    public static Integer parseAbsenceCount(String stringAbsenceCount) throws ParseException {
+        requireNonNull(stringAbsenceCount);
+        String trimmed = stringAbsenceCount.trim();
+
+        if (!trimmed.matches("\\d+")) {
+            throw new ParseException("Absence count must be a non-negative integer.");
+        }
+
+        return Integer.parseInt(trimmed);
     }
 }

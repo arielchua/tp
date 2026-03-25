@@ -24,86 +24,86 @@ import seedu.address.model.person.Person;
 public class TypicalPersons {
 
     public static final Person ALICE = new PersonBuilder().withName("Alice Pauline")
-                                                        .withCourseId("CS2103T")
-                                                        .withStudentId("A1234567G")
-                                                        .withTGroup("T08")
-                                                        .withEmail("alice@example.com")
-                                                        .withTele("alice_pauline")
-                                                        .build();
+            .withCourseId("CS2103T")
+            .withStudentId("A1234567G")
+            .withTGroup("T08")
+            .withEmail("alice@u.nus.edu")
+            .withTele("alice_pauline")
+            .build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
-                                                        .withCourseId("CS2101")
-                                                        .withStudentId("A1234567F")
-                                                        .withTGroup("T09")
-                                                        .withEmail("johnd@example.com")
-                                                        .withTele("johndoe")
-                                                        .build();
+            .withCourseId("CS2101")
+            .withStudentId("A1234567F")
+            .withTGroup("T09")
+            .withEmail("johnd@u.nus.edu")
+            .withTele("johndoe")
+            .build();
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz")
-                                                        .withTele("carl_kurz")
-                                                        .withEmail("heinz@example.com")
-                                                        .withCourseId("CS1101S")
-                                                        .withStudentId("A1234567H")
-                                                        .withTGroup("T01")
-                                                        .build();
+            .withTele("carl_kurz")
+            .withEmail("heinz@u.nus.edu")
+            .withCourseId("CS1101S")
+            .withStudentId("A1234567H")
+            .withTGroup("T01")
+            .build();
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier")
-                                                        .withTele("daniel_meier")
-                                                        .withEmail("cornelia@example.com")
-                                                        .withCourseId("HSS1000")
-                                                        .withStudentId("A1234567I")
-                                                        .withTGroup("T02")
-                                                        .build();
+            .withTele("daniel_meier")
+            .withEmail("cornelia@u.nus.edu")
+            .withCourseId("HSS1000")
+            .withStudentId("A1234567I")
+            .withTGroup("T02")
+            .build();
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer")
-                                                        .withTele("elle_meyer")
-                                                        .withEmail("werner@example.com")
-                                                        .withCourseId("GEN2061X")
-                                                        .withStudentId("A1234567J")
-                                                        .withTGroup("T03")
-                                                        .build();
+            .withTele("elle_meyer")
+            .withEmail("werner@u.nus.edu")
+            .withCourseId("GEN2061X")
+            .withStudentId("A1234567J")
+            .withTGroup("T03")
+            .build();
     public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz")
-                                                        .withTele("fiona_kunz")
-                                                        .withEmail("lydia@example.com")
-                                                        .withCourseId("CS2103T")
-                                                        .withStudentId("A1234567K")
-                                                        .withTGroup("T04")
-                                                        .build();
+            .withTele("fiona_kunz")
+            .withEmail("lydia@u.nus.edu")
+            .withCourseId("CS2103T")
+            .withStudentId("A1234567K")
+            .withTGroup("T04")
+            .build();
     public static final Person GEORGE = new PersonBuilder().withName("George Best")
-                                                        .withTele("george_best")
-                                                        .withEmail("anna@example.com")
-                                                        .withCourseId("CS2101")
-                                                        .withStudentId("A1234567L")
-                                                        .withTGroup("T05")
-                                                        .build();
+            .withTele("george_best")
+            .withEmail("anna@u.nus.edu")
+            .withCourseId("CS2101")
+            .withStudentId("A1234567L")
+            .withTGroup("T05")
+            .build();
 
     // Manually added
     public static final Person HOON = new PersonBuilder().withName("Hoon Meier")
-                                                        .withTele("hoon_meier")
-                                                        .withEmail("stefan@example.com")
-                                                        .withCourseId("CS2103T")
-                                                        .withStudentId("A1234567M")
-                                                        .withTGroup("T06")
-                                                        .build();
+            .withTele("hoon_meier")
+            .withEmail("stefan@u.nus.edu")
+            .withCourseId("CS2103T")
+            .withStudentId("A1234567M")
+            .withTGroup("T06")
+            .build();
     public static final Person IDA = new PersonBuilder().withName("Ida Mueller")
-                                                        .withTele("ida_mueller")
-                                                        .withEmail("hans@example.com")
-                                                        .withCourseId("CS2101")
-                                                        .withStudentId("A1234567N")
-                                                        .withTGroup("T07")
-                                                        .build();
+            .withTele("ida_mueller")
+            .withEmail("hans@u.nus.edu")
+            .withCourseId("CS2101")
+            .withStudentId("A1234567N")
+            .withTGroup("T07")
+            .build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
     public static final Person AMY = new PersonBuilder().withName(VALID_NAME_AMY)
-                                                        .withCourseId("CS2102")
-                                                        .withStudentId("A1234567O")
-                                                        .withTGroup("T10")
-                                                        .withTele(VALID_TELE_AMY)
-                                                        .withEmail(VALID_EMAIL_AMY)
-                                                        .build();
+            .withCourseId("CS2102")
+            .withStudentId("A1234567O")
+            .withTGroup("T10")
+            .withTele(VALID_TELE_AMY)
+            .withEmail(VALID_EMAIL_AMY)
+            .build();
     public static final Person BOB = new PersonBuilder().withName(VALID_NAME_BOB)
-                                                        .withCourseId("CS2102")
-                                                        .withStudentId("A1234567P")
-                                                        .withTGroup("T11")
-                                                        .withTele(VALID_TELE_BOB)
-                                                        .withEmail(VALID_EMAIL_BOB)
-                                                        .build();
+            .withCourseId("CS2102")
+            .withStudentId("A1234567P")
+            .withTGroup("T11")
+            .withTele(VALID_TELE_BOB)
+            .withEmail(VALID_EMAIL_BOB)
+            .build();
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 

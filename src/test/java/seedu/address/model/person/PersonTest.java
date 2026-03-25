@@ -15,28 +15,35 @@ public class PersonTest {
     private final StudentId validStudentId = new StudentId("A1234567X");
     private final TGroup validTGroup = new TGroup("T01");
     private final Tele validTele = new Tele("alextan");
+    private final WeekList validWeekList = new WeekList();
 
     private final Person person = new Person(
-            validName, validCourseId, validEmail, validStudentId, validTGroup, validTele, Progress.NOT_SET);
+            validName, validCourseId, validEmail, validStudentId,
+            validTGroup, validTele, validWeekList, Progress.NOT_SET);
 
     /**
      * Tests if any input is null.
-     * Assuming all fields compulsory in Person constructor.
      */
     @Test
     public void constructor_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
-                new Person(null, validCourseId, validEmail, validStudentId, validTGroup, validTele, Progress.NOT_SET));
+                new Person(null, validCourseId, validEmail,
+                        validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, null, validEmail, validStudentId, validTGroup, validTele, Progress.NOT_SET));
+                new Person(validName, null, validEmail,
+                        validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, null, validStudentId, validTGroup, validTele, Progress.NOT_SET));
+                new Person(validName, validCourseId, null,
+                        validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, validEmail, null, validTGroup, validTele, Progress.NOT_SET));
+                new Person(validName, validCourseId, validEmail,
+                        null, validTGroup, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, validEmail, validStudentId, null, validTele, Progress.NOT_SET));
+                new Person(validName, validCourseId, validEmail,
+                        validStudentId, null, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, validEmail, validStudentId, validTGroup, validTele, null));
+                new Person(validName, validCourseId, validEmail,
+                        validStudentId, validTGroup, validTele, null, null));
     }
 
     /**
@@ -51,6 +58,7 @@ public class PersonTest {
             new StudentId("A1234567X"),
             new TGroup("T01"),
             new Tele("alextan"),
+            new WeekList(),
             Progress.NOT_SET);
 
         // same object -> returns true
@@ -67,10 +75,11 @@ public class PersonTest {
                 new StudentId("A1234567X"),
                 new TGroup("T02"),
                 new Tele("boblim"),
+                new WeekList(),
                 Progress.NOT_SET);
         assertTrue(person.isSamePerson(editedPerson));
 
-        // different studentId, all other attributes same -> returns false
+        // different studentId -> returns false
         editedPerson = new Person(
                 new Name("Alex Tan"),
                 new CourseId("CS2030S"),
@@ -78,6 +87,7 @@ public class PersonTest {
                 new StudentId("B1234567X"),
                 new TGroup("T01"),
                 new Tele("alextan"),
+                new WeekList(),
                 Progress.NOT_SET);
         assertFalse(person.isSamePerson(editedPerson));
     }
@@ -92,6 +102,7 @@ public class PersonTest {
                 new StudentId("A1234567X"),
                 new TGroup("T01"),
                 new Tele("alextan"),
+                new WeekList(),
                 Progress.NOT_SET);
         assertTrue(person.equals(samePerson));
 
@@ -104,7 +115,7 @@ public class PersonTest {
         // different type -> returns false
         assertFalse(person.equals(5));
 
-        // different email -> returns false
+        // different email -> returns true
         Person editedPerson = new Person(
                 validName,
                 validCourseId,
@@ -112,8 +123,9 @@ public class PersonTest {
                 validStudentId,
                 validTGroup,
                 validTele,
+                new WeekList(),
                 Progress.NOT_SET);
-        assertFalse(person.equals(editedPerson));
+        assertTrue(person.equals(editedPerson));
 
         // different studentId -> returns false
         editedPerson = new Person(
@@ -123,10 +135,11 @@ public class PersonTest {
                 new StudentId("B1234567X"),
                 validTGroup,
                 validTele,
+                new WeekList(),
                 Progress.NOT_SET);
         assertFalse(person.equals(editedPerson));
 
-        // different tele -> returns false
+        // different tele -> returns true
         editedPerson = new Person(
                 validName,
                 validCourseId,
@@ -134,8 +147,9 @@ public class PersonTest {
                 validStudentId,
                 validTGroup,
                 new Tele("otheruser"),
+                new WeekList(),
                 Progress.NOT_SET);
-        assertFalse(person.equals(editedPerson));
+        assertTrue(person.equals(editedPerson));
 
         // different name, same email/studentId/tele -> returns true
         editedPerson = new Person(
@@ -145,10 +159,11 @@ public class PersonTest {
                 validStudentId,
                 validTGroup,
                 validTele,
+                new WeekList(),
                 Progress.NOT_SET);
         assertTrue(person.equals(editedPerson));
 
-        // different courseId, same email/studentId/tele -> returns true
+        // different courseId, same email/studentId/tele -> returns false
         editedPerson = new Person(
                 validName,
                 new CourseId("CS2040S"),
@@ -156,10 +171,11 @@ public class PersonTest {
                 validStudentId,
                 validTGroup,
                 validTele,
+                new WeekList(),
                 Progress.NOT_SET);
-        assertTrue(person.equals(editedPerson));
+        assertFalse(person.equals(editedPerson));
 
-        // different tGroup, same email/studentId/tele -> returns true
+        // different tGroup, same email/studentId/tele -> returns false
         editedPerson = new Person(
                 validName,
                 validCourseId,
@@ -167,8 +183,9 @@ public class PersonTest {
                 validStudentId,
                 new TGroup("T02"),
                 validTele,
+                new WeekList(),
                 Progress.NOT_SET);
-        assertTrue(person.equals(editedPerson));
+        assertFalse(person.equals(editedPerson));
     }
 
     @Test
@@ -180,6 +197,7 @@ public class PersonTest {
                 + ", studentId=" + person.getStudentId()
                 + ", tGroup=" + person.getTGroup()
                 + ", tele=" + (person.getTele() == null ? "-" : person.getTele())
+                + ", weeklyAttendanceList=" + person.getWeeklyAttendanceList()
                 + ", progress=" + person.getProgress() + "}";
         assertEquals(expected, person.toString());
     }

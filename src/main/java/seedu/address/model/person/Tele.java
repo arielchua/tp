@@ -10,8 +10,8 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Tele {
     public static final String MESSAGE_CONSTRAINTS =
             "Telegram handle should only contain alphanumeric characters and underscores, "
-            + "and should not be blank";
-    public static final String VALIDATION_REGEX = "[\\w.@]+";
+            + "with an optional leading '@', and should not be blank";
+    public static final String VALIDATION_REGEX = "@?[A-Za-z0-9_]+";
     public final String value;
 
     /**
