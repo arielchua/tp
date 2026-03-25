@@ -16,10 +16,10 @@ TeachAssist is a desktop app designed to help full-time teaching assistants mana
   - [Viewing help: `help`]
   - [Adding a student: `add`]
   - [Listing all students `list`]
-  - [Deleting a student: `delete`](#deleting-a-student--delete)
-    - [Delete by index]
-    - [Delete by student details]
-  - [Finding a student: `find`]
+  - [Deleting a student: `delete`](#delete-a-student-delete)
+    - [Delete by index](#deletebyindex)
+    - [Delete by student details](#deletebydetails)
+  - [Finding a student: `find`](#finding-students-by-name-find)
   - [Filtering students: `filter`]
     - [Filter by __]
     - [Filter by __]
@@ -83,6 +83,7 @@ help
 
 Removes a student from TeachAssist.
 
+<a name="deletebyindex"></a>
 **Delete by index**
 
 Format: 
@@ -94,7 +95,7 @@ delete INDEX
 * The index refers to the index number shown in the currently displayed student list.
 * The index **must be a positive integer** 1, 2, 3, …
 
-
+<a name="deletebydetails"></a>
 **Delete by student details**
 
 Format: 
@@ -103,6 +104,23 @@ delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP
 ```
 
 * Deletes the student with the exact details match for `STUDENT_ID`, `COURSE_ID`, and `TUTORIAL_GROUP`.
+
+**Confirmation prompt**
+
+After entering a valid `delete` command, TeachAssist will show a confirmation pop-up.<br>
+Enter `yes` to proceed with the deletion, or `no` to cancel it.
+
+**Examples**:
+
+`delete 1` followed by `yes`
+* Deletes the 1st student in the currently displayed student list.
+
+`delete id/A1234567X crs/CS2103T tg/T01` followed by `yes`
+* Deletes the student with student ID A1234567X, course CS2103T, and tutorial group T01.
+
+`delete 3` followed by `no`
+* No change is made.
+
 
 ### Finding students by name: `find`
 
@@ -126,6 +144,52 @@ Examples:
 
 `delete 3` followed by `no`
 * No change is made.
+
+<a name="progress"></a>
+### Updating a student's progress : `progress`
+
+Updates a student's progress to either:
+1. `on_track`
+2. `needs_attention`
+3. `at_risk`
+
+<div markdown="span" class="alert alert-primary">
+:bulb: **Tip:**<br><br>
+
+To remove the progress tag of a student, use `not_set`
+</div>
+
+<a name="progressbyindex"></a>
+**Update Progress by index**
+
+Format: 
+```
+updateprogress INDEX p/PROGRESS
+```
+
+* Updates the progress of student at the specified `INDEX` to `PROGRESS`.
+* The index refers to the index number shown in the currently displayed student list.
+* The index **must be a positive integer** 1, 2, 3, …
+
+<a name="progressbydetails"></a>
+**Update progress by student details**
+
+Format: 
+```
+updateprogress id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP p/PROGRESS
+```
+
+* Updates the progress of student with the exact details match for `STUDENT_ID`, `COURSE_ID`, and `TUTORIAL_GROUP` to `PROGRESS`.
+
+**Examples**:
+`progress 1 p/on_track`
+* Sets the progress of the 1st student in the currently displayed student list to on_track.
+
+`progress id/A1234567X crs/CS2103T tg/T01 p/needs_attention`
+* Sets the progress of the student with student ID A1234567X, course CS2103T, and tutorial group T01 to needs_attention.
+
+`progress 2 p/not_set`
+* Clears the progress status of the 2nd student in the currently displayed student list.
 
 
 ### Clearing all entries : `clear`
