@@ -80,8 +80,8 @@ public class Person {
         return progress;
     }
 
-    public int getAbsenceCount() {
-        return 0; //placeholder for future implementation of absences
+    public double getAbsenceCount() {
+        return weeklyAttendanceList.calculateWeekAbsence();
     }
     /**
      * Returns an unmodifiable view of the remarks list.

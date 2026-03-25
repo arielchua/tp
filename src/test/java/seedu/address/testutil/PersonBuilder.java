@@ -11,7 +11,6 @@ import seedu.address.model.person.Tele;
 import seedu.address.model.person.WeekList;
 import seedu.address.model.person.WeeklyAttendanceList;
 
-
 /**
  * A utility class to help with building Person objects.
  */
@@ -23,6 +22,7 @@ public class PersonBuilder {
     public static final String DEFAULT_STUDENT_ID = "A1234567X";
     public static final String DEFAULT_TGROUP = "T01";
     public static final String DEFAULT_TELE = "91234567";
+
     private Name name;
     private Email email;
     private CourseId courseId;
@@ -48,6 +48,7 @@ public class PersonBuilder {
 
     /**
      * Initializes the PersonBuilder with the data of {@code personToCopy}.
+     * @param personToCopy The person object to copy data from.
      */
     public PersonBuilder(Person personToCopy) {
         name = personToCopy.getName();
@@ -107,6 +108,7 @@ public class PersonBuilder {
         this.tele = new Tele(tele);
         return this;
     }
+
     /**
      * Sets the {@code WeeklyAttendanceList} of the {@code Person} that we are building.
      */
@@ -123,6 +125,22 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code WeeklyAttendanceList} to have a specific number of absences.
+     * This is useful for testing filtering by absence count.
+     * @param count The number of weeks to mark as absent (starting from Week 1).
+     */
+    public PersonBuilder withAbsences(int count) {
+        this.weeklyAttendanceList = new WeekList();
+        for (int i = 0; i < count; i++) {
+            this.weeklyAttendanceList.markWeekAsAbsent(i);
+        }
+        return this;
+    }
+
+    /**
+     * Builds and returns a {@code Person} with the specified details.
+     */
     public Person build() {
         return new Person(name, courseId, email, studentId, tGroup, tele, weeklyAttendanceList, progress);
     }

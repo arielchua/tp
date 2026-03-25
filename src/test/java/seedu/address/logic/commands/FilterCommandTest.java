@@ -123,7 +123,66 @@ public class FilterCommandTest {
         // different predicate -> returns false
         assertFalse(filterFirstCommand.equals(filterSecondCommand));
     }
+    @Test
+    public void execute_filterByAbsenceCount_success() {
+        // Assume Alice has 0 absences and we filter for >= 0
+        FilterMatchesPredicate zeroPredicate = new FilterMatchesPredicate(
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(0));
 
+        FilterCommand zeroCommand = new FilterCommand(zeroPredicate);
+        expectedModel.updateFilteredPersonList(zeroPredicate);
+        assertCommandSuccess(zeroCommand, model,
+                String.format(FilterCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
+                expectedModel);
+
+        // Filter for a high absence count that likely matches no one in TypicalPersons
+        FilterMatchesPredicate highAbsencePredicate = new FilterMatchesPredicate(
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(10));
+
+        FilterCommand highAbsenceCommand = new FilterCommand(highAbsencePredicate);
+        expectedModel.updateFilteredPersonList(highAbsencePredicate);
+        assertCommandSuccess(highAbsenceCommand, model,
+                String.format(FilterCommand.MESSAGE_SUCCESS, 0),
+                expectedModel);
+    }
+
+    @Test
+    public void execute_filterByMultipleFields_success() {
+        // Filter by both CourseId and Absence Count
+        // Alice: CourseId=CS2103T, Absences=0 (assumed)
+        FilterMatchesPredicate multiPredicate = new FilterMatchesPredicate(
+                Optional.of(ALICE.getCourseId()),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of(0));
+
+        FilterCommand command = new FilterCommand(multiPredicate);
+        expectedModel.updateFilteredPersonList(multiPredicate);
+
+        assertCommandSuccess(command, model,
+                String.format(FilterCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
+                expectedModel);
+
+        // Ensure Alice is actually in the filtered results
+        assertTrue(expectedModel.getFilteredPersonList().contains(ALICE));
+    }
+
+    @Test
+    public void execute_allFieldsEmpty_success() {
+        // Empty predicate should show everyone (matching your FilterMatchesPredicate logic)
+        FilterMatchesPredicate emptyPredicate = new FilterMatchesPredicate(
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        FilterCommand command = new FilterCommand(emptyPredicate);
+        expectedModel.updateFilteredPersonList(emptyPredicate);
+
+        assertCommandSuccess(command, model,
+                String.format(FilterCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
+                expectedModel);
+
+        assertEquals(model.getAddressBook().getPersonList().size(),
+                expectedModel.getFilteredPersonList().size());
+    }
     @Test
     public void toStringMethod() {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(

@@ -201,12 +201,13 @@ public class WeekList implements WeeklyAttendanceList {
     public double calculateWeekAbsence() {
         double count = 0;
         for (WeeklyAttendance week : weeks) {
-            if (week.isAttended()) {
+            if (week.isAbsent()) {
                 count++;
             }
         }
-        return NUMBER_OF_WEEKS - count;
+        return count;
     }
+
     @Override
     public int compareTo(WeeklyAttendanceList other) {
         return Double.compare(this.calculateWeekAttendance(), other.calculateWeekAttendance());
