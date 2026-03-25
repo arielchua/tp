@@ -32,7 +32,7 @@ public class AddCommand extends Command {
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "JOHN DOE "
             + PREFIX_STUDENTID + "A0123456X "
-            + PREFIX_EMAIL + "johnd@example.com "
+            + PREFIX_EMAIL + "johnd@u.nus.edu "
             + PREFIX_COURSEID + "CS2103T "
             + PREFIX_TGROUP + "T01 "
             + PREFIX_TELE + "@JOHNDOE";
