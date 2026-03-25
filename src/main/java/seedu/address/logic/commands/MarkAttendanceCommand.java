@@ -72,7 +72,12 @@ public class MarkAttendanceCommand extends Command {
         // Copy current attendance list
         WeeklyAttendanceList weekList = ((WeekList) personToEdit
                 .getWeeklyAttendanceList()).copy();
-
+        Week week = (Week) weekList.getWeeks()[weekNumber.getZeroBased()];
+        if (week.isCancelled()) {
+            throw new CommandException(
+                    String.format("Week %d has been cancelled and cannot be marked",
+                            weekNumber.getOneBased()));
+        }
         // update attendance
         try {
             applyStatusUpdate(weekList);

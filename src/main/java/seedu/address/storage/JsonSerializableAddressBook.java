@@ -1,7 +1,10 @@
 package seedu.address.storage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -22,13 +25,19 @@ class JsonSerializableAddressBook {
     public static final String MESSAGE_DUPLICATE_PERSON = "Persons list contains duplicate person(s).";
 
     private final List<JsonAdaptedPerson> persons = new ArrayList<>();
+    private final Map<String, List<Integer>> cancelledWeeks;
 
     /**
      * Constructs a {@code JsonSerializableAddressBook} with the given persons.
      */
     @JsonCreator
-    public JsonSerializableAddressBook(@JsonProperty("persons") List<JsonAdaptedPerson> persons) {
+    public JsonSerializableAddressBook(@JsonProperty("persons") List<JsonAdaptedPerson> persons,
+                                       @JsonProperty("cancelledWeeks") Map<String, List<Integer>> cancelledWeeks) {
         this.persons.addAll(persons);
+
+        this.cancelledWeeks = cancelledWeeks != null
+                ? new HashMap<>(cancelledWeeks)
+                : new HashMap<>();
     }
 
     /**
@@ -38,6 +47,11 @@ class JsonSerializableAddressBook {
      */
     public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
         persons.addAll(source.getPersonList().stream().map(JsonAdaptedPerson::new).collect(Collectors.toList()));
+
+        this.cancelledWeeks = new HashMap<>();
+        source.getCancelledWeeksMap().forEach((key, set) -> {
+            this.cancelledWeeks.put(key, new ArrayList<>(set));
+        });
     }
 
     /**
@@ -47,6 +61,14 @@ class JsonSerializableAddressBook {
      */
     public AddressBook toModelType() throws IllegalValueException {
         AddressBook addressBook = new AddressBook();
+        Map<String, java.util.Set<Integer>> map = new HashMap<>();
+
+        for (Map.Entry<String, List<Integer>> entry : cancelledWeeks.entrySet()) {
+            map.put(entry.getKey(), new HashSet<>(entry.getValue()));
+        }
+
+        addressBook.setCancelledWeeksMap(map);
+
         for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
             Person person = jsonAdaptedPerson.toModelType();
             if (addressBook.hasPerson(person)) {

@@ -384,6 +384,18 @@
     -fx-min-height: 16px;
 }
 
+.week-cross {
+    -fx-background-color: #BDBDBD;
+    -fx-border-color: black;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-alignment: center;
+    -fx-min-width: 16px;
+    -fx-min-height: 16px;
+
+}
+
 .label.progress-on-track {
     -fx-background-color: #e7f6ec;
     -fx-text-fill: #166534;

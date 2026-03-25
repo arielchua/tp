@@ -58,6 +58,12 @@ public class WeekList implements WeeklyAttendanceList {
         assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
         weeks[index].markAsDefault();
     }
+    @Override
+    public void markAsCancelled(int index) {
+        assert index >= 0 : "Index must be >= 0";
+        assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
+        weeks[index].markAsCancelled();
+    }
 
     @Override
     public boolean equals(Object other) {
@@ -92,6 +98,9 @@ public class WeekList implements WeeklyAttendanceList {
                 break;
             case "A":
                 newWeek.markAsAbsent();
+                break;
+            case "C":
+                newWeek.markAsCancelled();
                 break;
             default:
                 break;
@@ -169,6 +178,9 @@ public class WeekList implements WeeklyAttendanceList {
                 break;
             case "N":
                 break;
+            case "C":
+                week.markAsCancelled();
+                break;
             default:
                 throw new IllegalValueException("Invalid week status: " + status);
             }
@@ -218,6 +230,7 @@ public class WeekList implements WeeklyAttendanceList {
             TrackerColour colour = switch (status) {
             case "Y" -> TrackerColour.GREEN;
             case "A" -> TrackerColour.RED;
+            case "C" -> TrackerColour.CROSS;
             default -> TrackerColour.GREY;
             };
             colours.add(colour);

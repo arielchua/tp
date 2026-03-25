@@ -12,7 +12,8 @@ public class Week implements WeeklyAttendance {
     public enum Status {
         Y, // Attended
         A, // Absent
-        N; // Not marked
+        N, // Not marked
+        C; // Default
         public static Status fromString(String value) {
             return Status.valueOf(value.toUpperCase());
         }
@@ -55,10 +56,21 @@ public class Week implements WeeklyAttendance {
         }
         status = Status.N;
     }
+    @Override
+    public void markAsCancelled() throws IllegalStateException {
+        if (status == Status.C) {
+            throw new IllegalStateException("Week attendance is already default");
+        }
+        status = Status.C;
+    }
 
     @Override
     public boolean isAttended() {
         return status == Status.Y;
+    }
+    @Override
+    public boolean isCancelled() {
+        return status == Status.C;
     }
 
     @Override
