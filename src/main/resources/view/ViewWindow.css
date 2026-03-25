@@ -1,0 +1,97 @@
+/* =========================================================================
+   VIEW WINDOW STYLESHEET (Black, Grey, and White Scheme)
+   ========================================================================= */
+
+/* The main container background */
+.view-container {
+    -fx-background-color: #ffffff;
+}
+
+/* TOP SECTION (Grey Header)
+*/
+.header-section {
+    -fx-background-color: #333333; /* Dark Grey as seen in screenshot */
+    -fx-border-color: #444444;
+    -fx-border-width: 0 0 1 0;
+}
+
+.window-header {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-family: "Segoe UI Semibold", "Helvetica", sans-serif;
+    -fx-letter-spacing: 1px;
+}
+
+.meta-label {
+    -fx-text-fill: #b3b3b3; /* Muted light grey for the field names */
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.meta-value {
+    -fx-text-fill: #ffffff; /* Bright white for the actual student data */
+    -fx-font-size: 14px;
+}
+
+/* CENTER SECTION (White Tabular Body)
+*/
+.white-body-wrapper {
+    -fx-background-color: #ffffff;
+}
+
+.remarks-scroll-pane {
+    -fx-background-color: #ffffff;
+    /* This ensures the viewport doesn't show grey bars when scrolling */
+    -fx-background: #ffffff;
+    -fx-border-color: transparent;
+    -fx-viewport-fill: #ffffff;
+}
+
+/* Tabular Headers (Date, Remark) */
+.column-header {
+    -fx-text-fill: #333333;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 15 12 15;
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 0 0 2 0;
+    -fx-alignment: CENTER; /* Center align headers */
+}
+
+/* The Vertical Divider Logic */
+.date-cell {
+    -fx-text-fill: #555555;
+    -fx-padding: 10 15 10 15;
+    -fx-border-color: #eeeeee;
+    -fx-border-width: 0 1 1 0;
+    -fx-font-family: "Consolas", monospace;
+    -fx-alignment: CENTER; /* Center align date */
+}
+
+.remark-cell {
+    -fx-text-fill: #222222;
+    -fx-padding: 10 15 10 15;
+    -fx-border-color: #eeeeee;
+    -fx-border-width: 0 0 1 0;
+    -fx-alignment: CENTER; /* Center align remark text */
+    -fx-text-alignment: CENTER;
+}
+
+/* Optional: Zebra Striping (Alternating row colors) */
+/* If you use Java to add a "zebra-row" class to every other row */
+.zebra-row {
+    -fx-background-color: #fafafa;
+}
+
+/* SCROLLBAR STYLING (To match the theme)
+*/
+.remarks-scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-width: 8px;
+}
+
+.remarks-scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 5px;
+}

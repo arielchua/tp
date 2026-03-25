@@ -9,59 +9,48 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1"
-            prefWidth="750.0"
-            prefHeight="500.0">
-
+<BorderPane fx:id="viewWindowRoot" stylesheets="@ViewWindow.css" styleClass="view-container"
+            prefWidth="800.0" prefHeight="550.0"
+            xmlns:fx="http://javafx.com/fxml/1">
     <top>
-        <VBox spacing="12" BorderPane.alignment="CENTER">
-            <padding>
-                <Insets top="20" right="20" bottom="10" left="20"/>
-            </padding>
+        <VBox spacing="15" styleClass="header-section" alignment="CENTER"> <padding>
+            <Insets top="25" right="25" bottom="25" left="25"/>
+        </padding>
 
-            <Label text="Student Details"
-                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <GridPane hgap="30" vgap="10" alignment="CENTER">
+                <Label text="NAME:" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="meta-label"/>
+                <Label fx:id="nameLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="meta-value"/>
 
-            <HBox spacing="20">
-                <Label text="Name:" style="-fx-font-weight: bold;"/>
-                <Label fx:id="nameLabel"/>
+                <Label text="STUDENT ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="meta-label"/>
+                <Label fx:id="studentIdLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="meta-value"/>
 
-                <Label text="Student ID:" style="-fx-font-weight: bold;"/>
-                <Label fx:id="studentIdLabel"/>
+                <Label text="COURSE:" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="meta-label"/>
+                <Label fx:id="courseIdLabel" GridPane.columnIndex="3" GridPane.rowIndex="0" styleClass="meta-value"/>
 
-                <Label text="Course:" style="-fx-font-weight: bold;"/>
-                <Label fx:id="courseIdLabel"/>
-
-                <Label text="Tutorial Group:" style="-fx-font-weight: bold;"/>
-                <Label fx:id="tGroupLabel"/>
-            </HBox>
+                <Label text="TUTORIAL:" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="meta-label"/>
+                <Label fx:id="tGroupLabel" GridPane.columnIndex="3" GridPane.rowIndex="1" styleClass="meta-value"/>
+            </GridPane>
         </VBox>
     </top>
 
     <center>
-        <ScrollPane fitToWidth="true">
-            <content>
-                <GridPane fx:id="remarksGrid" hgap="20" vgap="10">
-                    <padding>
-                        <Insets top="10" right="20" bottom="20" left="20"/>
-                    </padding>
+        <ScrollPane fitToWidth="true" styleClass="remarks-scroll-pane">
+            <VBox styleClass="white-body-wrapper" fillWidth="true" minHeight="400">
+                <GridPane fx:id="remarksGrid" hgap="0" vgap="0"> <padding>
+                    <Insets top="0" right="0" bottom="0" left="0"/>
+                </padding>
 
                     <columnConstraints>
-                        <ColumnConstraints percentWidth="25"/>
-                        <ColumnConstraints percentWidth="75"/>
+                        <ColumnConstraints percentWidth="30"/>
+                        <ColumnConstraints percentWidth="70"/>
                     </columnConstraints>
 
-                    <Label text="Date"
-                           style="-fx-font-weight: bold;"
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="0"/>
-
-                    <Label text="Remark"
-                           style="-fx-font-weight: bold;"
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="1"/>
+                    <Label text="Date" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                           styleClass="column-header, header-left-pad"/>
+                    <Label text="Remark" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                           styleClass="column-header, header-right-pad"/>
                 </GridPane>
-            </content>
+            </VBox>
         </ScrollPane>
     </center>
 </BorderPane>

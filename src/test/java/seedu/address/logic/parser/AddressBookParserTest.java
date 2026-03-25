@@ -21,6 +21,7 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
@@ -108,5 +109,26 @@ public class AddressBookParserTest {
     public void parseCommand_unknownCommand_throwsParseException() {
         assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, (
         ) -> parser.parseCommand("unknownCommand"));
+    }
+
+    @Test
+    public void parseCommand_view() throws Exception {
+        ViewCommand command = (ViewCommand) parser.parseCommand(
+                ViewCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new ViewCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_viewMissingIndex_throwsParseException() {
+        assertThrows(ParseException.class,
+                ViewCommandParser.MESSAGE_INDEX_MISSING + "\n" + ViewCommand.MESSAGE_USAGE, () ->
+                        parser.parseCommand(ViewCommand.COMMAND_WORD));
+    }
+
+    @Test
+    public void parseCommand_viewInvalidArgs_throwsParseException() {
+        assertThrows(ParseException.class,
+                ViewCommandParser.MESSAGE_NOT_A_NUMBER + "\n" + ViewCommand.MESSAGE_USAGE, () ->
+                        parser.parseCommand(ViewCommand.COMMAND_WORD + " abc"));
     }
 }
