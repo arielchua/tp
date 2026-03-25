@@ -64,7 +64,7 @@ public class FilterCommandIntegrationTest {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.of(new CourseId("CS2103T")),
                 Optional.empty(),
-                Optional.empty());
+                Optional.empty(), Optional.empty());
 
         FilterCommand command = new FilterCommand(predicate);
 
@@ -83,7 +83,7 @@ public class FilterCommandIntegrationTest {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.empty(),
                 Optional.of(new TGroup("T01")),
-                Optional.empty());
+                Optional.empty(), Optional.empty());
 
         FilterCommand command = new FilterCommand(predicate);
 
@@ -102,7 +102,7 @@ public class FilterCommandIntegrationTest {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.empty(),
                 Optional.empty(),
-                Optional.of(Progress.ON_TRACK));
+                Optional.of(Progress.ON_TRACK), Optional.empty());
 
         FilterCommand command = new FilterCommand(predicate);
 
@@ -121,7 +121,7 @@ public class FilterCommandIntegrationTest {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.of(new CourseId("CS2103T")),
                 Optional.of(new TGroup("T01")),
-                Optional.empty());
+                Optional.empty(), Optional.empty());
 
         FilterCommand command = new FilterCommand(predicate);
 
@@ -140,7 +140,7 @@ public class FilterCommandIntegrationTest {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.of(new CourseId("CS2103T")),
                 Optional.of(new TGroup("T01")),
-                Optional.of(Progress.ON_TRACK));
+                Optional.of(Progress.ON_TRACK), Optional.empty());
 
         FilterCommand command = new FilterCommand(predicate);
 
@@ -159,7 +159,7 @@ public class FilterCommandIntegrationTest {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.of(new CourseId("CS9999")),
                 Optional.empty(),
-                Optional.empty());
+                Optional.empty(), Optional.empty());
 
         FilterCommand command = new FilterCommand(predicate);
 

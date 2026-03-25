@@ -18,7 +18,7 @@ import seedu.address.model.person.WeeklyAttendanceList;
 /**
  * Marks the specified week (tutorial) as attended or not attended for a person.
  */
-public class UpdateAttendanceCommand extends Command {
+public class MarkAttendanceCommand extends Command {
 
     public static final String COMMAND_WORD = "markattendance";
 
@@ -43,14 +43,14 @@ public class UpdateAttendanceCommand extends Command {
     public final Week.Status status;
 
     /**
-     * Creates an UpdateAttendanceCommand to update the attendance status
+     * Creates an MarkAttendanceCommand to update the attendance status
      * of a specific week for a student identified by their index.
      *
      * @param index Index of the student in the displayed person list.
      * @param weekNumber Index of the week to update (1-based index from user input).
      * @param status The attendance status to assign for the specified week.
      */
-    public UpdateAttendanceCommand(Index index, Index weekNumber, Week.Status status) {
+    public MarkAttendanceCommand(Index index, Index weekNumber, Week.Status status) {
         requireAllNonNull(index, weekNumber, status);
         this.index = index;
         this.weekNumber = weekNumber;
@@ -147,10 +147,10 @@ public class UpdateAttendanceCommand extends Command {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof UpdateAttendanceCommand)) {
+        if (!(other instanceof MarkAttendanceCommand)) {
             return false;
         }
-        UpdateAttendanceCommand otherCommand = (UpdateAttendanceCommand) other;
+        MarkAttendanceCommand otherCommand = (MarkAttendanceCommand) other;
         return index.equals(otherCommand.index)
                 && weekNumber.equals(otherCommand.weekNumber)
                 && status == otherCommand.status;

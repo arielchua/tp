@@ -25,9 +25,9 @@ import seedu.address.model.person.WeeklyAttendanceList;
 import seedu.address.testutil.PersonBuilder;
 
 /**
- * Unit tests for {@link UpdateAttendanceCommand} using a ModelStub with ObservableList.
+ * Unit tests for {@link MarkAttendanceCommand} using a ModelStub with ObservableList.
  */
-public class UpdateAttendanceCommandTest {
+public class MarkAttendanceCommandTest {
 
     private Person alice;
 
@@ -118,7 +118,7 @@ public class UpdateAttendanceCommandTest {
     @Test
     public void execute_markWeekAttended_success() throws CommandException {
         ModelStub model = new ModelStub(alice);
-        UpdateAttendanceCommand command = new UpdateAttendanceCommand(Index.fromOneBased(1),
+        MarkAttendanceCommand command = new MarkAttendanceCommand(Index.fromOneBased(1),
                 Index.fromOneBased(1), Week.Status.Y);
         command.execute(model);
 
@@ -130,7 +130,7 @@ public class UpdateAttendanceCommandTest {
     @Test
     public void execute_markWeekAbsent_success() throws CommandException {
         ModelStub model = new ModelStub(alice);
-        UpdateAttendanceCommand command = new UpdateAttendanceCommand(Index.fromOneBased(1),
+        MarkAttendanceCommand command = new MarkAttendanceCommand(Index.fromOneBased(1),
                 Index.fromOneBased(2), Week.Status.A);
         command.execute(model);
 
@@ -144,12 +144,12 @@ public class UpdateAttendanceCommandTest {
         ModelStub model = new ModelStub(alice);
 
         // First mark attended
-        UpdateAttendanceCommand commandY = new UpdateAttendanceCommand(Index.fromOneBased(1),
+        MarkAttendanceCommand commandY = new MarkAttendanceCommand(Index.fromOneBased(1),
                 Index.fromOneBased(3), Week.Status.Y);
         commandY.execute(model);
 
         // Reset to default
-        UpdateAttendanceCommand commandN = new UpdateAttendanceCommand(Index.fromOneBased(1),
+        MarkAttendanceCommand commandN = new MarkAttendanceCommand(Index.fromOneBased(1),
                 Index.fromOneBased(3), Week.Status.N);
         commandN.execute(model);
 
@@ -161,7 +161,7 @@ public class UpdateAttendanceCommandTest {
     @Test
     public void execute_invalidIndex_throwsCommandException() {
         ModelStub model = new ModelStub(alice);
-        UpdateAttendanceCommand command = new UpdateAttendanceCommand(Index.fromOneBased(2),
+        MarkAttendanceCommand command = new MarkAttendanceCommand(Index.fromOneBased(2),
                 Index.fromOneBased(1), Week.Status.Y);
         assertThrows(CommandException.class, () -> command.execute(model));
     }
@@ -170,12 +170,12 @@ public class UpdateAttendanceCommandTest {
     public void execute_duplicateStatus_throwsCommandException() throws CommandException {
         ModelStub model = new ModelStub(alice);
         // Mark attended
-        UpdateAttendanceCommand commandY = new UpdateAttendanceCommand(Index.fromOneBased(1),
+        MarkAttendanceCommand commandY = new MarkAttendanceCommand(Index.fromOneBased(1),
                 Index.fromOneBased(1), Week.Status.Y);
         commandY.execute(model);
 
         // Mark attended again
-        UpdateAttendanceCommand duplicateCommand = new UpdateAttendanceCommand(Index.fromOneBased(1),
+        MarkAttendanceCommand duplicateCommand = new MarkAttendanceCommand(Index.fromOneBased(1),
                 Index.fromOneBased(1), Week.Status.Y);
 
         assertThrows(CommandException.class, () -> duplicateCommand.execute(model));
@@ -183,11 +183,11 @@ public class UpdateAttendanceCommandTest {
 
     @Test
     public void equals() {
-        UpdateAttendanceCommand command1 = new UpdateAttendanceCommand(Index.fromOneBased(1),
+        MarkAttendanceCommand command1 = new MarkAttendanceCommand(Index.fromOneBased(1),
                 Index.fromOneBased(1), Week.Status.Y);
-        UpdateAttendanceCommand command2 = new UpdateAttendanceCommand(Index.fromOneBased(1),
+        MarkAttendanceCommand command2 = new MarkAttendanceCommand(Index.fromOneBased(1),
                 Index.fromOneBased(1), Week.Status.Y);
-        UpdateAttendanceCommand command3 = new UpdateAttendanceCommand(Index.fromOneBased(1),
+        MarkAttendanceCommand command3 = new MarkAttendanceCommand(Index.fromOneBased(1),
                 Index.fromOneBased(1), Week.Status.A);
 
         assertEquals(command1, command2);

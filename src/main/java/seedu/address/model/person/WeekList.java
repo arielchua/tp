@@ -194,6 +194,19 @@ public class WeekList implements WeeklyAttendanceList {
         }
         return count / NUMBER_OF_WEEKS * 100;
     }
+    /**
+     * Calculates the amount of absences
+     * @return the number of absences
+     */
+    public double calculateWeekAbsence() {
+        double count = 0;
+        for (WeeklyAttendance week : weeks) {
+            if (week.isAttended()) {
+                count++;
+            }
+        }
+        return NUMBER_OF_WEEKS - count;
+    }
     @Override
     public int compareTo(WeeklyAttendanceList other) {
         return Double.compare(this.calculateWeekAttendance(), other.calculateWeekAttendance());

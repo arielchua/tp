@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
-import seedu.address.logic.commands.UpdateAttendanceCommand;
+import seedu.address.logic.commands.MarkAttendanceCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Week;
 
@@ -15,7 +15,7 @@ import seedu.address.model.person.Week;
  * Unit tests for {@link UpdateAttendanceCommandParser}.
  * Pure unit testing: only parses, no model access.
  */
-public class UpdateAttendanceCommandParserTest {
+public class MarkAttendanceCommandParserTest {
 
     private UpdateAttendanceCommandParser parser;
 
@@ -26,7 +26,7 @@ public class UpdateAttendanceCommandParserTest {
 
     @Test
     public void parseValidAttendanceInputReturnsSuccessModel() throws Exception {
-        UpdateAttendanceCommand command = parser.parse("1 week/1 sta/Y");
+        MarkAttendanceCommand command = parser.parse("1 week/1 sta/Y");
 
         assertEquals(Index.fromOneBased(1), command.index);
         assertEquals(Index.fromOneBased(1), command.weekNumber);
@@ -35,7 +35,7 @@ public class UpdateAttendanceCommandParserTest {
 
     @Test
     public void parse_validInput_absentSuccess() throws Exception {
-        UpdateAttendanceCommand command = parser.parse("2 week/3 sta/A");
+        MarkAttendanceCommand command = parser.parse("2 week/3 sta/A");
 
         assertEquals(Index.fromOneBased(2), command.index);
         assertEquals(Index.fromOneBased(3), command.weekNumber);
@@ -44,7 +44,7 @@ public class UpdateAttendanceCommandParserTest {
 
     @Test
     public void parse_validInput_defaultSuccess() throws Exception {
-        UpdateAttendanceCommand command = parser.parse("5 week/2 sta/N");
+        MarkAttendanceCommand command = parser.parse("5 week/2 sta/N");
 
         assertEquals(Index.fromOneBased(5), command.index);
         assertEquals(Index.fromOneBased(2), command.weekNumber);
