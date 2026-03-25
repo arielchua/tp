@@ -14,64 +14,53 @@ public class FilterMatchesPredicateTest {
 
     @Test
     public void equals() {
-        Optional<CourseId> firstCourseId = Optional.of(new CourseId("CS2103T"));
-        Optional<CourseId> secondCourseId = Optional.of(new CourseId("CS2101"));
-        Optional<TGroup> firstTGroup = Optional.of(new TGroup("T01"));
-        Optional<Progress> firstProgress = Optional.of(Progress.ON_TRACK);
-        Optional<Progress> secondProgress = Optional.of(Progress.AT_RISK);
-        Optional<Integer> firstAbsenceCount = Optional.of(2);
+        Optional<CourseId> courseId = Optional.of(new CourseId("CS2103T"));
+        Optional<TGroup> tGroup = Optional.of(new TGroup("T01"));
+        Optional<Progress> progress = Optional.of(Progress.ON_TRACK);
+        Optional<Integer> absenceCount = Optional.of(2);
 
-        FilterMatchesPredicate firstPredicate = new FilterMatchesPredicate(firstCourseId, Optional.empty(),
-                Optional.empty(), Optional.empty());
-        FilterMatchesPredicate secondPredicate = new FilterMatchesPredicate(secondCourseId, Optional.empty(),
-                Optional.empty(), Optional.empty());
-        FilterMatchesPredicate thirdPredicate = new FilterMatchesPredicate(firstCourseId, firstTGroup,
-                Optional.empty(), Optional.empty());
-        FilterMatchesPredicate fourthPredicate = new FilterMatchesPredicate(firstCourseId, Optional.empty(),
-                firstProgress, Optional.empty());
-        FilterMatchesPredicate fifthPredicate = new FilterMatchesPredicate(firstCourseId, Optional.empty(),
-                secondProgress, Optional.empty());
-        FilterMatchesPredicate sixthPredicate = new FilterMatchesPredicate(firstCourseId, Optional.empty(),
-                Optional.empty(), firstAbsenceCount);
+        FilterMatchesPredicate predicate = new FilterMatchesPredicate(courseId, tGroup, progress, absenceCount);
 
         // same object -> returns true
-        assertTrue(firstPredicate.equals(firstPredicate));
+        assertTrue(predicate.equals(predicate));
 
         // same values -> returns true
-        FilterMatchesPredicate firstPredicateCopy = new FilterMatchesPredicate(firstCourseId, Optional.empty(),
-                Optional.empty(), Optional.empty());
-        assertTrue(firstPredicate.equals(firstPredicateCopy));
+        FilterMatchesPredicate predicateCopy = new FilterMatchesPredicate(courseId, tGroup, progress, absenceCount);
+        assertTrue(predicate.equals(predicateCopy));
 
         // different types -> returns false
-        assertFalse(firstPredicate.equals(1));
+        assertFalse(predicate.equals(1));
 
         // null -> returns false
-        assertFalse(firstPredicate.equals(null));
+        assertFalse(predicate.equals(null));
 
         // different course ID -> returns false
-        assertFalse(firstPredicate.equals(secondPredicate));
+        FilterMatchesPredicate differentCourse = new FilterMatchesPredicate(
+                Optional.of(new CourseId("CS2101")), tGroup, progress, absenceCount);
+        assertFalse(predicate.equals(differentCourse));
 
-        // different combination (course + tgroup vs course only) -> returns false
-        assertFalse(firstPredicate.equals(thirdPredicate));
-
-        // different combination (course + progress vs course only) -> returns false
-        assertFalse(firstPredicate.equals(fourthPredicate));
+        // different tutorial group -> returns false
+        FilterMatchesPredicate differentTGroup = new FilterMatchesPredicate(
+                courseId, Optional.of(new TGroup("T05")), progress, absenceCount);
+        assertFalse(predicate.equals(differentTGroup));
 
         // different progress -> returns false
-        assertFalse(fourthPredicate.equals(fifthPredicate));
+        FilterMatchesPredicate differentProgress = new FilterMatchesPredicate(
+                courseId, tGroup, Optional.of(Progress.AT_RISK), absenceCount);
+        assertFalse(predicate.equals(differentProgress));
 
         // different absence count -> returns false
-        assertFalse(firstPredicate.equals(sixthPredicate));
+        FilterMatchesPredicate differentAbsence = new FilterMatchesPredicate(
+                courseId, tGroup, progress, Optional.of(3));
+        assertFalse(predicate.equals(differentAbsence));
     }
 
     @Test
     public void test_courseIdMatches_returnsTrue() {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("CS2103T")), Optional.empty(), Optional.empty(),
-                Optional.empty());
+                Optional.of(new CourseId("CS2103T")), Optional.empty(), Optional.empty(), Optional.empty());
 
         assertTrue(predicate.test(new PersonBuilder().withCourseId("CS2103T").build()));
-
         // Case insensitive match
         assertTrue(predicate.test(new PersonBuilder().withCourseId("cs2103t").build()));
         assertTrue(predicate.test(new PersonBuilder().withCourseId("Cs2103T").build()));
@@ -80,261 +69,173 @@ public class FilterMatchesPredicateTest {
     @Test
     public void test_courseIdMatches_returnsFalse() {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("CS2103T")), Optional.empty(), Optional.empty(),
-                Optional.empty());
-
+                Optional.of(new CourseId("CS2103T")), Optional.empty(), Optional.empty(), Optional.empty());
         assertFalse(predicate.test(new PersonBuilder().withCourseId("CS2101").build()));
-        assertFalse(predicate.test(new PersonBuilder().withCourseId("MA2001").build()));
     }
 
     @Test
     public void test_tGroupMatches_returnsTrue() {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.empty(), Optional.of(new TGroup("T01")), Optional.empty(), Optional.empty());
-
         assertTrue(predicate.test(new PersonBuilder().withTGroup("T01").build()));
-
         // Case insensitive match
         assertTrue(predicate.test(new PersonBuilder().withTGroup("t01").build()));
-        assertTrue(predicate.test(new PersonBuilder().withTGroup("T01").build()));
-    }
-
-    @Test
-    public void test_tGroupMatches_returnsFalse() {
-        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.empty(), Optional.of(new TGroup("T01")), Optional.empty(), Optional.empty());
-
-        assertFalse(predicate.test(new PersonBuilder().withTGroup("T02").build()));
-        assertFalse(predicate.test(new PersonBuilder().withTGroup("G01").build()));
     }
 
     @Test
     public void test_progressMatches_returnsTrue() {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.empty(), Optional.empty(), Optional.of(Progress.ON_TRACK), Optional.empty());
-
-        assertTrue(predicate.test(new PersonBuilder().withProgress(Progress.valueOf("ON_TRACK")).build()));
+        assertTrue(predicate.test(new PersonBuilder().withProgress(Progress.ON_TRACK).build()));
     }
 
     @Test
-    public void test_progressMatches_returnsFalse() {
+    public void test_absenceCount_thresholdLogic() {
+        // Filter threshold: Absences >= 3
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.empty(), Optional.empty(), Optional.of(Progress.ON_TRACK), Optional.empty());
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(3));
 
-        assertFalse(predicate.test(new PersonBuilder().withProgress(Progress.valueOf("AT_RISK")).build()));
-        assertFalse(predicate.test(new PersonBuilder().withProgress(Progress.valueOf("NEEDS_ATTENTION")).build()));
+        // 1. Person with exactly 3 absences -> returns true
+        assertTrue(predicate.test(new PersonBuilder().withAbsences(3).build()));
+
+        // 2. Person with 5 absences (above threshold) -> returns true
+        assertTrue(predicate.test(new PersonBuilder().withAbsences(5).build()));
+
+        // 3. Person with 2 absences (below threshold) -> returns false
+        assertFalse(predicate.test(new PersonBuilder().withAbsences(2).build()));
+
+        // 4. Person with 0 absences (default) -> returns false
+        assertFalse(predicate.test(new PersonBuilder().build()));
+
+        // 5. Filter: Absences >= 0 -> returns true for any person
+        FilterMatchesPredicate zeroPredicate = new FilterMatchesPredicate(
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(0));
+        assertTrue(zeroPredicate.test(new PersonBuilder().withAbsences(0).build()));
+        assertTrue(zeroPredicate.test(new PersonBuilder().withAbsences(10).build()));
     }
 
     @Test
-    public void test_bothCourseAndTGroupMatch_returnsTrue() {
+    public void test_allFieldsMatch_returnsTrue() {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.of(new CourseId("CS2103T")),
                 Optional.of(new TGroup("T01")),
-                Optional.empty(),
-                Optional.empty());
+                Optional.of(Progress.ON_TRACK),
+                Optional.of(2));
 
+        // All fields match exactly or satisfy threshold
         assertTrue(predicate.test(new PersonBuilder()
                 .withCourseId("CS2103T")
                 .withTGroup("T01")
+                .withProgress(Progress.ON_TRACK)
+                .withAbsences(2)
                 .build()));
 
+        // All match, and absences (5) is above threshold (2)
         assertTrue(predicate.test(new PersonBuilder()
                 .withCourseId("cs2103t")
                 .withTGroup("t01")
+                .withProgress(Progress.ON_TRACK)
+                .withAbsences(5)
                 .build()));
     }
 
     @Test
-    public void test_bothCourseAndTGroupMatch_returnsFalse() {
-        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("CS2103T")),
-                Optional.of(new TGroup("T01")),
-                Optional.empty(),
-                Optional.empty());
-
-        assertFalse(predicate.test(new PersonBuilder()
-                .withCourseId("CS2103T")
-                .withTGroup("T02")
-                .build()));
-
-        assertFalse(predicate.test(new PersonBuilder()
-                .withCourseId("CS2101")
-                .withTGroup("T01")
-                .build()));
-
-        assertFalse(predicate.test(new PersonBuilder()
-                .withCourseId("MA2001")
-                .withTGroup("G05")
-                .build()));
-    }
-
-    @Test
-    public void test_allThreeFiltersMatch_returnsTrue() {
+    public void test_multiFieldMismatch_returnsFalse() {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.of(new CourseId("CS2103T")),
                 Optional.of(new TGroup("T01")),
                 Optional.of(Progress.ON_TRACK),
-                Optional.empty());
+                Optional.of(3));
 
-        assertTrue(predicate.test(new PersonBuilder()
-                .withCourseId("CS2103T")
+        // Everything matches except course
+        assertFalse(predicate.test(new PersonBuilder()
+                .withCourseId("CS1231")
                 .withTGroup("T01")
-                .withProgress(Progress.valueOf("ON_TRACK"))
+                .withProgress(Progress.ON_TRACK)
+                .withAbsences(3)
                 .build()));
-    }
 
-    @Test
-    public void test_allThreeFiltersMatch_returnsFalse() {
-        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("CS2103T")),
-                Optional.of(new TGroup("T01")),
-                Optional.of(Progress.ON_TRACK),
-                Optional.empty());
-
-        // progress mismatch
+        // Everything matches except absences (too few)
         assertFalse(predicate.test(new PersonBuilder()
                 .withCourseId("CS2103T")
                 .withTGroup("T01")
-                .withProgress(Progress.valueOf("AT_RISK"))
+                .withProgress(Progress.ON_TRACK)
+                .withAbsences(2)
                 .build()));
 
-        // tGroup mismatch
+        // Everything matches except progress
         assertFalse(predicate.test(new PersonBuilder()
                 .withCourseId("CS2103T")
-                .withTGroup("T02")
-                .withProgress(Progress.valueOf("ON_TRACK"))
-                .build()));
-
-        // course mismatch
-        assertFalse(predicate.test(new PersonBuilder()
-                .withCourseId("CS2101")
                 .withTGroup("T01")
-                .withProgress(Progress.valueOf("ON_TRACK"))
+                .withProgress(Progress.NEEDS_ATTENTION)
+                .withAbsences(3)
                 .build()));
     }
 
     @Test
-    public void test_courseIdOnlyFilter_ignoresTGroupAndProgress() {
+    public void test_emptyPredicate_returnsTrue() {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("CS2103T")), Optional.empty(), Optional.empty(),
-                Optional.empty());
-
-        assertTrue(predicate.test(new PersonBuilder()
-                .withCourseId("CS2103T")
-                .withTGroup("T01")
-                .withProgress(Progress.valueOf("ON_TRACK"))
-                .build()));
-
-        assertTrue(predicate.test(new PersonBuilder()
-                .withCourseId("CS2103T")
-                .withTGroup("T99")
-                .withProgress(Progress.valueOf("AT_RISK"))
-                .build()));
-    }
-
-    @Test
-    public void test_tGroupOnlyFilter_ignoresCourseIdAndProgress() {
-        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.empty(), Optional.of(new TGroup("T01")), Optional.empty(), Optional.empty());
-
-        assertTrue(predicate.test(new PersonBuilder()
-                .withCourseId("CS2103T")
-                .withTGroup("T01")
-                .withProgress(Progress.valueOf("ON_TRACK"))
-                .build()));
-
-        assertTrue(predicate.test(new PersonBuilder()
-                .withCourseId("MA2001")
-                .withTGroup("T01")
-                .withProgress(Progress.valueOf("AT_RISK"))
-                .build()));
-    }
-
-    @Test
-    public void test_progressOnlyFilter_ignoresCourseIdAndTGroup() {
-        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.empty(), Optional.empty(), Optional.of(Progress.ON_TRACK), Optional.empty());
-
-        assertTrue(predicate.test(new PersonBuilder()
-                .withCourseId("CS2103T")
-                .withTGroup("T01")
-                .withProgress(Progress.valueOf("ON_TRACK"))
-                .build()));
-
-        assertTrue(predicate.test(new PersonBuilder()
-                .withCourseId("MA2001")
-                .withTGroup("G05")
-                .withProgress(Progress.valueOf("ON_TRACK"))
-                .build()));
-    }
-
-    @Test
-    public void test_absenceCountMatches_returnsTrue() {
-        // abs/0 matches a person with 0 absences (placeholder value from getAbsenceCount())
-        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(0));
-
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        // Empty predicate should match any person
         assertTrue(predicate.test(new PersonBuilder().build()));
+        assertTrue(predicate.test(new PersonBuilder().withAbsences(10).withProgress(Progress.AT_RISK).build()));
     }
 
     @Test
-    public void test_absenceCountMatches_returnsFalse() {
-        // abs/1 does not match a person with 0 absences (placeholder value from getAbsenceCount())
-        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(1));
-
-        assertFalse(predicate.test(new PersonBuilder().build()));
-    }
-
-    @Test
-    public void test_absenceOnlyFilter_ignoresCourseIdTGroupAndProgress() {
-        // abs/0 matches regardless of course, group, and progress
+    public void test_null_throwsNullPointerException() {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(0));
-
-        assertTrue(predicate.test(new PersonBuilder()
-                .withCourseId("CS2103T")
-                .withTGroup("T01")
-                .withProgress(Progress.ON_TRACK)
-                .build()));
-
-        assertTrue(predicate.test(new PersonBuilder()
-                .withCourseId("MA2001")
-                .withTGroup("G05")
-                .withProgress(Progress.AT_RISK)
-                .build()));
+        // Ensure the predicate handles null person gracefully by throwing NPE as per requireNonNull
+        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> predicate.test(null));
     }
 
     @Test
-    public void test_allFourFiltersMatch_returnsTrue() {
-        // abs/0 matches person with 0 absences (placeholder)
+    public void test_absenceCount_maxBoundary() {
+        // Filter threshold: Absences >= 13 (The maximum possible)
+        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(13));
+
+        // Person with 12 absences -> FALSE
+        assertFalse(predicate.test(new PersonBuilder().withAbsences(12).build()));
+
+        // Person with 13 absences -> TRUE
+        assertTrue(predicate.test(new PersonBuilder().withAbsences(13).build()));
+    }
+
+    @Test
+    public void test_mixedMatches_returnsFalse() {
+        // Predicate with all fields set
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.of(new CourseId("CS2103T")),
                 Optional.of(new TGroup("T01")),
                 Optional.of(Progress.ON_TRACK),
-                Optional.of(0));
+                Optional.of(2));
 
-        assertTrue(predicate.test(new PersonBuilder()
-                .withCourseId("CS2103T")
-                .withTGroup("T01")
-                .withProgress(Progress.ON_TRACK)
-                .build()));
+        // 1. Only CourseId matches -> FALSE
+        assertFalse(predicate.test(new PersonBuilder().withCourseId("CS2103T")
+                .withTGroup("T02").withProgress(Progress.AT_RISK).withAbsences(0).build()));
+
+        // 2. Only TGroup matches -> FALSE
+        assertFalse(predicate.test(new PersonBuilder().withCourseId("CS1010")
+                .withTGroup("T01").withProgress(Progress.AT_RISK).withAbsences(0).build()));
+
+        // 3. Only Progress matches -> FALSE
+        assertFalse(predicate.test(new PersonBuilder().withCourseId("CS1010")
+                .withTGroup("T02").withProgress(Progress.ON_TRACK).withAbsences(0).build()));
+
+        // 4. Only AbsenceCount matches -> FALSE
+        assertFalse(predicate.test(new PersonBuilder().withCourseId("CS1010")
+                .withTGroup("T02").withProgress(Progress.AT_RISK).withAbsences(2).build()));
     }
 
     @Test
-    public void test_allFourFiltersMatch_returnsFalse() {
-        // abs/1 does not match person with 0 absences (placeholder)
+    public void test_absenceCountHighThreshold_returnsFalse() {
+        // Threshold higher than possible weeks (e.g., 14)
+        // Even with max absences (13), this should always be false.
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("CS2103T")),
-                Optional.of(new TGroup("T01")),
-                Optional.of(Progress.ON_TRACK),
-                Optional.of(1));
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(14));
 
-        assertFalse(predicate.test(new PersonBuilder()
-                .withCourseId("CS2103T")
-                .withTGroup("T01")
-                .withProgress(Progress.ON_TRACK)
-                .build()));
+        assertFalse(predicate.test(new PersonBuilder().withAbsences(13).build()));
     }
 
     @Test
@@ -342,11 +243,11 @@ public class FilterMatchesPredicateTest {
         Optional<CourseId> courseId = Optional.of(new CourseId("CS2103T"));
         Optional<TGroup> tGroup = Optional.of(new TGroup("T01"));
         Optional<Progress> progress = Optional.of(Progress.ON_TRACK);
-        Optional<Integer> absenceCount = Optional.empty();
+        Optional<Integer> absenceCount = Optional.of(2);
 
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(courseId, tGroup, progress, absenceCount);
 
-        String expected = "seedu.address.model.person.FilterMatchesPredicate{courseId=" + courseId
+        String expected = FilterMatchesPredicate.class.getCanonicalName() + "{courseId=" + courseId
                 + ", tGroup=" + tGroup + ", progress=" + progress + ", absenceCount=" + absenceCount
                 + "}";
         assertEquals(expected, predicate.toString());

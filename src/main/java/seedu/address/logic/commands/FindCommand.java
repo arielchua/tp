@@ -8,24 +8,37 @@ import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 
 /**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
- * Keyword matching is case-insensitive.
+ * Finds and lists all persons in the address book whose names contain words
+ * that start with any of the argument keywords. Keyword matching is case-insensitive.
  */
 public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain words that "
+            + "start with any of the specified keywords (case-insensitive) and displays them as a list with "
+            + "index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+            + "Example: " + COMMAND_WORD + " al bo";
 
     private final NameContainsKeywordsPredicate predicate;
 
+    /**
+     * Creates a {@code FindCommand} that filters persons using the given predicate.
+     *
+     * @param predicate The predicate used to match persons by name.
+     */
     public FindCommand(NameContainsKeywordsPredicate predicate) {
+        requireNonNull(predicate);
         this.predicate = predicate;
     }
 
+    /**
+     * Updates the filtered person list in the model using this command's predicate.
+     *
+     * @param model The model to operate on.
+     * @return A command result showing the number of matched persons.
+     */
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
