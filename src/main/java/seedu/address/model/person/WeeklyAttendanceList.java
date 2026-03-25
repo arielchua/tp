@@ -28,6 +28,11 @@ public interface WeeklyAttendanceList extends Comparable<WeeklyAttendanceList> ,
      */
     public double calculateWeekAttendance();
 
+    /**
+     * Calculates the amount of absences
+     * @return the number of absences
+     */
+    public double calculateWeekAbsence();
 
     /**
      * @return attendence each week
