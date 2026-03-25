@@ -30,8 +30,20 @@
       <FlowPane fx:id="tags" />
       <Label fx:id="studentId" styleClass="cell_small_label" text="$studentId" />
       <Label fx:id="email" styleClass="cell_small_label" text="$email" />
-      <Label fx:id="courseId" styleClass="cell_small_label" text="$courseId" />
-      <Label fx:id="tGroup" styleClass="cell_small_label" text="$tGroup" />
+      <HBox spacing="6" alignment="CENTER_LEFT">
+        <HBox styleClass="badge_course" alignment="CENTER_LEFT">
+          <padding>
+            <Insets top="2" right="8" bottom="2" left="8" />
+          </padding>
+          <Label fx:id="courseId" styleClass="cell_small_label" text="$courseId" />
+        </HBox>
+        <HBox styleClass="badge_tgroup" alignment="CENTER_LEFT">
+          <padding>
+            <Insets top="2" right="8" bottom="2" left="8" />
+          </padding>
+          <Label fx:id="tGroup" styleClass="cell_small_label" text="$tGroup" />
+        </HBox>
+      </HBox>
       <Label fx:id="tele" styleClass="cell_small_label" text="$tele" />
     </VBox>
   </GridPane>

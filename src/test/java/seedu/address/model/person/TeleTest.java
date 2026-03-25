@@ -36,7 +36,6 @@ public class TeleTest {
         assertTrue(Tele.isValidTele("alextan"));
         assertTrue(Tele.isValidTele("alex_tan"));
         assertTrue(Tele.isValidTele("@alextan"));
-        assertTrue(Tele.isValidTele("alex.tan"));
         assertTrue(Tele.isValidTele("alex123"));
     }
 

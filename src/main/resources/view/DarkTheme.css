@@ -374,3 +374,13 @@
     -fx-background-radius: 10;
     -fx-padding: 3 7 3 7;
 }
+
+.badge_course {
+    -fx-background-color: #77b2ee;
+    -fx-background-radius: 4;
+}
+
+.badge_tgroup {
+    -fx-background-color: #4a93e8;
+    -fx-background-radius: 4;
+}

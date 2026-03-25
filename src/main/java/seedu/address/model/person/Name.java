@@ -28,7 +28,7 @@ public class Name {
     public Name(String name) {
         requireNonNull(name);
         checkArgument(isValidName(name), MESSAGE_CONSTRAINTS);
-        fullName = name;
+        fullName = toTitleCase(name);
     }
 
     /**
@@ -38,6 +38,18 @@ public class Name {
         return test.matches(VALIDATION_REGEX);
     }
 
+    private static String toTitleCase(String input) {
+        String[] words = input.trim().split("\\s+");
+        StringBuilder titleCase = new StringBuilder();
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                titleCase.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1).toLowerCase())
+                        .append(" ");
+            }
+        }
+        return titleCase.toString().trim();
+    }
 
     @Override
     public String toString() {

@@ -126,10 +126,8 @@ public class Person {
 
         Person otherPerson = (Person) other;
         return studentId.equals(otherPerson.studentId)
-                && Objects.equals(otherPerson.getTele(), getTele())
-                && otherPerson.getEmail().equals(getEmail())
-                && otherPerson.getProgress().equals(getProgress())
-                && remarks.equals(otherPerson.remarks);
+                && otherPerson.getCourseId().equals(getCourseId())
+                && otherPerson.getTGroup().equals(getTGroup());
     }
 
     @Override

@@ -104,7 +104,7 @@ public class PersonTest {
         // different type -> returns false
         assertFalse(person.equals(5));
 
-        // different email -> returns false
+        // different email -> returns true
         Person editedPerson = new Person(
                 validName,
                 validCourseId,
@@ -113,7 +113,7 @@ public class PersonTest {
                 validTGroup,
                 validTele,
                 Progress.NOT_SET);
-        assertFalse(person.equals(editedPerson));
+        assertTrue(person.equals(editedPerson));
 
         // different studentId -> returns false
         editedPerson = new Person(
@@ -126,7 +126,7 @@ public class PersonTest {
                 Progress.NOT_SET);
         assertFalse(person.equals(editedPerson));
 
-        // different tele -> returns false
+        // different tele -> returns true
         editedPerson = new Person(
                 validName,
                 validCourseId,
@@ -135,7 +135,7 @@ public class PersonTest {
                 validTGroup,
                 new Tele("otheruser"),
                 Progress.NOT_SET);
-        assertFalse(person.equals(editedPerson));
+        assertTrue(person.equals(editedPerson));
 
         // different name, same email/studentId/tele -> returns true
         editedPerson = new Person(
@@ -148,7 +148,7 @@ public class PersonTest {
                 Progress.NOT_SET);
         assertTrue(person.equals(editedPerson));
 
-        // different courseId, same email/studentId/tele -> returns true
+        // different courseId, same email/studentId/tele -> returns false
         editedPerson = new Person(
                 validName,
                 new CourseId("CS2040S"),
@@ -157,9 +157,9 @@ public class PersonTest {
                 validTGroup,
                 validTele,
                 Progress.NOT_SET);
-        assertTrue(person.equals(editedPerson));
+        assertFalse(person.equals(editedPerson));
 
-        // different tGroup, same email/studentId/tele -> returns true
+        // different tGroup, same email/studentId/tele -> returns false
         editedPerson = new Person(
                 validName,
                 validCourseId,
@@ -168,7 +168,7 @@ public class PersonTest {
                 new TGroup("T02"),
                 validTele,
                 Progress.NOT_SET);
-        assertTrue(person.equals(editedPerson));
+        assertFalse(person.equals(editedPerson));
     }
 
     @Test
