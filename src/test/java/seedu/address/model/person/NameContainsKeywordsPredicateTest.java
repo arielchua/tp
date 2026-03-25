@@ -120,8 +120,6 @@ public class NameContainsKeywordsPredicateTest {
         assertFalse(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
     }
 
-
-
     @Test
     public void test_wholeKeywordLongerThanNameWord_returnsFalse() {
         NameContainsKeywordsPredicate predicate =
