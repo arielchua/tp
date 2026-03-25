@@ -146,4 +146,19 @@ public class ParserUtil {
                     "Invalid progress value. Allowed values are: on_track, needs_attention, at_risk, clear.");
         }
     }
+    /**
+     * Parses {@code stringAbsenceCount} into an {@code Integer} absence count threshold.
+     *
+     * @throws ParseException if the given string is not a non-negative integer
+     */
+    public static Integer parseAbsenceCount(String stringAbsenceCount) throws ParseException {
+        requireNonNull(stringAbsenceCount);
+        String trimmed = stringAbsenceCount.trim();
+
+        if (!trimmed.matches("\\d+")) {
+            throw new ParseException("Absence count must be a non-negative integer.");
+        }
+
+        return Integer.parseInt(trimmed);
+    }
 }
