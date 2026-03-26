@@ -1,20 +1,63 @@
-#copyButton, #helpMessage {
-    -fx-text-fill: #1a1a1a;
+/* Header styling */
+#helpMessageContainer {
+    -fx-background-color: #333333;
+    -fx-border-color: #444444;
+    -fx-border-width: 0 0 1 0;
 }
 
+#helpMessage {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Segoe UI Semibold", "Helvetica", sans-serif;
+    -fx-font-size: 14px;
+}
+
+/* Copy Button */
 #copyButton {
     -fx-background-color: #e8e8e8;
     -fx-border-color: #c8c8c8;
+    -fx-text-fill: #1a1a1a;
+    -fx-background-radius: 4px;
 }
 
 #copyButton:hover {
     -fx-background-color: #d8d8d8;
 }
 
-#copyButton:armed {
-    -fx-background-color: #c8c8c8;
+/* ScrollPane */
+.scroll-pane {
+    -fx-background-color: #ffffff;
+    -fx-background: #ffffff;
+    -fx-border-color: transparent;
 }
 
-#helpMessageContainer {
-    -fx-background-color: #f5f5f5;
+/* Rounded Command Cards */
+.command-card {
+    -fx-background-color: #fcfcfc;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 15;
+}
+
+.command-title {
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Make TextFields in cards look like flat text */
+.command-format {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 0;
+    -fx-text-fill: #555555;
+    -fx-font-family: "Consolas", "Monaco", monospace;
+    -fx-font-size: 12px;
+}
+
+.command-description {
+    -fx-text-fill: #666666;
+    -fx-font-size: 13px;
 }

@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import seedu.address.commons.core.LogsCenter;
 
 /**
- * Controller for a help page
+ * Controller for the help window.
  */
 public class HelpWindow extends UiPart<Stage> {
 
@@ -20,6 +20,11 @@ public class HelpWindow extends UiPart<Stage> {
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
+
+    private static final double DEFAULT_WIDTH = 800;
+    private static final double DEFAULT_HEIGHT = 600;
+    private static final double MIN_WIDTH = 600;
+    private static final double MIN_HEIGHT = 400;
 
     @FXML
     private Button copyButton;
@@ -35,6 +40,7 @@ public class HelpWindow extends UiPart<Stage> {
     public HelpWindow(Stage root) {
         super(FXML, root);
         helpMessage.setText(HELP_MESSAGE);
+        applyDefaultWindowSizing();
     }
 
     /**
@@ -42,6 +48,28 @@ public class HelpWindow extends UiPart<Stage> {
      */
     public HelpWindow() {
         this(new Stage());
+    }
+
+    /**
+     * Apply default sizing constraints so the help window does not open overly large.
+     */
+    private void applyDefaultWindowSizing() {
+        Stage stage = getRoot();
+        // Ensure sensible defaults and prevent the window from opening overly large.
+        // Set minimums first so content can't force an extremely small window.
+        stage.setMinWidth(MIN_WIDTH);
+        stage.setMinHeight(MIN_HEIGHT);
+
+        // If the loaded stage is larger than our defaults or has not been sized yet, set to defaults.
+        boolean tooWide = stage.getWidth() <= 0 || stage.getWidth() > DEFAULT_WIDTH;
+        boolean tooTall = stage.getHeight() <= 0 || stage.getHeight() > DEFAULT_HEIGHT;
+
+        if (tooWide) {
+            stage.setWidth(DEFAULT_WIDTH);
+        }
+        if (tooTall) {
+            stage.setHeight(DEFAULT_HEIGHT);
+        }
     }
 
     /**
