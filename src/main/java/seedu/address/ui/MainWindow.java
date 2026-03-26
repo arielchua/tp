@@ -220,7 +220,14 @@ public class MainWindow extends UiPart<Stage> {
             if (commandResult.isExit()) {
                 handleExit();
             }
-
+            if (viewWindow.isShowing()) {
+                // Find the updated version of the person from the logic/model
+                // and pass it to the viewWindow again.
+                logic.getFilteredPersonList().stream()
+                        .filter(p -> viewWindow.isViewing(p))
+                        .findFirst()
+                        .ifPresent(updatedPerson -> viewWindow.setPerson(updatedPerson));
+            }
             return commandResult;
         } catch (CommandException | ParseException e) {
             logger.info("An error occurred while executing command: " + commandText);

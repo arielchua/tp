@@ -12,7 +12,10 @@ public class Week implements WeeklyAttendance {
     public enum Status {
         Y, // Attended
         A, // Absent
-        N // Not marked
+        N; // Not marked
+        public static Status fromString(String value) {
+            return Status.valueOf(value.toUpperCase());
+        }
     }
 
     private final int weekNo;
@@ -39,11 +42,18 @@ public class Week implements WeeklyAttendance {
     }
 
     @Override
-    public void markAsAbsent() {
+    public void markAsAbsent() throws IllegalStateException {
         if (status == Status.A) {
             throw new IllegalStateException("Week attendance has already been marked as absent");
         }
         status = Status.A;
+    }
+    @Override
+    public void markAsDefault() throws IllegalStateException {
+        if (status == Status.N) {
+            throw new IllegalStateException("Week attendance is already default");
+        }
+        status = Status.N;
     }
 
     @Override
@@ -84,5 +94,10 @@ public class Week implements WeeklyAttendance {
     @Override
     public String toString() {
         return String.format("W%d: %s", weekNo, getStatus());
+    }
+
+    @Override
+    public boolean isAbsent() {
+        return this.status == Status.A;
     }
 }

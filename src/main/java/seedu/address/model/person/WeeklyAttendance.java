@@ -15,6 +15,11 @@ public interface WeeklyAttendance {
     public void markAsAbsent();
 
     /**
+     * Marks this week to be default.
+     */
+    public void markAsDefault();
+
+    /**
      * Returns whether this week has been marked as attended.
      *
      * @return {@code true} if the week has been marked as attended;
@@ -28,4 +33,7 @@ public interface WeeklyAttendance {
      * @return the attendance status of the week session
      */
     public String getStatus();
+
+    public boolean isAbsent();
+
 }

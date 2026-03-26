@@ -1,7 +1,11 @@
 package seedu.address.model.person;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import seedu.address.commons.exceptions.IllegalValueException;
 
 /**
  * Represents a collection of tutorial attendance records for a student across all weeks.
@@ -48,6 +52,12 @@ public class WeekList implements WeeklyAttendanceList {
         assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
         weeks[index].markAsAbsent();
     }
+    @Override
+    public void markWeekAsDefault(int index) {
+        assert index >= 0 : "Index must be >= 0";
+        assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
+        weeks[index].markAsDefault();
+    }
 
     @Override
     public boolean equals(Object other) {
@@ -76,8 +86,15 @@ public class WeekList implements WeeklyAttendanceList {
         for (int i = 0; i < NUMBER_OF_WEEKS; i++) {
             Week original = (Week) this.weeks[i];
             Week newWeek = new Week(i + 1);
-            if (original.isAttended()) {
+            switch (original.getStatus()) {
+            case "Y":
                 newWeek.markAsAttended();
+                break;
+            case "A":
+                newWeek.markAsAbsent();
+                break;
+            default:
+                break;
             }
             copiedWeeks[i] = newWeek;
         }
@@ -109,17 +126,55 @@ public class WeekList implements WeeklyAttendanceList {
 
         for (int i = 0; i < NUMBER_OF_WEEKS; i++) {
             String label = parts[i * 2];
-            String status = parts[i * 2 + 1];
+            String statusStr = parts[i * 2 + 1];
 
+            // Validate label
             if (!label.equals("W" + (i + 1) + ":")) {
                 return false;
             }
 
-            if (!status.equals("Y") && !status.equals("N") && !status.equals("A")) {
-                return false;
+            // Validate status using the enum
+            try {
+                Week.Status.valueOf(statusStr.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return false; // invalid status
             }
         }
+
         return true;
+    }
+
+    /**
+     * Uses a String internal representation of Attendancelist to create an attendanceList
+     * @return WeekList
+     * @throws IllegalValueException
+     */
+    public static WeekList buildWeekListFromString(String weeklyAttendanceList) throws IllegalValueException {
+        requireNonNull(weeklyAttendanceList);
+        String trimmed = weeklyAttendanceList.trim();
+        if (!WeekList.isValidWeekList(weeklyAttendanceList)) {
+            throw new IllegalValueException(WeekList.MESSAGE_CONSTRAINTS);
+        }
+        String[] parts = trimmed.split("\\s+");
+        WeeklyAttendance[] weeks = new WeeklyAttendance[WeekList.NUMBER_OF_WEEKS];
+        for (int i = 0; i < WeekList.NUMBER_OF_WEEKS; i++) {
+            String status = parts[i * 2 + 1]; // Y / N / A
+            Week week = new Week(i + 1);
+            switch (status) {
+            case "Y":
+                week.markAsAttended();
+                break;
+            case "A":
+                week.markAsAbsent();
+                break;
+            case "N":
+                break;
+            default:
+                throw new IllegalValueException("Invalid week status: " + status);
+            }
+            weeks[i] = week;
+        }
+        return new WeekList(weeks);
     }
 
     public WeeklyAttendance[] getWeeks() {
@@ -139,6 +194,20 @@ public class WeekList implements WeeklyAttendanceList {
         }
         return count / NUMBER_OF_WEEKS * 100;
     }
+    /**
+     * Calculates the amount of absences
+     * @return the number of absences
+     */
+    public double calculateWeekAbsence() {
+        double count = 0;
+        for (WeeklyAttendance week : weeks) {
+            if (week.isAbsent()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     @Override
     public int compareTo(WeeklyAttendanceList other) {
         return Double.compare(this.calculateWeekAttendance(), other.calculateWeekAttendance());

@@ -40,7 +40,7 @@ public class RemarkCommand extends Command {
      * Creates a RemarksCommand to add remarks to a person by displayed index.
      *
      * @param targetIndex
-     * @param Remark
+     * @param remark
      */
     public RemarkCommand(Index targetIndex, Remark remark) {
         requireNonNull(targetIndex);

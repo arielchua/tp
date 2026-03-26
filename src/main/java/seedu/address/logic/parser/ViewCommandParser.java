@@ -1,6 +1,6 @@
 package seedu.address.logic.parser;
 
-import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static java.util.Objects.requireNonNull;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ViewCommand;
@@ -11,31 +11,40 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class ViewCommandParser implements Parser<ViewCommand> {
 
+    public static final String MESSAGE_INDEX_MISSING = "The index to view is missing.";
+    public static final String MESSAGE_NOT_A_NUMBER = "The index provided must be a number.";
+    public static final String MESSAGE_TOO_MANY_ARGS = "The view command only accepts one index. "
+            + "Please remove extra arguments.";
+
     /**
      * Parses the given {@code String} of arguments in the context of the ViewCommand
      * and returns a ViewCommand object for execution.
-     *
-     * @throws ParseException if the user input does not conform the expected format
      */
     public ViewCommand parse(String args) throws ParseException {
-        String trimmedInput = args.trim();
+        requireNonNull(args);
+        String trimmedArgs = args.trim();
 
-        if (trimmedInput.isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewCommand.MESSAGE_USAGE));
+        // Check 1: Empty input (Missing Index)
+        if (trimmedArgs.isEmpty()) {
+            throw new ParseException(MESSAGE_INDEX_MISSING + "\n" + ViewCommand.MESSAGE_USAGE);
         }
 
-        if (trimmedInput.matches("[1-9]\\d*\\s+.+")) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewCommand.MESSAGE_USAGE));
+        // Check 2: Multiple arguments
+        if (trimmedArgs.split("\\s+").length > 1) {
+            throw new ParseException(MESSAGE_TOO_MANY_ARGS + "\n" + ViewCommand.MESSAGE_USAGE);
+        }
+
+        // Check 3: Numeric format
+        if (!trimmedArgs.matches("-?\\d+")) {
+            throw new ParseException(MESSAGE_NOT_A_NUMBER + "\n" + ViewCommand.MESSAGE_USAGE);
         }
 
         try {
-            Index index = ParserUtil.parseIndex(trimmedInput);
+            Index index = ParserUtil.parseIndex(trimmedArgs);
             return new ViewCommand(index);
         } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewCommand.MESSAGE_USAGE), pe);
+            // This catches "0" or negative numbers via ParserUtil
+            throw new ParseException(pe.getMessage() + "\n" + ViewCommand.MESSAGE_USAGE);
         }
     }
 }

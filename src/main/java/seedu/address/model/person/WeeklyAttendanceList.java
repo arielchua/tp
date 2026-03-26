@@ -17,10 +17,22 @@ public interface WeeklyAttendanceList extends Comparable<WeeklyAttendanceList> ,
     public void markWeekAsAbsent(int index);
 
     /**
+     * Marks as default for specific week.
+     * @param index the zero-based index of the week.
+     */
+    void markWeekAsDefault(int index);
+
+    /**
      * Calculates the week attendance rate as a percentage.
      * @return the attendance percentage.
      */
     public double calculateWeekAttendance();
+
+    /**
+     * Calculates the amount of absences
+     * @return the number of absences
+     */
+    public double calculateWeekAbsence();
 
     /**
      * @return attendence each week

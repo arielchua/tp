@@ -8,7 +8,8 @@ import seedu.address.model.person.Progress;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
-
+import seedu.address.model.person.WeekList;
+import seedu.address.model.person.WeeklyAttendanceList;
 
 /**
  * A utility class to help with building Person objects.
@@ -28,6 +29,7 @@ public class PersonBuilder {
     private StudentId studentId;
     private TGroup tGroup;
     private Tele tele;
+    private WeeklyAttendanceList weeklyAttendanceList;
     private Progress progress;
 
     /**
@@ -40,11 +42,13 @@ public class PersonBuilder {
         studentId = new StudentId(DEFAULT_STUDENT_ID);
         tGroup = new TGroup(DEFAULT_TGROUP);
         tele = new Tele(DEFAULT_TELE);
+        weeklyAttendanceList = new WeekList();
         progress = Progress.NOT_SET;
     }
 
     /**
      * Initializes the PersonBuilder with the data of {@code personToCopy}.
+     * @param personToCopy The person object to copy data from.
      */
     public PersonBuilder(Person personToCopy) {
         name = personToCopy.getName();
@@ -53,6 +57,7 @@ public class PersonBuilder {
         studentId = personToCopy.getStudentId();
         tGroup = personToCopy.getTGroup();
         tele = personToCopy.getTele();
+        weeklyAttendanceList = personToCopy.getWeeklyAttendanceList();
         progress = personToCopy.getProgress();
     }
 
@@ -105,6 +110,14 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets the {@code WeeklyAttendanceList} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withWeeklyAttendanceList(WeeklyAttendanceList list) {
+        this.weeklyAttendanceList = list;
+        return this;
+    }
+
+    /**
      * Sets the {@code Progress} of the {@code Person} that we are building.
      */
     public PersonBuilder withProgress(Progress progress) {
@@ -112,7 +125,23 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code WeeklyAttendanceList} to have a specific number of absences.
+     * This is useful for testing filtering by absence count.
+     * @param count The number of weeks to mark as absent (starting from Week 1).
+     */
+    public PersonBuilder withAbsences(int count) {
+        this.weeklyAttendanceList = new WeekList();
+        for (int i = 0; i < count; i++) {
+            this.weeklyAttendanceList.markWeekAsAbsent(i);
+        }
+        return this;
+    }
+
+    /**
+     * Builds and returns a {@code Person} with the specified details.
+     */
     public Person build() {
-        return new Person(name, courseId, email, studentId, tGroup, tele, progress);
+        return new Person(name, courseId, email, studentId, tGroup, tele, weeklyAttendanceList, progress);
     }
 }
