@@ -27,6 +27,8 @@ TeachAssist is a desktop app designed to help full-time teaching assistants mana
   - [Updating a student's progress: `updateprogress`]
   - [Marking a student's attendance: `markattendance`]
   - [Clearing list](#clear)
+  - [Adding a remark: `remark`]
+  - [Deleting a remark: `unremark`]
   - [Exiting the app](#exit)
 - [Command Summary](#command-summary)
 - [Parameter Summary](#parameter-summary)
@@ -223,6 +225,10 @@ Format:
 remark INDEX txt/REMARK
 ```
 
+**Examples**:
+`remark 1 txt/Needs help with recursion`
+* Adds remark "Needs help with recursion" to 1st student in the currently displayed student list.
+
 <a name='unremark'></a>
 * Removes the remark of a student at a particular index
 
@@ -230,6 +236,9 @@ Format:
 ```
 unremark INDEX r/REMARK_INDEX
 ```
+**Examples**:
+`unremark 1 r/2`
+* Deletes 2nd remark associated to the 1st student in the currently displayed student list.
 
 <a name="exit"></a>
 ### Exiting the program : `exit`
