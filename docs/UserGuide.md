@@ -26,8 +26,6 @@ TeachAssist is a desktop app designed to help full-time teaching assistants mana
   - [Editing a student: `edit`]
   - [Updating a student's progress: `updateprogress`]
   - [Marking a student's attendance: `markattendance`]
-  - [Cancelling a tutorial: `cancelweek`]
-  - [Uncancelling a tutorial: `uncancelweek`]
   - [Clearing list](#clear)
   - [Adding a remark: `remark`]
   - [Deleting a remark: `unremark`]
