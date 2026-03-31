@@ -13,7 +13,6 @@ import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.WeekList;
-import seedu.address.model.person.WeeklyAttendanceList;
 
 /**
  * Marks the specified week (tutorial) as Cancelled for the same (CourseId-Tutorial) pair
@@ -60,7 +59,8 @@ public class CancelWeekCommand extends Command {
             if (personToEdit.getCourseId().equals(courseId)
                     && personToEdit.getTGroup().equals(tGroup)) {
 
-                WeeklyAttendanceList weekList = ((WeekList) personToEdit.getWeeklyAttendanceList()).copy();
+                WeekList weekList = personToEdit
+                        .getWeekList().copy();
 
                 try {
                     weekList.markAsCancelled(weekNumber.getZeroBased());

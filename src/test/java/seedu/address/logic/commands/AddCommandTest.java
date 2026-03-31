@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,9 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.TGroup;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandTest {
@@ -151,6 +154,21 @@ public class AddCommandTest {
         @Override
         public ObservableList<Person> getFilteredPersonList() {
             throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Set<Integer> getCancelledWeeks(CourseId courseId, TGroup tGroup) {
+            return Set.of();
+        }
+
+        @Override
+        public void addCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
+
+        }
+
+        @Override
+        public void removeCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
+
         }
 
         @Override

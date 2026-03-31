@@ -155,8 +155,8 @@ public class ModelManager implements Model {
     }
 
     private Person applyCancelledWeeks(Person person) {
-        WeekList weekList = ((WeekList) person.getWeeklyAttendanceList()).copy();
-
+        WeekList weekList = person
+                .getWeekList().copy();
         Set<Integer> cancelledWeeks =
                 getCancelledWeeks(person.getCourseId(), person.getTGroup());
 

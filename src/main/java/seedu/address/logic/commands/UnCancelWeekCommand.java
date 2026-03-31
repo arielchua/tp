@@ -53,8 +53,8 @@ public class UnCancelWeekCommand extends Command {
             if (person.getCourseId().equals(courseId)
                     && person.getTGroup().equals(tGroup)) {
 
-                WeekList weekList = ((WeekList) person.getWeeklyAttendanceList()).copy();
-
+                WeekList weekList = person
+                        .getWeekList().copy();
                 weekList.markWeekAsDefault(weekNumber.getZeroBased());
 
                 Person updated = new Person(
