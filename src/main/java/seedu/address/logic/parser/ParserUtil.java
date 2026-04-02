@@ -21,6 +21,8 @@ import seedu.address.model.person.Week;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_INVALID_PROGRESS =
+            "Invalid progress value. Allowed values are: on_track, needs_attention, at_risk, clear.";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -204,8 +206,7 @@ public class ParserUtil {
         case "not_set":
             return Progress.NOT_SET;
         default:
-            throw new ParseException(
-                    "Invalid progress value. Allowed values are: on_track, needs_attention, at_risk, clear.");
+            throw new ParseException(MESSAGE_INVALID_PROGRESS);
         }
     }
     /**
