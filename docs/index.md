@@ -4,8 +4,8 @@
 ---
 # TeachAssist
 
-[![CI Status](https://github.com/ay2526s2-cs2103t-f10-3/workflows/Java%20CI/badge.svg)](https://github.com/ay2526s2-cs2103t-f10-3/actions)
-[![codecov](https://codecov.io/gh/ay2526s2-cs2103t-f10-3/branch/master/graph/badge.svg)](https://codecov.io/gh/ay2526s2-cs2103t-f10-3)
+[![CI Status](https://github.com/AY2526S2-CS2103T-F10-3/tp/actions/workflows/gradle.yml/badge.svg)](https://github.com/AY2526S2-CS2103T-F10-3/tp/actions)
+[![codecov](https://codecov.io/gh/AY2526S2-CS2103T-F10-3/branch/master/graph/badge.svg)](https://codecov.io/gh/AY2526S2-CS2103T-F10-3)
 
 ![Ui](images/Ui.png)
 
