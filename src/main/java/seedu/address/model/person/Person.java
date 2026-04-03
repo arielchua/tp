@@ -52,10 +52,6 @@ public class Person {
         return courseId;
     }
 
-    public String getNameAndID() {
-        return name.toString() + " (" + studentId.toString() + ")";
-    }
-
     public Email getEmail() {
         return email;
     }
@@ -79,7 +75,7 @@ public class Person {
         return progress;
     }
 
-    public double getAbsenceCount() {
+    public int getAbsenceCount() {
         return weekList.calculateWeekAbsence();
     }
     /**
@@ -132,11 +128,10 @@ public class Person {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof Person)) {
+        if (!(other instanceof Person otherPerson)) {
             return false;
         }
 
-        Person otherPerson = (Person) other;
         return name.equals(otherPerson.name)
                 && courseId.equals(otherPerson.courseId)
                 && studentId.equals(otherPerson.studentId)

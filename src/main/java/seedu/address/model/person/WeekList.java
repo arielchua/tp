@@ -71,11 +71,10 @@ public class WeekList implements WeeklyAttendanceList {
             return true;
         }
 
-        if (!(other instanceof WeekList)) {
+        if (!(other instanceof WeekList otherList)) {
             return false;
         }
 
-        WeekList otherList = (WeekList) other;
         for (int i = 0; i < NUMBER_OF_WEEKS; i++) {
             if (this.weeks[i].isAttended() != otherList.weeks[i].isAttended()) {
                 return false;
@@ -210,8 +209,8 @@ public class WeekList implements WeeklyAttendanceList {
      * Calculates the amount of absences
      * @return the number of absences
      */
-    public double calculateWeekAbsence() {
-        double count = 0;
+    public int calculateWeekAbsence() {
+        int count = 0;
         for (WeeklyAttendance week : weeks) {
             if (week.isAbsent()) {
                 count++;

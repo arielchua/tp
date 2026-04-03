@@ -19,6 +19,7 @@ import java.util.List;
 
 import seedu.address.model.AddressBook;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Progress;
 
 /**
  * A utility class containing a list of {@code Person} objects to be used in tests.
@@ -45,6 +46,7 @@ public class TypicalPersons {
             .withCourseId("CS1101S")
             .withStudentId("A1234567H")
             .withTGroup("T01")
+            .withProgress(Progress.NEEDS_ATTENTION)
             .build();
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier")
             .withTele("daniel_meier")
@@ -82,6 +84,8 @@ public class TypicalPersons {
             .withCourseId("CS2103T")
             .withStudentId("A1234567M")
             .withTGroup("T06")
+            .withAbsences(2)
+            .withProgress(Progress.ON_TRACK)
             .build();
     public static final Person IDA = new PersonBuilder().withName("Ida Mueller")
             .withTele("ida_mueller")
@@ -89,6 +93,8 @@ public class TypicalPersons {
             .withCourseId("CS2101")
             .withStudentId("A1234567N")
             .withTGroup("T07")
+            .withAbsences(3)
+            .withProgress(Progress.AT_RISK)
             .build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
@@ -110,8 +116,6 @@ public class TypicalPersons {
                     .withEmail(VALID_EMAIL_BOB)
                     .build();
 
-    public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
-
     private TypicalPersons() {} // prevents instantiation
 
     /**
@@ -126,6 +130,7 @@ public class TypicalPersons {
     }
 
     public static List<Person> getTypicalPersons() {
-        return new ArrayList<>(Arrays.asList(ALICE, BENSON, CARL, DANIEL, ELLE, FIONA, GEORGE));
+        return new ArrayList<>(Arrays.asList(ALICE, BENSON, CARL, DANIEL, ELLE, FIONA, GEORGE,
+                HOON, IDA));
     }
 }
