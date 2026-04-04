@@ -220,37 +220,7 @@ public class MainWindow extends UiPart<Stage> {
      */
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
         try {
-            CommandResult commandResult;
-
-            // case 1: awaiting yes/no confirmation message from user
-            if (isAwaitingDeleteConfirmation) {
-                String trimmedCommand = commandText.trim().toLowerCase();
-
-                if (trimmedCommand.equals("yes")) {
-                    isAwaitingDeleteConfirmation = false;
-                    String deleteCommandToExecute = pendingDeleteCommandText;
-                    pendingDeleteCommandText = null;
-                    commandResult = logic.execute(deleteCommandToExecute);
-                } else if (trimmedCommand.equals("no")) {
-                    isAwaitingDeleteConfirmation = false;
-                    pendingDeleteCommandText = null;
-                    commandResult = new CommandResult(MESSAGE_DELETE_CANCELLED);
-                } else {
-                    commandResult = new CommandResult(MESSAGE_INVALID_CONFIRMATION_RESPONSE);
-                }
-
-            // case 2: delete action requested and is fully valid
-            } else {
-                Person personToDelete = logic.getPersonToDelete(commandText);
-
-                if (personToDelete != null) {
-                    isAwaitingDeleteConfirmation = true;
-                    pendingDeleteCommandText = commandText;
-                    commandResult = new CommandResult(String.format(MESSAGE_CONFIRM_DELETE, personToDelete.getName()));
-                } else {
-                    commandResult = logic.execute(commandText);
-                }
-            }
+            CommandResult commandResult = logic.execute(commandText);
 
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
@@ -266,14 +236,14 @@ public class MainWindow extends UiPart<Stage> {
             if (commandResult.isExit()) {
                 handleExit();
             }
+
             if (viewWindow.isShowing()) {
-                // Find the updated version of the person from the logic/model
-                // and pass it to the viewWindow again.
                 logic.getFilteredPersonList().stream()
                         .filter(p -> viewWindow.isViewing(p))
                         .findFirst()
                         .ifPresent(updatedPerson -> viewWindow.setPerson(updatedPerson));
             }
+
             return commandResult;
         } catch (CommandException | ParseException e) {
             logger.info("An error occurred while executing command: " + commandText);
