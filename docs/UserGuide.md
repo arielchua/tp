@@ -13,21 +13,22 @@ This guide assumes that users are familiar with basic computer operations, such 
 ## Table of contents
 - [Quick Start](#quick-start)
 - [Features](#features)
-    - [Viewing help: `help`](#help)
-    - [Adding a student: `add`]
-    - [Listing all students `list`]
-    - [Deleting a student: `delete`](#delete)
-        - [Delete by index](#deletebyindex)
-        - [Delete by student details](#deletebydetails)
-    - [Finding a student: `find`](#finding-students-by-name-find)
-    - [Filtering students: `filter`]
-        - [Filter by __]
-        - [Filter by __]
-    - [Editing a student: `edit`]
-    - [Updating a student's progress: `updateprogress`]
-    - [Marking a student's attendance: `markattendance`]
-    - [Clearing list](#clear)
-    - [Exiting the app](#exit)
+  - [Viewing help: `help`](#help)
+  - [Listing all students `list`](#list)
+  - [Adding a student: `add`](#add)
+  - [Deleting a student: `delete`](#delete)
+    - [Delete by index](#deletebyindex)
+    - [Delete by student details](#deletebydetails)
+  - [Clearing all contacts: `clear`](#clear)
+  - [Finding a student: `find`](#finding-students-by-name-find)
+  - [Filtering students: `filter`](#filter)
+  - [Editing a student: `edit`](#edit)
+  - [Viewing a student: `view`](#view)
+  - [Marking a student's attendance: `markattendance`](#mark-attendance)
+  - [Updating a student's progress: `updateprogress`](#update-progress)
+  - [Adding a remark: `remark`](#remark)
+  - [Deleting a remark: `unremark`](#unremark)
+  - [Exiting the app](#exit)
 - [Command Summary](#command-summary)
 - [Parameter Summary](#parameter-summary)
 - [FAQ](#faq)
@@ -73,7 +74,7 @@ This guide assumes that users are familiar with basic computer operations, such 
 <a name="help"></a>
 ### Viewing help : `help`
 
-Shows a message explaining how to access the help page.
+Shows a message explaining how to access the User Guide and displays the available commands.
 
 ![help message](images/helpMessage.png)
 
@@ -82,22 +83,41 @@ Format:
 help
 ```
 
-<a name="delete"></a>
+## 
 
 <a name="list"></a>
-### Listing all students `list`
+### Listing all students: `list`
 
-Shows all Persons stored sorted in Ascending order
+Lists all students stored sorted in ascending order
 
 Format:
 ```
 list
 ```
 
+##
+
+<a name="add"></a>
+### Adding a student: `add`
+
+Adds a student. The TELEGRAM_USERNAME field is optional.
+
+Format:
+```
+add n\NAME id/STUDENT_ID e/EMAIL crs/COURSE_ID tg/TUTORIAL_GROUP [tel/TELEGRAM_USERNAME]
+```
+
+Examples:
+```
+add n/JOHN DOE id/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01 tel/@JOHNDOE
+```
+
+##
+
 <a name="delete"></a>
 ### Deleting a student : `delete`
 
-Removes a student from TeachAssist.
+Deletes a student by INDEX or by student details.
 
 <a name="deletebyindex"></a>
 **Delete by index**
@@ -137,10 +157,24 @@ Enter `yes` to proceed with the deletion, or `no` to cancel it.
 `delete 3` followed by `no`
 * No change is made.
 
+##
 
+<a name="clear"></a>
+### Clears all students : `clear`
+
+Deletes all students
+
+Format:
+```
+clear
+```
+
+##
+
+<a name="find"></a>
 ### Finding students by name: `find`
 
-Finds students whose names contain words that start with any of the given keywords.
+Finds students whose names contain any of the given keywords.
 
 Format: `find KEYWORD [MORE_KEYWORDS]...`
 
@@ -158,12 +192,17 @@ Examples:
 * `find Jo` returns `John Doe`
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
 
+##
+
 <a name="filter"></a>
 ### Filtering students: `filter`
 
-Filters the stored student list (all students in the application) using one or more of the available filter fields. All provided filter fields must match (logical AND).
+Filters students using one or more of the available filter fields.
 
-Format: `filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]`
+Format:
+```
+filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]`
+```
 
 Behaviour:
 * Course ID (`crs/`) and tutorial group (`tg/`) are matched case-insensitively.
@@ -185,32 +224,86 @@ Expected output:
 
 Tip: if a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
 
+##
 
-<a name="progress"></a>
+<a name="edit"></a>
+### Editing a student: `edit`
+
+Edit fields of the students at the given index. At least one field to edit must be provided.
+
+Format:
+```
+edit INDEX [n/NAME] [id/STUDENT_ID] [e/EMAIL] [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [tel/TELEGRAM_USERNAME]
+```
+
+Examples:
+* `edit 1 n/John Tan` - Edits the name of the 1st student to `John Tan`.
+* `edit 2 e1384397@u.nus.edu` - Edits the email of the 2nd student.
+* `edit 3 tel/@john_tan` - Edits the Telegram username of the 3rd student.
+* `edit 4 crs/CS2103T tg/T03` - Edits the course ID and tutorial group of the 4th student.
+* `edit 5 n/John Tan e1384397@u.nus.edu` - Edits the name and email of the 5th student.
+* `edit 6 id/A1234567B crs/CS2040S tg/T12` - Edits the student ID, course ID, and tutorial group of the 6th student.
+* `edit 7 n/John Tan id/A1234567B e1384397@u.nus.edu crs/CS2105 tg/T08 tel/@john_tan` - Edits all editable fields of the 7th student.
+
+##
+
+<a name="view"></a>
+### Viewing a student: `view`
+
+Shows student details.
+
+Format:
+```
+view INDEX
+```
+
+##
+
+<a name="mark-attendance"></a>
+### Marks a students attendance: `markattendance`
+
+Updates attendance using the given week and status
+
+Format:
+```
+markattendance INDEX week/WEEK_NUMBER sta/STATUS
+```
+
+* Supported attendance status values:
+    * `y` --> Present  --> Green
+    * `a` --> Absent   --> Red
+    * `n` --> Undetermined   --> Grey
+
+Examples:
+```
+markattendance 1 week/1 sta/y
+```
+
+##
+
+<a name="update-progress"></a>
 ### Updating a student's progress : `updateprogress`
 
-Updates a student's progress. Valid progress tokens:
-
-- `on_track`
-- `needs_attention`
-- `at_risk`
-- `not_set` (alias: `clear`)
-
-Parsing is case-insensitive (for example `ON_TRACK` and `on_track` are both accepted). Matching is by exact token mapping: the token must match one of the allowed values after normalization — partial or prefix matches (e.g., `on` or `ontrack`) are not supported. Underscores are required where shown.
-
-Tip: to remove a progress tag use `not_set` or `clear`.
-
-<a name="progressbyindex"></a>
-**Update Progress by index**
+Updates a student's progress.
 
 Format:
 ```
 updateprogress INDEX p/PROGRESS
 ```
 
-* Updates the progress of the student at the specified `INDEX` to `PROGRESS`.
-* The index refers to the index number shown in the currently displayed student list.
-* The index **must be a positive integer** 1, 2, 3, …
+* Supported progress values:
+  * `on_track`
+  * `needs_attention`
+  * `at_risk`
+  * `not_set` (alias: `clear`)
+
+* Parsing is case-insensitive (e.g `ON_TRACK` and `on_track` are both accepted)
+* To remove a progress tag use `not_set` or `clear`.
+
+Examples:
+```
+updateprogress 1 p/on_track
+```
 
 <a name="progressbydetails"></a>
 **Update progress by student details**
@@ -223,26 +316,53 @@ updateprogress id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP p/PROGRESS
 * Updates the progress of the student with the exact details match for `STUDENT_ID`, `COURSE_ID`, and `TUTORIAL_GROUP` to `PROGRESS`.
 
 **Examples**:
-`updateprogress 1 p/on_track`
-* Sets the progress of the 1st student in the currently displayed student list to `on_track`.
+* `updateprogress 1 p/on_track` - Sets the progress of the 1st student in the currently displayed student list to `on_track`.
+* `updateprogress id/A1234567X crs/CS2103T tg/T01 p/needs_attention` - Sets the progress of the student with student ID A1234567X, course CS2103T, and tutorial group T01 to `needs_attention`.
+* `updateprogress 2 p/not_set` - Clears the progress status of the 2nd student in the currently displayed student list.
 
-`updateprogress id/A1234567X crs/CS2103T tg/T01 p/needs_attention`
-* Sets the progress of the student with student ID A1234567X, course CS2103T, and tutorial group T01 to `needs_attention`.
+##
 
-`updateprogress 2 p/not_set`
-* Clears the progress status of the 2nd student in the currently displayed student list.
+<a name="remark"></a>
+### Adding a remark : `remark`
 
-<a name="clear"></a>
+Adds a textual remark to the student.
 
-### Marking a student's attendance : `markattendance`
-Updates a student's Attendance Status to either:
-1. `y` --> Present  --> Green
-2. `a` --> Absent   --> Red
-3. `n` --> Undetermined   --> Grey
+Format:
+```
+remark INDEX txt/REMARK
+```
+
+Examples:
+```
+remark 1 txt/Participates actively in class!
+```
+
+##
+
+<a name="unremark"></a>
+### Removing a remark : `unremark`
+
+Removes the specified remark from the student.
+
+Format:
+```
+unremark INDEX r/REMARK_INDEX
+```
+
+Examples:
+```
+unremark 1 r/2
+```
+
+##
 
 <div markdown="span" class="alert alert-primary"></div>
 :bulb: **Tip:**<br><br>
 
+<a name='remark'></a>
+### Adding a remark: `remark`
+
+* Adds a remark to the student at a particular index
 
 <a name="attendancebyindex"></a>
 **Update attendance by index, week, status**
@@ -257,7 +377,7 @@ markattendance INDEX week/WEEK sta/STATUS
 * The index **must be a positive integer** 1, 2, 3, …
 * The week referes to school weeks, which are visible to the right of teachassist
 
-**Examples**:  
+**Examples**:
 `markattendance 1 week/3 sta/y`
 * marks the attendance of the 1st student's attendance in week 3 as present -> Green.
 
@@ -266,16 +386,12 @@ markattendance INDEX week/WEEK sta/STATUS
 
 `markattendance 4 week/4 sta/n`
 * marks the attendance of the 4th student's attendance in week 4 as unmarked -> Grey.
-<a name="clear"></a>
 
-### Clearing all entries : `clear`
+<a name='unremark'></a>
+### Deleting a remark: `unremark`
 
-Clears all entries from the address book.
+* Removes the remark of a student at a particular index
 
-Format:
-```
-clear
-```
 
 <a name="exit"></a>
 ### Exiting the program : `exit`
