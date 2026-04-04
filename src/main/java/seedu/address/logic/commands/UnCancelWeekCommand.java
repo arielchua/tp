@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEEK;
 
 import seedu.address.commons.core.index.Index;
@@ -45,32 +46,11 @@ public class UnCancelWeekCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-
-        model.removeCancelledWeek(courseId, tGroup, weekNumber.getZeroBased());
-
-        // update existing persons
-        for (Person person : model.getFilteredPersonList()) {
-            if (person.getCourseId().equals(courseId)
-                    && person.getTGroup().equals(tGroup)) {
-
-                WeekList weekList = person
-                        .getWeekList().copy();
-                weekList.markWeekAsDefault(weekNumber.getZeroBased());
-
-                Person updated = new Person(
-                        person.getName(),
-                        person.getCourseId(),
-                        person.getEmail(),
-                        person.getStudentId(),
-                        person.getTGroup(),
-                        person.getTele(),
-                        weekList,
-                        person.getProgress()
-                );
-
-                model.setPerson(person, updated);
-            }
+        requireNonNull(model);
+        if (weekNumber.getZeroBased() >= WeekList.NUMBER_OF_WEEKS) {
+            throw new CommandException("Invalid Week, there are only 13 weeks");
         }
+        model.removeCancelledWeek(courseId, tGroup, weekNumber.getZeroBased());
 
         return new CommandResult("Week uncancelled successfully");
     }

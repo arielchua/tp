@@ -6,6 +6,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -132,10 +133,67 @@ public class ModelManager implements Model {
         String key = makeKey(courseId, tGroup);
         return cancelledWeeksMap.getOrDefault(key, new java.util.HashSet<>());
     }
+    private void deriveCancelledWeekList(CourseId courseId, TGroup tGroup, int weekIndex) {
+        List<Person> persons = getFilteredPersonList();
+        for (Person personToEdit : persons) {
+            if (personToEdit.getCourseId().equals(courseId)
+                    && personToEdit.getTGroup().equals(tGroup)) {
+
+                WeekList weekList = personToEdit
+                        .getWeekList().copy();
+
+                try {
+                    weekList.markAsCancelled(weekIndex);
+                } catch (IllegalStateException e) {
+                    // ignore duplicates
+                    continue;
+                }
+
+                Person editedPerson = new Person(
+                        personToEdit.getName(),
+                        personToEdit.getCourseId(),
+                        personToEdit.getEmail(),
+                        personToEdit.getStudentId(),
+                        personToEdit.getTGroup(),
+                        personToEdit.getTele(),
+                        weekList,
+                        personToEdit.getProgress()
+                );
+                setPerson(personToEdit, editedPerson);
+            }
+        }
+    }
+    private void deriveUncancelledWeekList(CourseId courseId, TGroup tGroup, int weekIndex) {
+        List<Person> persons = getFilteredPersonList();
+        // update existing persons
+        for (Person person : persons) {
+            if (person.getCourseId().equals(courseId)
+                    && person.getTGroup().equals(tGroup)) {
+
+                WeekList weekList = person
+                        .getWeekList().copy();
+                weekList.markWeekAsDefault(weekIndex);
+
+                Person updated = new Person(
+                        person.getName(),
+                        person.getCourseId(),
+                        person.getEmail(),
+                        person.getStudentId(),
+                        person.getTGroup(),
+                        person.getTele(),
+                        weekList,
+                        person.getProgress()
+                );
+
+                setPerson(person, updated);
+            }
+        }
+    }
 
     @Override
     public void addCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
         requireAllNonNull(courseId, tGroup);
+        deriveCancelledWeekList(courseId, tGroup, weekIndex);
         String key = makeKey(courseId, tGroup);
         cancelledWeeksMap.putIfAbsent(key, new java.util.HashSet<>());
         cancelledWeeksMap.get(key).add(weekIndex);
@@ -145,13 +203,14 @@ public class ModelManager implements Model {
 
     @Override
     public void removeCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
+        requireAllNonNull(courseId, tGroup);
         String key = makeKey(courseId, tGroup);
-
         if (cancelledWeeksMap.containsKey(key)) {
             cancelledWeeksMap.get(key).remove(weekIndex);
         }
 
         addressBook.getCancelledWeeksMap().putAll(cancelledWeeksMap);
+        deriveUncancelledWeekList(courseId, tGroup, weekIndex);
     }
 
     private Person applyCancelledWeeks(Person person) {

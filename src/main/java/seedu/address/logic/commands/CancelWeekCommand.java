@@ -51,37 +51,8 @@ public class CancelWeekCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Person> persons = model.getFilteredPersonList();
         if (weekNumber.getZeroBased() >= WeekList.NUMBER_OF_WEEKS) {
             throw new CommandException("Invalid Week, there are only 13 weeks");
-        }
-        for (Person personToEdit : persons) {
-            if (personToEdit.getCourseId().equals(courseId)
-                    && personToEdit.getTGroup().equals(tGroup)) {
-
-                WeekList weekList = personToEdit
-                        .getWeekList().copy();
-
-                try {
-                    weekList.markAsCancelled(weekNumber.getZeroBased());
-                } catch (IllegalStateException e) {
-                    // ignore duplicates
-                    continue;
-                }
-
-                Person editedPerson = new Person(
-                        personToEdit.getName(),
-                        personToEdit.getCourseId(),
-                        personToEdit.getEmail(),
-                        personToEdit.getStudentId(),
-                        personToEdit.getTGroup(),
-                        personToEdit.getTele(),
-                        weekList,
-                        personToEdit.getProgress()
-                );
-
-                model.setPerson(personToEdit, editedPerson);
-            }
         }
         model.addCancelledWeek(courseId, tGroup, weekNumber.getZeroBased());
         return new CommandResult(String.format(
