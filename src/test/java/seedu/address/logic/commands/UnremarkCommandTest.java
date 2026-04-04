@@ -9,6 +9,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
@@ -22,9 +23,11 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Progress;
 import seedu.address.model.person.Remark;
+import seedu.address.model.person.TGroup;
 import seedu.address.testutil.PersonBuilder;
 
 public class UnremarkCommandTest {
@@ -130,6 +133,21 @@ public class UnremarkCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+        @Override
+        public void removeCancelledWeek(CourseId courseId, TGroup tGroup, int weekNumber) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addCancelledWeek(CourseId courseId, TGroup tGroup, int weekNumber) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Set<Integer> getCancelledWeeks(CourseId courseId, TGroup tGroup) {
+            throw new AssertionError("This method should not be called.");
+        }
+
         @Override
         public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
             throw new AssertionError();
