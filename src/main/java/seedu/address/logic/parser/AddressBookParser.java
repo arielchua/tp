@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.CancelWeekCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteCommand;
@@ -21,6 +22,7 @@ import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.MarkAttendanceCommand;
 import seedu.address.logic.commands.ProgressCommand;
 import seedu.address.logic.commands.RemarkCommand;
+import seedu.address.logic.commands.UnCancelWeekCommand;
 import seedu.address.logic.commands.UnremarkCommand;
 import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -97,6 +99,11 @@ public class AddressBookParser {
 
         case UnremarkCommand.COMMAND_WORD:
             return new UnremarkCommandParser().parse(arguments);
+
+        case UnCancelWeekCommand.COMMAND_WORD:
+            return new UnCancelWeekCommandParser().parse(arguments);
+        case CancelWeekCommand.COMMAND_WORD:
+            return new CancelWeekCommandParser().parse(arguments);
 
         case ViewCommand.COMMAND_WORD:
             return new ViewCommandParser().parse(arguments);

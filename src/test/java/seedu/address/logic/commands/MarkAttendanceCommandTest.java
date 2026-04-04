@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,9 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Week;
 import seedu.address.model.person.WeekList;
 import seedu.address.testutil.PersonBuilder;
@@ -50,6 +53,21 @@ public class MarkAttendanceCommandTest {
         @Override
         public ObservableList<Person> getFilteredPersonList() {
             return persons;
+        }
+
+        @Override
+        public Set<Integer> getCancelledWeeks(CourseId courseId, TGroup tGroup) {
+            return Set.of();
+        }
+
+        @Override
+        public void addCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
+
+        }
+
+        @Override
+        public void removeCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
+
         }
 
         @Override

@@ -36,6 +36,10 @@ public class MainWindow extends UiPart<Stage> {
     private static final String MESSAGE_INVALID_CONFIRMATION_RESPONSE =
             "Please type 'yes' to confirm deletion or 'no' to cancel.";
 
+    private static final String WELCOME_MESSAGE = "Welcome to TeachAssist!\n"
+            + "Manage student attendance, progress, and remarks across multiple courses in one place.\n"
+            + "Type 'help' to see the list of available commands.";
+
     private final Logger logger = LogsCenter.getLogger(getClass());
 
     private Stage primaryStage;
@@ -138,6 +142,7 @@ public class MainWindow extends UiPart<Stage> {
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
+        resultDisplay.setFeedbackToUser(WELCOME_MESSAGE);
 
         StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getAddressBookFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());

@@ -64,4 +64,19 @@ public class RemarkCommand extends Command {
         personToEdit.addRemark(remark);
         return new CommandResult(String.format(MESSAGE_ADD_REMARKS_SUCCESS, personToEdit));
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        if (!(other instanceof RemarkCommand)) {
+            return false;
+        }
+
+        RemarkCommand otherRemarkCommand = (RemarkCommand) other;
+        return targetIndex.equals(otherRemarkCommand.targetIndex)
+                && remark.equals(otherRemarkCommand.remark);
+    }
 }

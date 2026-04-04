@@ -2,11 +2,14 @@ package seedu.address.model;
 
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.TGroup;
 
 /**
  * The API of the Model component.
@@ -79,6 +82,12 @@ public interface Model {
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();
+
+    Set<Integer> getCancelledWeeks(CourseId courseId, TGroup tGroup);
+
+    void addCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex);
+
+    void removeCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex);
 
     /**
      * Updates the sorter of the sorted person list to sorter by the given {@code comparator}.

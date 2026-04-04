@@ -1,5 +1,9 @@
 package seedu.address.storage;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,6 +33,7 @@ class JsonAdaptedPerson {
     private final String tele;
     private final String weekList;
     private final String progress;
+    private final List<JsonAdaptedRemark> remarks;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -41,7 +46,8 @@ class JsonAdaptedPerson {
             @JsonProperty("tGroup") String tGroup,
             @JsonProperty("tele") String tele,
             @JsonProperty("weekList") String weekList,
-            @JsonProperty("progress") String progress) {
+            @JsonProperty("progress") String progress,
+            @JsonProperty("remarks") List<JsonAdaptedRemark> remarks) {
         this.name = name;
         this.courseId = courseId;
         this.email = email;
@@ -50,6 +56,7 @@ class JsonAdaptedPerson {
         this.tele = tele;
         this.weekList = weekList;
         this.progress = progress;
+        this.remarks = remarks != null ? remarks : new ArrayList<>();
     }
 
     /**
@@ -64,6 +71,9 @@ class JsonAdaptedPerson {
         tele = source.getTele() == null ? null : source.getTele().value;
         weekList = source.getWeekList().toString();
         progress = source.getProgress().name();
+        remarks = source.getRemarks().stream()
+                .map(JsonAdaptedRemark::new)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -144,8 +154,15 @@ class JsonAdaptedPerson {
             }
         }
 
-        return new Person(modelName, modelCourseId, modelEmail,
+        Person person = new Person(modelName, modelCourseId, modelEmail,
                 modelStudentId, modelTGroup, modelTele, modelWeekList, modelProgress);
+
+        if (remarks != null) {
+            for (JsonAdaptedRemark jsonAdaptedRemark : remarks) {
+                person.addRemark(jsonAdaptedRemark.toModelType());
+            }
+        }
+        return person;
     }
 
 }

@@ -68,4 +68,17 @@ public class UnremarkCommand extends Command {
         personToEdit.deleteRemark(remarkIndex);
         return new CommandResult(String.format(MESSAGE_DELETE_REMARKS_SUCCESS, personToEdit));
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof UnremarkCommand)) {
+            return false;
+        }
+        UnremarkCommand otherCommand = (UnremarkCommand) other;
+        return targetIndex.equals(otherCommand.targetIndex)
+                && remarkIndex.equals(otherCommand.remarkIndex);
+    }
 }

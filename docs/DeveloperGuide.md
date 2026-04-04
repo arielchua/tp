@@ -1,10 +1,10 @@
 ---
-  layout: default.md
-    title: "Developer Guide"
-    pageNav: 3
+layout: default.md
+title: "Developer Guide"
+pageNav: 3
 ---
 
-# AB-3 Developer Guide
+# TeachAssist Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -13,7 +13,21 @@
 
 ## **Acknowledgements**
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+This project was forked from [se-edu/addressbook-level3](https://github.com/se-edu/addressbook-level3) under the MIT License.
+
+### **Third-Party Libraries**
+
+- **JavaFX** — for building the graphical user interface. ([openjfx.io](https://openjfx.io))
+- **Jackson** — for JSON data serialization and deserialization. ([github.com/FasterXML/jackson](https://github.com/FasterXML/jackson))
+- **JUnit 5** — for unit and integration testing. ([junit.org/junit5](https://junit.org/junit5))
+  
+### **Development Tools**
+
+- **Gradle** — for build automation and dependency management. ([gradle.org](https://gradle.org))
+- **GitHub Pages** — for hosting project documentation. ([pages.github.com](https://pages.github.com))
+- **PlantUML** — for generating UML diagrams used in documentation. ([plantuml.com](https://plantuml.com))
+- **MarkBind** — for authoring and publishing the user and developer guides. ([markbind.org](https://markbind.org))
+- **GitHub Actions** — for continuous integration and automated build testing. ([github.com/features/actions](https://github.com/features/actions))
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -123,7 +137,7 @@ How the parsing works:
 
 The `Model` component,
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
+* stores the TeachAssist data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
@@ -144,7 +158,7 @@ The `Model` component,
 <puml src="diagrams/StorageClassDiagram.puml" width="550" />
 
 The `Storage` component,
-* can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
+* can save both TeachAssist data and user preference data in JSON format, and read them back into corresponding objects.
 * inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
@@ -153,107 +167,121 @@ The `Storage` component,
 Classes used by multiple components are in the `seedu.address.commons` package.
 
 --------------------------------------------------------------------------------------------------------------------
-
-## **Implementation**
+## **Key Feature Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### \[Proposed\] Undo/redo feature
+### Feature: Add Student
 
-#### Proposed Implementation
+#### Overview
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+Describe the purpose of the `add` command and how it differs from the original AB3 implementation. State that TeachAssist uses student-specific fields instead of generic contact-oriented fields.
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+#### Student data model
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+Describe the student-related field classes involved in creating a student record, such as `Name`, `StudentId`, `CourseId`, `TGroup`, `Email`, `Tele`, and any other relevant attributes stored in `Person`.
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+Relevant diagram: Class diagram showing `Person` and the student-related field classes.
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+#### Implementation
 
-<puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />
+Explain how `AddCommandParser` parses the user input, validates each field, constructs the `Person` object, and passes it to `AddCommand` for insertion into the model.
 
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+#### Duplicate handling
 
-<puml src="diagrams/UndoRedoState1.puml" alt="UndoRedoState1" />
+Explain how TeachAssist checks whether a student record already exists before adding it, and describe which fields are used to determine duplicates in the current implementation.
 
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+### Feature: Delete Student
 
-<puml src="diagrams/UndoRedoState2.puml" alt="UndoRedoState2" />
+#### Overview
 
-<box type="info" seamless>
+Describe the purpose of the `delete` command and explain that it has been extended beyond the original AB3 version.
 
-**Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+#### Supported delete modes
 
-</box>
+Explain that TeachAssist supports deletion by displayed index and by student details. State the exact student details required for detail-based deletion.
 
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+#### Confirmation workflow
 
-<puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />
+Explain that deletion does not happen immediately after a valid delete command. Describe how TeachAssist first identifies the target student, prompts the user for confirmation, and then proceeds only if the user confirms.
 
+Relevant diagram: Activity diagram showing the branching delete flow, including deletion by index, deletion by student details, and confirmation handling.
 
-<box type="info" seamless>
+#### Implementation
 
-**Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
+Explain how the parser distinguishes between the supported delete formats, what validation is performed in the parser, what validation is deferred to command execution, and how the final deletion is carried out after confirmation.
 
-</box>
+Relevant diagram: Sequence diagram showing the successful delete flow through parser, command, model, and confirmation logic.
 
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
+### Feature: Update Progress
 
-<puml src="diagrams/UndoSequenceDiagram-Logic.puml" alt="UndoSequenceDiagram-Logic" />
+#### Overview
 
-<box type="info" seamless>
+Describe the purpose of the `updateprogress` command and how it helps TAs track a student’s academic standing or follow-up status.
 
-**Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+#### Progress representation
 
-</box>
+Explain the valid progress states supported by TeachAssist and describe how the progress status is represented in the model.
 
-Similarly, how an undo operation goes through the `Model` component is shown below:
+#### Implementation
 
-<puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="UndoSequenceDiagram-Model" />
+Explain how the command identifies the target student, validates the new progress value, updates the relevant `Person` object, and replaces the old record in the model.
 
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+Relevant diagram: Sequence diagram showing how the command identifies the student, validates the progress status, and updates the model.
 
-<box type="info" seamless>
+#### UI integration
 
-**Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+Describe how progress is displayed in the UI.
 
-</box>
+### Feature: Mark Attendance
 
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+#### Overview
 
-<puml src="diagrams/UndoRedoState4.puml" alt="UndoRedoState4" />
+Describe the purpose of the `markattendance` command and how it supports tutorial or class attendance tracking in TeachAssist.
 
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
+#### Attendance representation
 
-<puml src="diagrams/UndoRedoState5.puml" alt="UndoRedoState5" />
+Explain how attendance information is represented in the model. State whether attendance is stored as a count, a list, a status field, or another structure.
 
-The following activity diagram summarizes what happens when a user executes a new command:
+#### Implementation
 
-<puml src="diagrams/CommitActivityDiagram.puml" width="250" />
+Explain how the command parses the attendance input, identifies the target student, validates the attendance-related value, updates the student record, and commits the updated record back into the model.
 
-#### Design considerations:
+Relevant diagram: Sequence diagram showing how attendance input is parsed, validated, and recorded for the target student.
 
-**Aspect: How undo & redo executes:**
+### Feature: Remark Command
 
-* **Alternative 1 (current choice):** Saves the entire address book.
-    * Pros: Easy to implement.
-    * Cons: May have performance issues in terms of memory usage.
+#### Overview
 
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-    * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-    * Cons: We must ensure that the implementation of each individual command are correct.
+Describe the purpose of the `remark` command and how it allows TAs to store comment-like notes on individual students.
 
-_{more aspects and alternatives to be added}_
+#### Remark representation
 
-### \[Proposed\] Data archiving
+Explain how remarks are represented in the model, such as whether each remark is stored as text alone or as a richer object containing metadata like date or timestamp.
 
-_{Explain here how the data archiving feature will be implemented}_
+Relevant diagram: Class diagram snippet showing how remarks are associated with a student record.
+
+#### Implementation
+
+Explain how the `remark` command parses the target student and remark text, constructs the new remark, adds it to the student record, and updates the modified student in the model.
+
+Relevant diagram: Sequence diagram showing how the remark is parsed, created, and attached to the target student.
+
+### Feature: View Command
+
+#### Overview
+
+Describe the purpose of the `view` command and what additional student information it allows users to inspect.
+
+#### UI behaviour
+
+Explain what the user sees when the command is executed, such as whether a separate window, popup, or detailed panel is shown, and what information is included in the display.
+
+#### Implementation
+
+Explain how the command identifies the target student, retrieves the required details and remarks from the model, and passes the data to the relevant UI component for display.
+
+Relevant diagram: Sequence diagram showing how the selected student’s details and remarks are retrieved and passed to the UI for display.
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -289,51 +317,47 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 | Priority | As a … | I want to … | So that I can… |
 |----------|--------|-------------|---------------|
-| `*` | first-time user | see a welcome message on first launch | know how to get started |
-| `**` | first-time user | view a help command listing all available commands | understand what commands the system supports |
-| `*` | first-time user | view preloaded sample student data | understand how student records are structured |
-| `*` | second-time user | purge all sample data | start working with my real student records |
-| `***` | second-time user | add students into the system | maintain a record of all students I teach |
+| `**` | new user | see a welcome message on first launch | know how to get started |
+| `**` | new user | view a help command listing all available commands | understand what commands the system supports |
+| `**` | new user | view preloaded sample student data | understand how student records are structured |
+| `**` | new user | purge all sample data | start working with my real student records |
+| `***` | TA | add a student with fields such as name, student ID, course ID, tutorial group, email, and Telegram handle | maintain complete and structured student records |
+| `***` | TA | edit a student’s details | keep student records accurate and up to date |
+| `***` | TA | delete a student by index | quickly remove an incorrect or outdated student record |
+| `***` | TA | delete a student by student details | remove a specific student even when I do not want to rely on the displayed index |
+| `***` | careful TA | be asked to confirm before deleting a student | avoid accidentally deleting the wrong student record |
+| `***` | TA | view the full student list | get an overview of all the students I am managing |
+| `**` | TA handling multiple classes | filter or narrow down the displayed student list | focus on the relevant group of students more quickly |
+| `**` | TA handling multiple classes | identify students using course ID and tutorial group in addition to name | avoid confusion between students from different classes or students with similar names |
+| `***` | TA tracking student performance | update a student’s progress status | quickly identify which students are on track or need support |
+| `**` | TA preparing for class | view a student’s progress status in the UI | understand the student’s standing at a glance |
+| `***` | TA taking tutorial attendance | mark attendance for a student | keep a record of who attended class |
+| `***` | TA who conducts consultations | add remarks to a student’s record | remember important discussion points and follow-up actions |
+| `***` | TA who conducts consultations | view a student’s remarks and details | prepare for future consultations more effectively |
+| `**` | TA managing many students | keep remarks together with each student record | avoid scattering notes across separate apps or documents |
+| `**` | TA managing multiple tutorial groups | keep all students across different courses and tutorial groups in one application | avoid maintaining multiple spreadsheets or lists |
+| `**` | careful TA | receive clear error messages when a command format is invalid | correct mistakes quickly |
+| `**` | careful TA | be prevented from adding duplicate student records | maintain clean and consistent data |
+| `**` | TA | clear the current filter | return to the full student list after narrowing it down |
 
-*{More to be added}*
 
 ### Use cases
 
-**Use case: Delete a person**<br>
-**Actor:** User<br>
-**MSS**
-
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
-5. Use case ends.
-
-**Extensions**
-
-* 2a. The list is empty.
-    * 2a1. Use case ends.
-
-* 3a. The given index is invalid.
-
-    * 3a1. AddressBook shows an error message.
-    * Use case ends.
-    
 **Use Case: UC01 - Purge Sample Data**<br>
 **Actor:** User<br>
 **MSS:**
 1. User enters the purge command.
-2. TCMS detects sample data present.
-3. TCMS asks for confirmation.
+2. TeachAssist detects sample data present.
+3. TeachAssist asks for confirmation.
 4. User confirms the purge.
-5. TCMS deletes all sample records.
-6. TCMS confirms that sample data has been removed.
+5. TeachAssist deletes all sample records.
+6. TeachAssist confirms that sample data has been removed.
 7. Use case ends.
 
 **Extensions:** 
 
 * 3a. User cancels the purge.
-    * 3a1. TCMS aborts the purge operation.
+    * 3a1. TeachAssist aborts the purge operation.
     * Use case ends.
 
 **Use Case: UC02 – Add Student**<br>
@@ -341,20 +365,20 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS:**
 1. User enters the command to add a student.
 2. User provides the student’s name, student ID, course, tutorial group, and optionally a Telegram username.
-3. TCMS validates the input.
-4. TCMS creates the student record.
-5. TCMS adds the student to the student list.
-6. TCMS confirms that the student has been added.
+3. TeachAssist validates the input.
+4. TeachAssist creates the student record.
+5. TeachAssist adds the student to the student list.
+6. TeachAssist confirms that the student has been added.
 7. Use case ends.
 
 **Extensions:**
 
 * 3a. The input format is invalid.
-    * 3a1. TCMS displays an error message and the correct command format.
+    * 3a1. TeachAssist displays an error message and the correct command format.
     * Use case ends.
 * 3b. A student with the same student ID already exists.
-    * 3b1. TCMS rejects the command.
-    * 3b2. TCMS informs the user that the student already exists.
+    * 3b1. TeachAssist rejects the command.
+    * 3b2. TeachAssist informs the user that the student already exists.
     * Use case ends.
 
 **Use Case: UC05 – Mark Attendance**<br>
@@ -386,23 +410,32 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 1. User selects a student.
 2. User enters the participation recording command.
-3. TCMS requests participation details.
+3. TeachAssist requests participation details.
 4. User enters the participation score or description.
-5. TCMS records the participation entry.
-6. TCMS confirms the update.
+5. TeachAssist records the participation entry.
+6. TeachAssist confirms the update.
 7. Use case ends
 
 **Use Case: UC08 – Update Student Progress Status**<br>
 **Actor:** User<br>
 **MSS:**
 
-1. User selects a student.
-2. User enters the progress status update command.
-3. TCMS requests the new status (Red, Yellow, Green).
-4. User enters the status.
-5. TCMS updates the student progress status.
-6. TCMS confirms the update.
-7. Use case ends.
+1. User enters a command to update a student’s progress status to a specific status.
+3. TeachAssist updates the student progress status.
+4. TeachAssist confirms the update.
+5. Use case ends.
+
+**Extensions**
+
+* 1a. The command format is invalid.
+    * 1a1. TeachAssist displays an error message and the correct command format.
+    * Use case ends.
+* 1b. The specified student does not exist.
+    * 1b1. TeachAssist informs the user that the student record cannot be found.
+    * Use case ends.
+* 1c. The specified progress status is invalid.
+    * 1c1. TeachAssist informs the user of the valid progress statuses.
+    * Use case ends.
 
 **Use Case: UC09 – View Student History**<br>
 **Actor:** User<br>
@@ -440,19 +473,26 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Actor:** User <br>
 **MSS:**
 
-1. User enters the command to delete a student.
-2. TeachAssist identifies the student record to be deleted.
-3. TeachAssist removes the student record from the system.
-4. TeachAssist confirms that the student has been deleted.
-5. Use case ends.
+1. User enters a command to delete a student.
+2. TeachAssist validates the command and identifies the student record to be deleted.
+3. TeachAssist displays the student details and asks the user to confirm the deletion.
+4. User enters a confirmation response.
+5. TeachAssist deletes the student record from the system.
+6. Use case ends.
 
 **Extensions**
 
-* 1a. The command format is invalid
+* 1a. The command format is invalid.
     * 1a1. TeachAssist displays an error message and the correct command format.
     * Use case ends.
 * 2a. The specified student does not exist.
     * 2a1. TeachAssist informs the user that the student record cannot be found.
+    * Use case ends.
+* 4a. The user declines the deletion.
+    * 4a1. TeachAssist cancels the deletion.
+    * Use case ends.
+* 4b. The confirmation response is invalid.
+    * 4b1. TeachAssist informs the user to enter a valid confirmation response.
     * Use case ends.
  
 **Use Case: UC12 – View Student List** <br>
@@ -490,8 +530,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
@@ -509,40 +547,272 @@ testers are expected to do more *exploratory* testing.
 
 1. Initial launch
 
-    1. Download the jar file and copy into an empty folder
+    1. _{Fill in}_
 
-    1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+    2. _{Fill in expected behaviour}_
 
-1. Saving window preferences
+2. Saving window preferences
 
-    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+    1. _{Fill in}_
 
-    1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
+    2. _{Fill in expected behaviour}_
 
-1. _{ more test cases …​ }_
+3. Shutdown
 
-### Deleting a person
+    1. _{Fill in}_
 
-1. Deleting a person while all persons are being shown
+    2. _{Fill in expected behaviour}_
 
-    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+### Viewing help
 
-    1. Test case: `delete 1`<br>
-       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+1. Opening the help window
 
-    1. Test case: `delete 0`<br>
-       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+    1. _{Fill in test case}_
 
-    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-       Expected: Similar to previous.
+    2. _{Fill in expected behaviour}_
 
-1. _{ more test cases …​ }_
+2. Re-opening help when it is already open
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+### Adding a student
+
+1. Adding a student with valid fields
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+2. Adding a student with missing required fields
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+3. Adding a student with invalid field values
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+4. Adding a duplicate student
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+### Editing a student
+
+1. Editing a student with valid fields
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+2. Editing a student with invalid fields
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+3. Editing a non-existent student
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+4. Editing with missing edit fields
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+### Deleting a student
+
+1. Deleting a student by index
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+2. Deleting a student by student details
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+3. Confirming a deletion
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+4. Cancelling a deletion
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+5. Deleting with invalid command format
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+6. Deleting a non-existent student
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+### Updating progress
+
+1. Updating progress with a valid status
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+2. Updating progress with an invalid status
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+3. Updating progress for a non-existent student
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+### Marking attendance
+
+1. Marking attendance with valid input
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+2. Marking attendance with invalid input
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+3. Marking attendance for a non-existent student
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+### Adding a remark
+
+1. Adding a remark with valid input
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+2. Adding a remark with invalid input
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+3. Adding a remark to a non-existent student
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+### Viewing student details / remarks
+
+1. Viewing a student with valid input
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+2. Viewing a non-existent student
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+3. Re-opening the view when it is already open
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+### Listing students
+
+1. Listing all students
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+### Clearing the student list / sample data
+
+1. Clearing all students
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+2. Clearing when the list is already empty
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+### Clearing filters
+
+1. Clearing an active filter
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+2. Clearing when no filter is active
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+1. Data persistence after normal usage
 
-    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+    1. _{Fill in test case}_
 
-1. _{ more test cases …​ }_
+    2. _{Fill in expected behaviour}_
+
+2. Dealing with missing data files
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+3. Dealing with corrupted data files
+
+    1. _{Fill in test case}_
+
+    2. _{Fill in expected behaviour}_
+
+### Suggested exploratory testing
+
+1. Combining multiple commands in sequence
+
+    1. _{Fill in workflow}_
+
+2. Testing invalid inputs and edge cases
+
+    1. _{Fill in workflow}_
+
+3. Testing persistence across restarts
+
+    1. _{Fill in workflow}_

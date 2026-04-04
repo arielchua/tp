@@ -6,5 +6,6 @@ package seedu.address.model.person;
 public enum TrackerColour {
     GREEN,
     RED,
-    GREY
+    GREY,
+    CROSS
 }

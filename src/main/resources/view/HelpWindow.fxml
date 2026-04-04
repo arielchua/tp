@@ -43,6 +43,7 @@
                 </padding>
                 <children>
 
+                  <!-- HELP command -->
                   <VBox styleClass="command-card" spacing="8.0">
                     <children>
                       <Label text="Command: help" styleClass="command-title" />
@@ -51,31 +52,71 @@
                     </children>
                   </VBox>
 
+                  <!-- LIST command -->
                   <VBox styleClass="command-card" spacing="8.0">
                     <children>
-                      <Label text="Command: add" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: add n/NAME id/STUDENTID e/EMAIL crs/COURSEID tg/TGROUP [tel/TELE]" />
-                      <Label text="Adds a student. The telephone field is optional." wrapText="true" styleClass="command-description" />
-                      <TextField editable="false" styleClass="command-format" text="Example: add n/JOHN DOE id/A0123456X e/johnd@example.com crs/CS2103T tg/T01 tel/@JOHNDOE" />
+                      <Label text="Command: list" styleClass="command-title" />
+                      <TextField editable="false" styleClass="command-format" text="Format: list" />
+                      <Label text="Lists all students stored in ascending order." wrapText="true" styleClass="command-description" />
                     </children>
                   </VBox>
 
+                  <!-- ADD command -->
+                  <VBox styleClass="command-card" spacing="8.0">
+                    <children>
+                      <Label text="Command: add" styleClass="command-title" />
+                      <TextField editable="false" styleClass="command-format" text="Format: add n/NAME id/STUDENT_ID e/EMAIL crs/COURSE_ID tg/TUTORIAL_GROUP [tel/TELEGRAM_USERNAME]" />
+                      <Label text="Adds a student. The telegram username field is optional." wrapText="true" styleClass="command-description" />
+                      <TextField editable="false" styleClass="command-format" text="Example: add n/JOHN DOE id/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01 tel/@JOHNDOE" />
+                    </children>
+                  </VBox>
+
+                  <!-- DELETE command -->
+                  <VBox styleClass="command-card" spacing="8.0">
+                    <children>
+                      <Label text="Command: delete" styleClass="command-title" />
+                      <TextField editable="false" styleClass="command-format" text="Format: delete INDEX  OR delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP" />
+                      <Label text="Deletes by index or student's details." wrapText="true" styleClass="command-description" />
+                    </children>
+                  </VBox>
+
+                  <!-- CLEAR command -->
+                  <VBox styleClass="command-card" spacing="8.0">
+                    <children>
+                      <Label text="Command: clear" styleClass="command-title" />
+                      <TextField editable="false" styleClass="command-format" text="Format: clear" />
+                      <Label text="Deletes all students." wrapText="true" styleClass="command-description" />
+                    </children>
+                  </VBox>
+
+                  <!-- FIND command -->
+                  <VBox styleClass="command-card" spacing="8.0">
+                    <children>
+                      <Label text="Command: find" styleClass="command-title" />
+                      <TextField editable="false" styleClass="command-format" text="Format: find KEYWORD [MORE_KEYWORDS]..." />
+                      <Label text="Finds students whose names contain any of the given keywords." wrapText="true" styleClass="command-description" />
+                    </children>
+                  </VBox>
+
+                  <!-- FILTER command -->
+                  <VBox styleClass="command-card" spacing="8.0">
+                    <children>
+                      <Label text="Command: filter" styleClass="command-title" />
+                      <TextField editable="false" styleClass="command-format" text="Format: filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]" />
+                      <Label text="Filters students using one or more of the available filter fields." wrapText="true" styleClass="command-description" />
+                    </children>
+                  </VBox>
+
+                  <!-- EDIT command -->
                   <VBox styleClass="command-card" spacing="8.0">
                     <children>
                       <Label text="Command: edit" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: edit INDEX [n/NAME] [id/STUDENTID] [e/EMAIL] [crs/COURSEID] [tg/TGROUP] [tel/TELE]" />
+                      <TextField editable="false" styleClass="command-format" text="Format: edit INDEX [n/NAME] [id/STUDENT_ID] [e/EMAIL] [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [tel/TELEGRAM_USERNAME]" />
                       <Label text="Edits fields of the student at the given index." wrapText="true" styleClass="command-description" />
                     </children>
                   </VBox>
 
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: delete" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: delete INDEX  OR delete PERSON_NAME" />
-                      <Label text="Deletes by index or exact full name match." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
+                  <!-- VIEW command -->
                   <VBox styleClass="command-card" spacing="8.0">
                     <children>
                       <Label text="Command: view" styleClass="command-title" />
@@ -84,6 +125,7 @@
                     </children>
                   </VBox>
 
+                  <!-- MARKATTENDANCE command -->
                   <VBox styleClass="command-card" spacing="8.0">
                     <children>
                       <Label text="Command: markattendance" styleClass="command-title" />
@@ -92,6 +134,16 @@
                     </children>
                   </VBox>
 
+                  <!-- UPDATEPROGRESS command -->
+                  <VBox styleClass="command-card" spacing="8.0">
+                    <children>
+                      <Label text="Command: update_progress" styleClass="command-title" />
+                      <TextField editable="false" styleClass="command-format" text="Format: updateprogress INDEX p/PROGRESS OR updateprogress id/STUDENT_ID crs/COURSE_ID tg/TGROUP p/PROGRESS" />
+                      <Label text="Updates the student's progress. Progress values: 'on_track', 'needs_attention', 'at_risk', 'clear'" wrapText="true" styleClass="command-description" />
+                    </children>
+                  </VBox>
+
+                  <!-- REMARK command -->
                   <VBox styleClass="command-card" spacing="8.0">
                     <children>
                       <Label text="Command: remark" styleClass="command-title" />
@@ -100,6 +152,16 @@
                     </children>
                   </VBox>
 
+                  <!-- UNREMARK command -->
+                  <VBox styleClass="command-card" spacing="8.0">
+                    <children>
+                      <Label text="Command: unremark" styleClass="command-title" />
+                      <TextField editable="false" styleClass="command-format" text="Format: unremark INDEX r/REMARK_INDEX" />
+                      <Label text="Removes the specified remark from the student." wrapText="true" styleClass="command-description" />
+                    </children>
+                  </VBox>
+
+                  <!-- EXIT command -->
                   <VBox styleClass="command-card" spacing="8.0">
                     <children>
                       <Label text="Command: exit" styleClass="command-title" />

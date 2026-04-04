@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,9 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.TGroup;
 import seedu.address.testutil.PersonBuilder;
 
 
@@ -89,6 +92,22 @@ public class ListCommandTest {
         public ObservableList<Person> getFilteredPersonList() {
             return null;
         }
+
+        @Override
+        public Set<Integer> getCancelledWeeks(CourseId courseId, TGroup tGroup) {
+            return Set.of();
+        }
+
+        @Override
+        public void addCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
+
+        }
+
+        @Override
+        public void removeCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
+
+        }
+
         @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
 

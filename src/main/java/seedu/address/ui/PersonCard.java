@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Progress;
@@ -119,28 +120,60 @@ public class PersonCard extends UiPart<Region> {
             weekLabel.setMaxWidth(Double.MAX_VALUE);
             weekLabel.setAlignment(Pos.CENTER);
 
-            // Colored square
-            Label weekSquare = new Label();
-            weekSquare.setPrefSize(16, 16);
-            weekSquare.setMinSize(16, 16);
-            weekSquare.setMaxSize(16, 16);
-
-            // Assign color based on status
-            switch (week.getStatus()) {
-            case "Y" -> weekSquare.getStyleClass().add("week-green");
-            case "A" -> weekSquare.getStyleClass().add("week-red");
-            default -> weekSquare.getStyleClass().add("week-grey");
-            }
-
-            // Wrap in VBox
             VBox weekVBox = new VBox(4);
             weekVBox.setAlignment(Pos.CENTER);
             weekVBox.setPrefWidth(30);
-            weekVBox.getChildren().addAll(weekLabel, weekSquare);
-            // Add to FlowPane
+
+            switch (week.getStatus()) {
+            case "Y" -> {
+                Label weekSquare = new Label();
+                weekSquare.setPrefSize(16, 16);
+                weekSquare.getStyleClass().add("week-green");
+                weekVBox.getChildren().addAll(weekLabel, weekSquare);
+            }
+            case "A" -> {
+                Label weekSquare = new Label();
+                weekSquare.setPrefSize(16, 16);
+                weekSquare.getStyleClass().add("week-red");
+                weekVBox.getChildren().addAll(weekLabel, weekSquare);
+            }
+            case "C" -> {
+                // Grey square
+                Label weekSquare = new Label();
+                weekSquare.setPrefSize(16, 16);
+                weekSquare.getStyleClass().add("week-grey");
+
+                // Black X on top
+                Label xLabel = new Label("X");
+                xLabel.setStyle(
+                        "-fx-text-fill: black;"
+                                + "-fx-font-weight: bold;"
+                                + "-fx-font-size: 19px;"
+                );
+                // Center the X both horizontally and vertically
+                xLabel.setAlignment(Pos.CENTER);
+                StackPane.setAlignment(xLabel, Pos.CENTER);
+
+                // StackPane with fixed size
+                StackPane stack = new StackPane();
+                stack.setPrefSize(16, 16);
+                stack.setMinSize(16, 16);
+                stack.setMaxSize(16, 16);
+                stack.getChildren().addAll(weekSquare, xLabel);
+
+                // Add to VBox
+                weekVBox.getChildren().addAll(weekLabel, stack);
+            }
+            default -> {
+                Label weekSquare = new Label();
+                weekSquare.setPrefSize(16, 16);
+                weekSquare.getStyleClass().add("week-grey");
+                weekVBox.getChildren().addAll(weekLabel, weekSquare);
+            } }
+
+            // Add this week to the FlowPane
             weekPane.getChildren().add(weekVBox);
         }
-
         // Center all weeks
         weekPane.setAlignment(Pos.CENTER);
         weekPane.setHgap(5); // optional spacing

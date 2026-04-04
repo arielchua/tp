@@ -19,6 +19,8 @@ public interface WeeklyAttendance {
      */
     public void markAsDefault();
 
+    void markAsCancelled() throws IllegalStateException;
+
     /**
      * Returns whether this week has been marked as attended.
      *
@@ -26,6 +28,14 @@ public interface WeeklyAttendance {
      *         {@code false} otherwise
      */
     public boolean isAttended();
+
+    /**
+     * Returns whether this week has been marked as cancelled.
+     *
+     * @return {@code true} if the week has been marked as cancelled;
+     *         {@code false} otherwise
+     */
+    public boolean isCancelled();
 
     public int getWeek();
 
