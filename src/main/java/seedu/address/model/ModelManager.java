@@ -134,7 +134,7 @@ public class ModelManager implements Model {
         return cancelledWeeksMap.getOrDefault(key, new java.util.HashSet<>());
     }
     private void deriveCancelledWeekList(CourseId courseId, TGroup tGroup, int weekIndex) {
-        List<Person> persons = getFilteredPersonList();
+        List<Person> persons = addressBook.getPersonList();
         for (Person personToEdit : persons) {
             if (personToEdit.getCourseId().equals(courseId)
                     && personToEdit.getTGroup().equals(tGroup)) {
@@ -164,7 +164,7 @@ public class ModelManager implements Model {
         }
     }
     private void deriveUncancelledWeekList(CourseId courseId, TGroup tGroup, int weekIndex) {
-        List<Person> persons = getFilteredPersonList();
+        List<Person> persons = addressBook.getPersonList();
         // update existing persons
         for (Person person : persons) {
             if (person.getCourseId().equals(courseId)

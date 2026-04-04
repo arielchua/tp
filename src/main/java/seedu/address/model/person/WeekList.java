@@ -198,13 +198,18 @@ public class WeekList implements WeeklyAttendanceList {
      * @return the attendance percentage.
      */
     public double calculateWeekAttendance() {
-        double count = 0;
+        double attended = 0;
+        double total = 0;
+
         for (WeeklyAttendance week : weeks) {
-            if (week.isAttended()) {
-                count++;
+            if (!week.isCancelled()) {
+                total++;
+                if (week.isAttended()) {
+                    attended++;
+                }
             }
         }
-        return count / NUMBER_OF_WEEKS * 100;
+        return total == 0 ? 0 : attended / total * 100;
     }
     /**
      * Calculates the amount of absences
