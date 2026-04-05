@@ -43,19 +43,19 @@
     -fx-font-weight: bold;
     -fx-padding: 12 15 12 15;
     -fx-background-color: #d9d9d9;
-    -fx-border-color: #666666;
-    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #000000;
+    -fx-border-width: 0 1 1 0;
     -fx-alignment: CENTER;
     -fx-text-alignment: CENTER;
 }
 
 .header-left-pad {
-    -fx-border-color: #666666;
+    -fx-border-color: #000000;
     -fx-border-width: 0 1 1 0;
 }
 
 .header-right-pad {
-    -fx-border-color: #666666;
+    -fx-border-color: #000000;
     -fx-border-width: 0 0 1 0;
 }
 
@@ -79,6 +79,16 @@
     -fx-border-width: 0 0 1 0;
     -fx-alignment: CENTER;
     -fx-text-alignment: CENTER;
+}
+
+.index-cell {
+    -fx-text-fill: #000000;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-padding: 10 8 10 8;
+    -fx-border-color: #000000;
+    -fx-border-width: 0 1 1 0;
+    -fx-alignment: CENTER_RIGHT;
 }
 
 .zebra-row {

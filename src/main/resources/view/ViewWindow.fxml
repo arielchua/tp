@@ -43,13 +43,16 @@
                     </padding>
 
                     <columnConstraints>
+                        <ColumnConstraints percentWidth="10"/>
                         <ColumnConstraints percentWidth="30"/>
-                        <ColumnConstraints percentWidth="70"/>
+                        <ColumnConstraints percentWidth="60"/>
                     </columnConstraints>
 
-                    <Label text="Date" maxWidth="Infinity" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                    <Label text="No." maxWidth="Infinity" GridPane.rowIndex="0" GridPane.columnIndex="0"
                            styleClass="column-header, header-left-pad"/>
-                    <Label text="Remark" maxWidth="Infinity"  GridPane.rowIndex="0" GridPane.columnIndex="1"
+                    <Label text="Date" maxWidth="Infinity" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                           styleClass="column-header"/>
+                    <Label text="Remark" maxWidth="Infinity"  GridPane.rowIndex="0" GridPane.columnIndex="2"
                            styleClass="column-header, header-right-pad"/>
                 </GridPane>
             </VBox>

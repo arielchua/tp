@@ -114,6 +114,11 @@ public class ViewWindow extends UiPart<Region> {
      * @param rowIndex The index of the row where the remark should be placed.
      */
     private void addRemarkRow(Remark remark, int rowIndex) {
+        int displayIndex = rowIndex - FIRST_REMARK_ROW_INDEX + 1;
+        Label indexLabel = new Label(String.valueOf(displayIndex));
+        indexLabel.getStyleClass().add("index-cell");
+        indexLabel.setMaxWidth(Double.MAX_VALUE);
+
         Label dateLabel = new Label(remark.getDate().toString());
         dateLabel.getStyleClass().add("date-cell");
         dateLabel.setMaxWidth(Double.MAX_VALUE);
@@ -122,9 +127,9 @@ public class ViewWindow extends UiPart<Region> {
         remarkLabel.getStyleClass().add("remark-cell");
         remarkLabel.setWrapText(true);
         remarkLabel.setMaxWidth(Double.MAX_VALUE);
-
-        remarksGrid.add(dateLabel, 0, rowIndex);
-        remarksGrid.add(remarkLabel, 1, rowIndex);
+        remarksGrid.add(indexLabel, 0, rowIndex);
+        remarksGrid.add(dateLabel, 1, rowIndex);
+        remarksGrid.add(remarkLabel, 2, rowIndex);
     }
 
     /**
