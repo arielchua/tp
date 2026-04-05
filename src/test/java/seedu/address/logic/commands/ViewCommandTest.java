@@ -88,7 +88,8 @@ public class ViewCommandTest {
      */
     private void assertViewCommandSuccess() {
         ViewCommand viewCommand = new ViewCommand(seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON);
-        Person personToView = model.getFilteredPersonList().get(seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON.getZeroBased());
+        Person personToView = model.getFilteredPersonList().get(
+                seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON.getZeroBased());
 
         String expectedMessage = String.format(
                 ViewCommand.MESSAGE_VIEW_PERSON_SUCCESS,

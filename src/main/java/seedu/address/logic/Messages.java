@@ -17,7 +17,7 @@ public class Messages {
     public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The student index provided is invalid";
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d students listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
-                "Multiple values specified for the following single-valued field(s): ";
+            "Multiple values specified for the following single-valued field(s): ";
 
     /**
      * Returns an error message indicating the duplicate prefixes.
@@ -36,17 +36,17 @@ public class Messages {
      */
     public static String format(Person person) {
 
-        return person.getName() +
-                "; Student ID: " +
-                person.getStudentId() +
-                "; Email: " +
-                person.getEmail() +
-                "; Course ID: " +
-                person.getCourseId() +
-                "; TGroup: " +
-                person.getTGroup() +
-                "; Tele: " +
-                (person.getTele() == null ? "-" : person.getTele());
+        return person.getName()
+                + "; Student ID: "
+                + person.getStudentId()
+                + "; Email: "
+                + person.getEmail()
+                + "; Course ID: "
+                + person.getCourseId()
+                + "; TGroup: "
+                + person.getTGroup()
+                + "; Tele: "
+                + (person.getTele() == null ? "-" : person.getTele());
     }
 
 }
