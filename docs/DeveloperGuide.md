@@ -816,3 +816,14 @@ testers are expected to do more *exploratory* testing.
 3. Testing persistence across restarts
 
     1. _{Fill in workflow}_
+
+
+## **Appendix: Planned Enhancements**
+
+1.Relax student name validation to support special characters. Currently, the name field accepts only alphanumeric characters and spaces; we plan to extend this to support names containing hyphens, apostrophes, and other common punctuation, such as “O’Connor” and “Smith-Jones.”
+
+2.Extend find to support prefix-based search across additional fields such as student ID, email, and course, instead of names only.
+
+3.Add support for multi-value filtering. Currently, each filter prefix accepts only a single value; we plan to extend this to allow multiple values under the same prefix in a single filter command.
+
+4.Add support for more flexible absence filtering. Currently, absence filtering only supports values greater than or equal to a given threshold; we plan to extend this to support exact values, upper bounds, and ranges.
