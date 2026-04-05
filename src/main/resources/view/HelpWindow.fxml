@@ -6,14 +6,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.stage.Stage?>
 
-<fx:root resizable="true" title="Help" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root title="Help" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <icons>
     <Image url="@/images/help_icon.png" />
   </icons>
@@ -22,157 +21,175 @@
       <stylesheets>
         <URL value="@HelpWindow.css" />
       </stylesheets>
-      <BorderPane style="-fx-background-color: #333333;">
+      <BorderPane >
         <top>
           <HBox fx:id="helpMessageContainer" alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
-            <children>
-              <Label fx:id="helpMessage" text="For full details, see the User Guide." />
-              <Button fx:id="copyButton" mnemonicParsing="false" onAction="#copyUrl" text="Copy URL" />
-            </children>
             <padding>
-              <Insets bottom="15.0" left="10.0" right="10.0" top="15.0" />
+              <Insets bottom="15.0" left="10.0" right="10.0" top="15.0"/>
             </padding>
+            <Label fx:id="helpMessage" style="-fx-text-fill: white;" text="For full details, see the User Guide."/>
+            <Button fx:id="copyButton" mnemonicParsing="false" onAction="#copyUrl" text="Copy URL"/>
           </HBox>
         </top>
         <center>
           <ScrollPane fitToWidth="true" styleClass="scroll-pane">
-            <content>
-              <VBox spacing="15.0" style="-fx-background-color: #ffffff;">
-                <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                </padding>
-                <children>
+            <VBox spacing="15.0">
+              <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+              </padding>
+              <Label text="CORE MANAGEMENT" styleClass="section-header"
+                     style="-fx-text-fill: black; -fx-font-weight: bold;"/>
 
-                  <!-- HELP command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: help" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: help" />
-                      <Label text="Opens this help window." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                  <!-- LIST command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: list" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: list" />
-                      <Label text="Lists all students stored in ascending order." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                  <!-- ADD command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: add" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: add n/NAME id/STUDENT_ID e/EMAIL crs/COURSE_ID tg/TUTORIAL_GROUP [tel/TELEGRAM_USERNAME]" />
-                      <Label text="Adds a student. The telegram username field is optional." wrapText="true" styleClass="command-description" />
-                      <TextField editable="false" styleClass="command-format" text="Example: add n/JOHN DOE id/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01 tel/@JOHNDOE" />
-                    </children>
-                  </VBox>
-
-                  <!-- DELETE command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: delete" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: delete INDEX  OR delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP" />
-                      <Label text="Deletes by index or student's details." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                  <!-- CLEAR command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: clear" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: clear" />
-                      <Label text="Deletes all students." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                  <!-- FIND command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: find" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: find KEYWORD [MORE_KEYWORDS]..." />
-                      <Label text="Finds students whose names contain any of the given keywords." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                  <!-- FILTER command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: filter" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]" />
-                      <Label text="Filters students using one or more of the available filter fields." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                  <!-- EDIT command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: edit" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: edit INDEX [n/NAME] [id/STUDENT_ID] [e/EMAIL] [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [tel/TELEGRAM_USERNAME]" />
-                      <Label text="Edits fields of the student at the given index." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                  <!-- VIEW command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: view" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: view INDEX" />
-                      <Label text="Shows detailed attendance and remarks." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                  <!-- MARKATTENDANCE command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: markattendance" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: markattendance INDEX week/WEEK_NUMBER sta/STATUS" />
-                      <Label text="Updates attendance (y/a/n)." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                  <!-- UPDATEPROGRESS command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: update_progress" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: updateprogress INDEX p/PROGRESS OR updateprogress id/STUDENT_ID crs/COURSE_ID tg/TGROUP p/PROGRESS" />
-                      <Label text="Updates the student's progress. Progress values: 'on_track', 'needs_attention', 'at_risk', 'clear'" wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                  <!-- REMARK command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: remark" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: remark INDEX txt/REMARK" />
-                      <Label text="Adds a textual remark to the student." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                  <!-- UNREMARK command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: unremark" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: unremark INDEX r/REMARK_INDEX" />
-                      <Label text="Removes the specified remark from the student." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                  <!-- EXIT command -->
-                  <VBox styleClass="command-card" spacing="8.0">
-                    <children>
-                      <Label text="Command: exit" styleClass="command-title" />
-                      <TextField editable="false" styleClass="command-format" text="Format: exit" />
-                      <Label text="Exits the application." wrapText="true" styleClass="command-description" />
-                    </children>
-                  </VBox>
-
-                </children>
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: list" styleClass="command-title"/>
+                <Label text="Format: list" wrapText="true" styleClass="command-format"/>
+                <Label text="Lists all students stored in ascending alphabetical order." wrapText="true"
+                       styleClass="command-description"/>
               </VBox>
-            </content>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: add" styleClass="command-title"/>
+                <Label text="Format: add n/NAME id/STUDENT_ID e/EMAIL crs/COURSE_ID tg/TUTORIAL_GROUP [tel/TELEGRAM_USERNAME]"
+                       wrapText="true" styleClass="command-format"/>
+                <Label text="Adds a student. The telegram username field is optional." wrapText="true"
+                       styleClass="command-description"/>
+                <Label text="Example: add n/JOHN DOE id/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01 tel/@JOHNDOE"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: edit" styleClass="command-title"/>
+                <Label text="Format: edit INDEX [n/NAME] [id/STUDENT_ID] [e/EMAIL] [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [tel/TELEGRAM_USERNAME]"
+                       wrapText="true" styleClass="command-format"/>
+                <Label text="Edits fields of the student at the given index. Existing values will be overwritten."
+                       wrapText="true" styleClass="command-description"/>
+                <Label text="Example: edit 1 n/JANE DOE e/jane@u.nus.edu" wrapText="true"
+                       styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: delete" styleClass="command-title"/>
+                <Label text="Format 1: delete INDEX" wrapText="true" styleClass="command-format"/>
+                <Label text="Format 2: delete id/STUDENT_ID crs/COURSE_ID tg/TGROUP" wrapText="true"
+                       styleClass="command-format"/>
+                <Label text="Deletes a student. Requires confirmation ('yes' or 'no')." wrapText="true"
+                       styleClass="command-description"/>
+                <Label text="Example: delete 2  -- deletes the second student in the displayed list" wrapText="true"
+                       styleClass="command-example"/>
+                <Label text="Example: delete id/A0123456X crs/CS2103T tg/T01  -- deletes matching student by details"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: clear" styleClass="command-title"/>
+                <Label text="Format: clear" wrapText="true" styleClass="command-format"/>
+                <Label text="Deletes all students from the address book." wrapText="true"
+                       styleClass="command-description"/>
+              </VBox>
+
+              <Label text="SEARCH &amp; NAVIGATION" styleClass="section-header"
+                     style="-fx-text-fill: black; -fx-font-weight: bold;"/>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: find" styleClass="command-title"/>
+                <Label text="Format: find KEYWORD [MORE_KEYWORDS]..." wrapText="true" styleClass="command-format"/>
+                <Label text="Finds students whose names contain words that start with the given keywords (case-insensitive)."
+                       wrapText="true" styleClass="command-description"/>
+                <Label text="Example: find al bob  -- lists students with names starting 'al' or 'bob'"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: filter" styleClass="command-title"/>
+                <Label text="Format: filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS]" wrapText="true"
+                       styleClass="command-format"/>
+                <Label text="Filters students. Progress: on_track, needs_attention, at_risk, clear." wrapText="true"
+                       styleClass="command-description"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: view" styleClass="command-title"/>
+                <Label text="Format: view INDEX" wrapText="true" styleClass="command-format"/>
+                <Label text="Shows detailed remarks for a specific student." wrapText="true"
+                       styleClass="command-description"/>
+              </VBox>
+
+              <Label text="ACADEMIC TRACKING" styleClass="section-header"
+                     style="-fx-text-fill: black; -fx-font-weight: bold;"/>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: markattendance" styleClass="command-title"/>
+                <Label text="Format: markattendance INDEX week/WEEK_NUMBER sta/STATUS" wrapText="true"
+                       styleClass="command-format"/>
+                <Label text="Updates attendance. Status: y (present), a (absent), n (reset to unmarked)."
+                       wrapText="true" styleClass="command-description"/>
+                <Label text="Example: markattendance 1 week/5 sta/y  -- mark week 5 as present for student at index 1"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: updateprogress" styleClass="command-title"/>
+                <Label text="Format 1: updateprogress INDEX p/PROGRESS" wrapText="true" styleClass="command-format"/>
+                <Label text="Format 2: updateprogress id/SID crs/CID tg/TG p/PROGRESS" wrapText="true"
+                       styleClass="command-format"/>
+                <Label text="Updates a student's progress status." wrapText="true" styleClass="command-description"/>
+                <Label text="Example: updateprogress 1 p/on_track  -- set student at index 1 to 'on_track'"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: remark" styleClass="command-title"/>
+                <Label text="Format: remark INDEX txt/REMARK" wrapText="true" styleClass="command-format"/>
+                <Label text="Adds a textual remark to the student's record." wrapText="true"
+                       styleClass="command-description"/>
+                <Label text="Example: remark 1 txt/Met during consultation about assignments" wrapText="true"
+                       styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: unremark" styleClass="command-title"/>
+                <Label text="Format: unremark INDEX r/REMARK_INDEX" wrapText="true" styleClass="command-format"/>
+                <Label text="Removes the remark at the specified index from a student." wrapText="true"
+                       styleClass="command-description"/>
+                <Label text="Example: unremark 1 r/2  -- remove the 2nd remark from student at index 1"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: cancelweek" styleClass="command-title"/>
+                <Label text="Format: cancelweek crs/COURSE_ID tg/TUTORIAL_ID week/WEEK_NUMBER" wrapText="true"
+                       styleClass="command-format"/>
+                <Label text="Marks a week as cancelled. Cancelled weeks cannot be marked for attendance."
+                       wrapText="true" styleClass="command-description"/>
+                <Label text="Example: cancelweek crs/CS2103T tg/T01 week/5  -- cancel week 5 for CS2103T T01"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: uncancelweek" styleClass="command-title"/>
+                <Label text="Format: uncancelweek crs/COURSE_ID tg/TUTORIAL_ID week/WEEK_NUMBER" wrapText="true"
+                       styleClass="command-format"/>
+                <Label text="Reverts a previously cancelled tutorial week." wrapText="true"
+                       styleClass="command-description"/>
+                <Label text="Example: uncancelweek crs/CS2103T tg/T01 week/5  -- uncancel week 5 for CS2103T T01"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <Label text="SYSTEM" styleClass="section-header" style="-fx-text-fill: black; -fx-font-weight: bold;"/>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: help" styleClass="command-title"/>
+                <Label text="Format: help" wrapText="true" styleClass="command-format"/>
+                <Label text="Opens this help window." wrapText="true" styleClass="command-description"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: exit" styleClass="command-title"/>
+                <Label text="Format: exit" wrapText="true" styleClass="command-format"/>
+                <Label text="Exits the application." wrapText="true" styleClass="command-description"/>
+              </VBox>
+
+            </VBox>
           </ScrollPane>
         </center>
       </BorderPane>

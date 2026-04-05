@@ -1,9 +1,10 @@
 package seedu.address.ui;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -27,18 +28,15 @@ public class HelpWindow extends UiPart<Stage> {
     private static final double MIN_HEIGHT = 400;
 
     @FXML
-    private Button copyButton;
-
-    @FXML
     private Label helpMessage;
 
     /**
      * Creates a new HelpWindow.
      *
-     * @param root Stage to use as the root of the HelpWindow.
+     * @param root stage to use as the root of the HelpWindow
      */
     public HelpWindow(Stage root) {
-        super(FXML, root);
+        super(FXML, requireNonNull(root));
         helpMessage.setText(HELP_MESSAGE);
         applyDefaultWindowSizing();
     }
@@ -51,49 +49,28 @@ public class HelpWindow extends UiPart<Stage> {
     }
 
     /**
-     * Apply default sizing constraints so the help window does not open overly large.
+     * Applies default size constraints to the help window.
      */
     private void applyDefaultWindowSizing() {
         Stage stage = getRoot();
         // Ensure sensible defaults and prevent the window from opening overly large.
-        // Set minimums first so content can't force an extremely small window.
         stage.setMinWidth(MIN_WIDTH);
         stage.setMinHeight(MIN_HEIGHT);
 
-        // If the loaded stage is larger than our defaults or has not been sized yet, set to defaults.
-        boolean tooWide = stage.getWidth() <= 0 || stage.getWidth() > DEFAULT_WIDTH;
-        boolean tooTall = stage.getHeight() <= 0 || stage.getHeight() > DEFAULT_HEIGHT;
-
-        if (tooWide) {
-            stage.setWidth(DEFAULT_WIDTH);
-        }
-        if (tooTall) {
-            stage.setHeight(DEFAULT_HEIGHT);
-        }
+        // Force a sensible default size for the help window so it does not
+        // open at an overly large size computed from the content.
+        stage.setWidth(DEFAULT_WIDTH);
+        stage.setHeight(DEFAULT_HEIGHT);
     }
 
     /**
      * Shows the help window.
-     * @throws IllegalStateException
-     *     <ul>
-     *         <li>
-     *             if this method is called on a thread other than the JavaFX Application Thread.
-     *         </li>
-     *         <li>
-     *             if this method is called during animation or layout processing.
-     *         </li>
-     *         <li>
-     *             if this method is called on the primary stage.
-     *         </li>
-     *         <li>
-     *             if {@code dialogStage} is already showing.
-     *         </li>
-     *     </ul>
      */
     public void show() {
-        logger.fine("Showing help page about the application.");
-        getRoot().show();
-        getRoot().centerOnScreen();
+        logger.fine("Showing help window.");
+        Stage stage = getRoot();
+        stage.show();
+        stage.centerOnScreen();
     }
 
     /**
@@ -118,13 +95,13 @@ public class HelpWindow extends UiPart<Stage> {
     }
 
     /**
-     * Copies the URL to the user guide to the clipboard.
+     * Copies the user guide URL to the clipboard.
      */
     @FXML
     private void copyUrl() {
-        final Clipboard clipboard = Clipboard.getSystemClipboard();
-        final ClipboardContent url = new ClipboardContent();
-        url.putString(USERGUIDE_URL);
-        clipboard.setContent(url);
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(USERGUIDE_URL);
+        clipboard.setContent(content);
     }
 }
