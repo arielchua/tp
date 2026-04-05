@@ -252,10 +252,19 @@ public class MainWindow extends UiPart<Stage> {
             }
 
             if (viewWindow.isShowing()) {
-                logic.getFilteredPersonList().stream()
+                // Refresh view if person exists; hide if deleted.
+                boolean stillViewing = logic.getFilteredPersonList().stream()
                         .filter(p -> viewWindow.isViewing(p))
                         .findFirst()
-                        .ifPresent(updatedPerson -> viewWindow.setPerson(updatedPerson));
+                        .map(updatedPerson -> {
+                            viewWindow.setPerson(updatedPerson);
+                            return true;
+                        })
+                        .orElse(false);
+
+                if (!stillViewing) {
+                    viewWindow.hide();
+                }
             }
 
             return commandResult;
