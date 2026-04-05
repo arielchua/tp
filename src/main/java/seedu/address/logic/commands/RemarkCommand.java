@@ -22,7 +22,7 @@ public class RemarkCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Adds a remark for a person in the address book. "
             + "Parameters: "
-            + "INDEX (must be a positive integer) "
+            + "STUDENT INDEX (must be a valid index in the list) "
             + PREFIX_REMARK + "REMARK \n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_REMARK + "Excellent student who always submits assignments on time. \n";
