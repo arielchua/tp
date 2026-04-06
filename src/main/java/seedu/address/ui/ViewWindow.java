@@ -5,11 +5,10 @@ import static java.util.Objects.requireNonNull;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.stage.Stage;
+// No longer creates its own Stage; this UI part will be embedded in MainWindow
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Remark;
@@ -25,7 +24,6 @@ public class ViewWindow extends UiPart<Region> {
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
-    private final Stage stage;
     private Person person;
 
     @FXML
@@ -40,13 +38,11 @@ public class ViewWindow extends UiPart<Region> {
     private GridPane remarksGrid;
 
     /**
-     * Creates a new {@code ViewWindow} with its own {@code Stage}.
+     * Creates a new {@code ViewWindow} that is intended to be embedded inside
+     * the main application window (no separate Stage).
      */
     public ViewWindow() {
         super(FXML);
-        stage = new Stage();
-        stage.setTitle("View - Student Details");
-        stage.setScene(new Scene(getRoot()));
     }
 
     /**
@@ -135,32 +131,22 @@ public class ViewWindow extends UiPart<Region> {
     /**
      * Shows the view window and centers it on the screen.
      */
-    public void show() {
-        logger.fine("Showing view window.");
-        stage.show();
-        stage.centerOnScreen();
-    }
+    // The lifecycle (show/hide/focus) is managed by the embedding container (MainWindow).
 
     /**
-     * Hides the view window.
+     * Clears the current view and resets UI components.
      */
-    public void hide() {
-        stage.hide();
-    }
-
-    /**
-     * Returns true if the view window is currently being shown.
-     *
-     * @return True if the window is showing, false otherwise.
-     */
-    public boolean isShowing() {
-        return stage.isShowing();
-    }
-
-    /**
-     * Focuses on the view window to bring it to the foreground.
-     */
-    public void focus() {
-        stage.requestFocus();
+    public void clear() {
+        this.person = null;
+        nameLabel.setText("");
+        studentIdLabel.setText("");
+        courseIdLabel.setText("");
+        tGroupLabel.setText("");
+        // remove remark rows (preserve header row)
+        remarksGrid.getChildren().removeIf(node -> {
+            Integer rowIndex = GridPane.getRowIndex(node);
+            int effectiveRowIndex = rowIndex == null ? HEADER_ROW_INDEX : rowIndex;
+            return effectiveRowIndex >= FIRST_REMARK_ROW_INDEX;
+        });
     }
 }

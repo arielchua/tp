@@ -67,6 +67,9 @@ public class MainWindow extends UiPart<Stage> {
     private StackPane personListPanelPlaceholder;
 
     @FXML
+    private StackPane viewWindowPlaceholder;
+
+    @FXML
     private StackPane resultDisplayPlaceholder;
 
     @FXML
@@ -199,11 +202,10 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     public void handleView(Person person) {
+        // Set the person data on the embedded view and add the UI to the placeholder
         viewWindow.setPerson(person);
-        if (!viewWindow.isShowing()) {
-            viewWindow.show();
-        } else {
-            viewWindow.focus();
+        if (viewWindowPlaceholder.getChildren().isEmpty()) {
+            viewWindowPlaceholder.getChildren().add(viewWindow.getRoot());
         }
     }
 
@@ -223,7 +225,11 @@ public class MainWindow extends UiPart<Stage> {
                 (int) primaryStage.getX(), (int) primaryStage.getY());
         logic.setGuiSettings(guiSettings);
         helpWindow.hide();
-        viewWindow.hide();
+        // clear embedded view window if present
+        if (viewWindowPlaceholder != null) {
+            viewWindow.clear();
+            viewWindowPlaceholder.getChildren().clear();
+        }
         primaryStage.hide();
     }
 
@@ -258,8 +264,8 @@ public class MainWindow extends UiPart<Stage> {
                 handleExit();
             }
 
-            if (viewWindow.isShowing()) {
-                // Refresh view if person exists; hide if deleted.
+            if (!viewWindowPlaceholder.getChildren().isEmpty()) {
+                // Refresh view if person exists; clear if deleted.
                 boolean stillViewing = logic.getFilteredPersonList().stream()
                         .filter(p -> viewWindow.isViewing(p))
                         .findFirst()
@@ -270,7 +276,8 @@ public class MainWindow extends UiPart<Stage> {
                         .orElse(false);
 
                 if (!stillViewing) {
-                    viewWindow.hide();
+                    viewWindow.clear();
+                    viewWindowPlaceholder.getChildren().clear();
                 }
             }
 
