@@ -603,19 +603,119 @@ testers are expected to do more *exploratory* testing.
 
     2. _{Fill in expected behaviour}_
 
-### Viewing help
+### Help command (`help`) — manual tests
 
-1. Opening the help window
+1. Open help via command
 
-    1. _{Fill in test case}_
+    1. Test case: Type `help` in the command box and press Enter.
 
-    2. _{Fill in expected behaviour}_
+    2. Expected: A help window or pane opens showing the list of supported commands and short usage examples.
 
-2. Re-opening help when it is already open
+2. Re-open / focus when already open
 
-    1. _{Fill in test case}_
+    1. Test case: With help open, type `help` again or press the help accelerator (F1).
 
-    2. _{Fill in expected behaviour}_
+    2. Expected: The help window/pane gains focus (no duplicate windows opened). If a separate window is used, it is brought to the front.
+
+3. Accelerator / focus edge cases
+
+    1. Test case: Press F1 while focus is in `CommandBox` or `ResultDisplay` (text input controls).
+
+    2. Expected: Help opens or is focused despite text input controls consuming function keys (verify fallback event filter works).
+
+4. Content correctness
+
+    1. Test case: Inspect help content and verify the `find`, `filter`, `view`, and `help` entries match the documented usage and examples.
+
+    2. Expected: Command words and sample usages are accurate and executable.
+
+### Find command (`find`) — manual tests
+
+1. Basic single-keyword search
+
+    1. Test case: Enter `find Alice` where "Alice" exists in sample data.
+
+    2. Expected: Displayed list shows students whose names contain a word starting with "Alice" (case-insensitive). Result count shown matches number of displayed rows.
+
+2. Multiple-keyword search
+
+    1. Test case: Enter `find Al Bob` where both keywords match different students.
+
+    2. Expected: Displayed list contains students matching any of the keywords (OR across keywords). No duplicates; count is correct.
+
+3. Case and prefix matching
+
+    1. Test case: Enter `find ann` to match "Annabelle" and `find ANN`.
+
+    2. Expected: Matching is case-insensitive and supports prefix matching as documented.
+
+4. Empty or whitespace-only query
+
+    1. Test case: Enter `find` with no keywords or only whitespace.
+
+    2. Expected: Command rejected with a usage/error message; displayed list remains unchanged.
+
+5. Illegal characters
+
+    1. Test case: Enter `find @@@` or unusual punctuation.
+
+    2. Expected: Behaviour consistent with documentation (either treated as literal keyword or rejected); error message clarifies allowed input if rejected.
+
+6. Interaction with filters
+
+    1. Test case: Apply a `filter` (e.g., `filter crs/CS2103T`), then `find Alice` where Alice is outside the filter.
+
+    2. Expected: Document observed behaviour (whether `find` searches within filtered view or full dataset) and ensure it matches the Developer Guide's statement.
+
+7. After mutations
+
+    1. Test case: Add a student matching `find` keyword, then run `find`; delete a matching student and run `find` again.
+
+    2. Expected: Results reflect current model state (add appears, deleted entries disappear).
+
+### Filter command (`filter`) — manual tests
+
+1. Single-criterion filters
+
+    1. Test case: `filter crs/CS2103T` ; `filter tg/T01` ; `filter p/on_track` ; `filter abs/2`.
+
+    2. Expected: Each command restricts the displayed list to students matching the given criterion; feedback shows the match count.
+
+2. Multi-criterion filters (AND semantics)
+
+    1. Test case: `filter crs/CS2103T tg/T01 p/on_track`.
+
+    2. Expected: Displayed list contains only students satisfying all supplied criteria; removing a criterion expands the set.
+
+3. Missing parameter values
+
+    1. Test case: `filter crs/` or `filter abs/`
+
+    2. Expected: Command rejected with a message indicating the missing value and correct usage. Displayed list unchanged.
+
+4. Invalid formats
+
+    1. Test case: `filter tg/@@@` or `filter abs/xyz` or `filter p/unsupported_status`.
+
+    2. Expected: Rejected with a clear error message explaining valid formats/values.
+
+5. Absence boundary checks
+
+    1. Test case: `filter abs/0`, `filter abs/9999`, `filter abs/-1`.
+
+    2. Expected: `abs/0` matches students with zero absences; very large numbers return empty set (or behave consistently); negative numbers are rejected.
+
+6. No-match combinations
+
+    1. Test case: Combine criteria that yield no results.
+
+    2. Expected: Displayed list becomes empty and feedback indicates no matches.
+
+7. Interaction with `list` and subsequent commands
+
+    1. Test case: Apply a `filter`, then run `list`, then `filter` again.
+
+    2. Expected: `list` resets the displayed view to all students; subsequent `filter` applies to the full dataset.
 
 ### Adding a student
 
@@ -771,15 +871,39 @@ testers are expected to do more *exploratory* testing.
 
 1. Viewing a student with valid input
 
-    1. _{Fill in test case}_
+    1. Test case: Ensure a student is visible in the current displayed list, then enter `view 1` (or the appropriate index) and press Enter.
 
-    2. _{Fill in expected behaviour}_
+    2. Expected: The detail pane displays the selected student's full information (name, student ID, course, tutorial group, email, tele), attendance summary and remark entries. All fields render correctly; long text wraps or scrolls.
 
-2. Viewing a non-existent student
+2. Viewing a non-existent / out-of-range index
 
-    1. _{Fill in test case}_
+    1. Test case: Enter `view 9999` (index greater than displayed list size) or `view 0` if 0 is invalid.
 
-    2. _{Fill in expected behaviour}_
+    2. Expected: Command rejected with an "invalid index" or usage error message; detail pane remains unchanged.
+
+3. Viewing after filtering
+
+    1. Test case: Apply a `filter` that changes the displayed list, then `view 1` to view the first item in the filtered list.
+
+    2. Expected: `view` uses the current filtered ordering and index; the pane shows the selected student from the filtered view.
+
+4. View and delete interaction
+
+    1. Test case: `view 1` to show a student's details, then delete that student (`delete 1` + confirm).
+
+    2. Expected: After deletion, the detail pane is cleared or replaced by a placeholder message indicating no student is selected; the UI remains stable and does not throw exceptions.
+
+5. Repeated view commands
+
+    1. Test case: Call `view 1` multiple times in succession.
+
+    2. Expected: Behaviour is idempotent; repeated calls simply refresh the same details without error.
+
+6. Remarks-heavy student
+
+    1. Test case: View a student with many or long remarks.
+
+    2. Expected: Remarks list scrolls if needed; entries show timestamps and content correctly; no layout overflow.
 
 3. Re-opening the view when it is already open
 
