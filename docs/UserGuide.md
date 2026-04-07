@@ -22,6 +22,8 @@ And the best part? No technical expertise needed—just basic computer skills li
   - [Editing a student: `edit`](#edit)
   - [Marking a student's attendance: `markattendance`](#mark-attendance)
   - [Updating a student's progress: `updateprogress`](#update-progress)
+  - [Cancelling a tutorial's week: `cancelweek`](#cancel-week)
+  - [Unancelling a tutorial's week: `uncancelweek`](#uncancel-week)
   - [Remarks](#remarks)
     - [Adding a remark: `remark`](#remark)
     - [Deleting a remark: `unremark`](#unremark)
@@ -396,23 +398,76 @@ The **View Window** on the right side of the application updates to show the sel
 
 <a name="mark-attendance"></a>
 ### Marks a students attendance: `markattendance`
-
-Updates attendance using the given week and status
+![MarkAttendanceUI.png](images/MarkAttendanceUI.png)
+**Update attendance by index, week, status**
 
 Format:
 ```
-markattendance INDEX week/WEEK_NUMBER sta/STATUS
+markattendance INDEX week/WEEK sta/STATUS
 ```
 
-* Supported attendance status values:
-    * `y` --> Present  --> Green
-    * `a` --> Absent   --> Red
-    * `n` --> Undetermined   --> Grey
+* Updates the attendance of student at the specified `INDEX` and `WEEK` to `STATUS`.
+* The index refers to the index number shown in the currently displayed student list.
+* The index **must be a positive integer** 1, 2, 3, …
+* The week referes to school weeks, which are visible to the right of teachassist
 
-Examples:
-```
-markattendance 1 week/1 sta/y
-```
+**Examples**:
+`markattendance 1 week/3 sta/y`
+* marks the attendance of the 1st student's attendance in week 3 as present -> Green.
+
+`markattendance 2 week/6 sta/a`
+* marks the attendance of the 2nd student's attendance in week 6 as absent -> Red.
+
+`markattendance 4 week/4 sta/n`
+* marks the attendance of the 4th student's attendance in week 4 as unmarked -> Grey.
+
+##
+<a name="cancel-week"></a>
+### Cancelling a tutorial's week: `cancelweek`
+![CancelWeekUI.png](images/CancelWeekUI.png)
+Marks a specific week as **cancelled** for all students in a given course and tutorial group.
+
+Format:
+
+cancelweek crs/COURSE_ID tg/TUTORIAL_GROUP week/WEEK
+
+
+* Cancels the specified `WEEK` for **all students** in the matching `COURSE_ID` and `TUTORIAL_GROUP`.
+* A cancelled week will be reflected in each student’s attendance record.
+* If the week is already cancelled, the command will have no additional effect.
+* The cancellation is applied to:
+    * Existing students in that course and tutorial group.
+    * Future students added to the same course and tutorial group.
+
+**Examples**:
+
+cancelweek crs/CS2103T tg/T01 week/5
+
+* Cancels week 5 for all students in CS2103T tutorial group T01.
+
+##
+
+<a name="uncancel-week"></a>
+### Uncancelling a tutorial's week: `uncancelweek`
+Reverts a previously cancelled week for a specific course and tutorial group.
+
+Format:
+
+uncancelweek crs/COURSE_ID tg/TUTORIAL_GROUP week/WEEK
+
+
+* Removes the cancelled status for the specified `WEEK`.
+* The week will return to a normal attendance state for all students in the matching course and tutorial group.
+* This affects:
+    * Existing students (their week status will be updated).
+    * Future students (the week will no longer be auto-marked as cancelled).
+* If the week was not previously cancelled, the command will have no effect.
+
+**Examples**:
+
+uncancelweek crs/CS2103T tg/T01 week/5
+
+* Restores week 5 as a normal week for all students in CS2103T tutorial group T01.
 
 
 <a name="update-progress"></a>
