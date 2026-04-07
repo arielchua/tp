@@ -159,15 +159,11 @@ The `Model` component,
 
 The `Storage` component,
 * can save both TeachAssist data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `AddressBookStorage` and `UserPrefsStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
+* exposes functionality through the `Storage` interface, which extends both `AddressBookStorage` and `UserPrefsStorage`.
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 * delegates JSON conversion of TeachAssist data to classes such as `JsonSerializableAddressBook`, `JsonAdaptedPerson`, and `JsonAdaptedRemark`.
-* provides concrete implementations `JsonAddressBookStorage` and `JsonUserPrefsStorage`, which handle reading from and writing to files on disk.
-
-The `StorageManager` class,
-* implements the `Storage` interface.
-* composes the individual storage providers for address book data and user preferences.
-* exposes a unified interface so that other components can access persistence through a single entry point.
+* uses concrete storage classes `JsonAddressBookStorage` and `JsonUserPrefsStorage`, which handle reading from and writing to files on disk.
+* is implemented primarily by `StorageManager`, which coordinates `JsonAddressBookStorage` and `JsonUserPrefsStorage` to provide a unified persistence interface.
 
 TeachAssist data stored by the `Storage` component includes not only persons, but also additional persisted fields such as cancelled weeks, weekly attendance data, progress, and remarks.
 
@@ -278,11 +274,13 @@ In the model, a remark is represented as a dedicated `Remark` object rather than
 
 This design allows each remark to carry basic metadata in addition to its content. In the current implementation, the creation date is automatically assigned using `LocalDate.now()` when the command is parsed. This means the user only provides the text of the remark, while the system records the date implicitly.
 
-Remarks are associated with a `Person` as a list of remark objects. This is also reflected in storage: `JsonAdaptedPerson` stores `remarks` as a `List<JsonAdaptedRemark>`, and each `JsonAdaptedRemark` contains a `text` field and a `date` field. During deserialization, each adapted remark is converted back into a model-level `Remark` object and reattached to the corresponding person.
+- Remarks are associated with a `Person` as a list of remark objects. 
+- In storage, `JsonAdaptedPerson` stores `remarks` as a `List<JsonAdaptedRemark>`.
+- Each `JsonAdaptedRemark` contains a `text` field and a `date` field.
+- During deserialization, each adapted remark is converted back into a model-level `Remark` object and reattached to the corresponding person.
 
 #### Implementation
 
-Explain how the `remark` command parses the target student and remark text, constructs the new remark, adds it to the student record, and updates the modified student in the model.
 The `remark` feature is implemented using the `RemarkCommand` and `RemarkCommandParser` classes. The parser is responsible for extracting the target student index and the remark text from user input. It tokenizes the input using the `txt/` prefix, validates that both the preamble and the remark body are present, parses the preamble as an `Index`, trims the remark text, and constructs a new `Remark` object with the supplied text and the current date. It then returns a `RemarkCommand` containing the parsed index and newly created remark.
 
 When `RemarkCommand#execute` is called, the command first retrieves the currently filtered person list from the model. It checks whether the provided index is within bounds; if not, it throws a `CommandException` using `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX`. Otherwise, it retrieves the target `Person` from the displayed list and adds the new remark to that person using `personToEdit.addRemark(remark)`. A success message is then returned to the user.
