@@ -189,8 +189,12 @@ The progress tags added should look like the following:
 ![progress updated](images/updateProgressExample.png)
 
 <remark>
+
+### Remarks
+
 <a name="remark"></a>
-### Adding a remark : `remark`
+
+#### Adding a remark : `remark`
 
 Need to record an important note about a student? Use the `remark` command to attach a remark directly to that student’s record! Keep track of class participation, proficiency in topics, or just general remarks of a student!
 
@@ -217,7 +221,8 @@ will be stored as `Needs more practice on txt/recursion`
 
 
 <a name="unremark"></a>
-### Removing a remark : `unremark`
+
+#### Removing a remark : `unremark`
 
 Over time, some remarks may become outdated, unnecessary, or incorrect. The `unremark` feature lets you delete a specific remark from a student’s record when it is no longer useful.
 
