@@ -10,7 +10,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class CourseId {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Course ID should follow the format used in the app, with no spaces"
+            "Course ID should not contain spaces"
             + " or special characters: e.g. CS2103.";
     public static final String VALIDATION_REGEX = "[A-Za-z0-9][A-Za-z0-9]*";
     public final String value;

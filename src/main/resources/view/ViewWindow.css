@@ -1,3 +1,72 @@
+.remarks-scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 5px;
+}
+
+.remarks-scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-width: 8px;
+}
+.zebra-row {
+    -fx-background-color: #fafafa;
+}
+.index-cell {
+    -fx-text-fill: #000000;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-padding: 10 8 10 8;
+    -fx-border-color: #000000;
+    -fx-border-width: 0 1 1 0;
+    -fx-alignment: CENTER_RIGHT;
+}
+.remark-cell {
+    -fx-text-fill: #000000;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-padding: 10 15 10 15;
+    -fx-border-color: #666666;
+    -fx-border-width: 0 0 1 0;
+    -fx-alignment: CENTER;
+    -fx-text-alignment: CENTER;
+}
+.date-cell {
+    -fx-text-fill: #000000;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-padding: 10 15 10 15;
+    -fx-border-color: #666666;
+    -fx-border-width: 0 1 1 0;
+    -fx-alignment: CENTER;
+    -fx-text-alignment: CENTER;
+}
+.header-left-pad {
+    -fx-border-color: #000000;
+    -fx-border-width: 0 1 1 0;
+}
+.column-header {
+    -fx-text-fill: #333333;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 15 12 15;
+    -fx-background-color: #d9d9d9;
+    -fx-border-color: #000000;
+    -fx-border-width: 0 1 1 0;
+    -fx-alignment: CENTER;
+    -fx-text-alignment: CENTER;
+}
+.remarks-scroll-pane {
+    -fx-background-color: #ffffff;
+    -fx-background: #ffffff;
+    -fx-border-color: transparent;
+    -fx-viewport-fill: #ffffff;
+}
+.white-body-wrapper {
+    -fx-background-color: #ffffff;
+}
+.meta-value {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+}
 .view-container {
     -fx-background-color: #ffffff;
 }
@@ -33,45 +102,9 @@
 .remarks-scroll-pane {
     -fx-background-color: #ffffff;
     -fx-background: #ffffff;
-    -fx-border-color: transparent;
-    -fx-viewport-fill: #ffffff;
-}
-
-.column-header {
-    -fx-text-fill: #333333;
-    -fx-font-size: 13px;
+    -fx-font-size: 11px;
     -fx-font-weight: bold;
-    -fx-padding: 12 15 12 15;
-    -fx-background-color: #d9d9d9;
-    -fx-border-color: #000000;
-    -fx-border-width: 0 1 1 0;
-    -fx-alignment: CENTER;
-    -fx-text-alignment: CENTER;
 }
-
-.header-left-pad {
-    -fx-border-color: #000000;
-    -fx-border-width: 0 1 1 0;
-}
-
-.header-right-pad {
-    -fx-border-color: #000000;
-    -fx-border-width: 0 0 1 0;
-}
-
-.date-cell {
-    -fx-text-fill: #000000;
-    -fx-font-size: 13px;
-    -fx-font-weight: normal;
-    -fx-padding: 10 15 10 15;
-    -fx-border-color: #666666;
-    -fx-border-width: 0 1 1 0;
-    -fx-alignment: CENTER;
-    -fx-text-alignment: CENTER;
-}
-
-.remark-cell {
-    -fx-text-fill: #000000;
     -fx-font-size: 13px;
     -fx-font-weight: normal;
     -fx-padding: 10 15 10 15;
@@ -95,12 +128,10 @@
     -fx-background-color: #fafafa;
 }
 
-.remarks-scroll-pane .scroll-bar:vertical {
-    -fx-background-color: transparent;
-    -fx-width: 8px;
+.header-right-pad {
+    -fx-border-color: #000000;
+    -fx-border-width: 0 0 1 0;
 }
-
-.remarks-scroll-pane .scroll-bar:vertical .thumb {
     -fx-background-color: #cccccc;
     -fx-background-radius: 5px;
 }

@@ -12,16 +12,16 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Week;
 
 /**
- * Unit tests for {@link UpdateAttendanceCommandParser}.
+ * Unit tests for {@link MarkAttendanceCommandParser}.
  * Pure unit testing: only parses, no model access.
  */
 public class MarkAttendanceCommandParserTest {
 
-    private UpdateAttendanceCommandParser parser;
+    private MarkAttendanceCommandParser parser;
 
     @BeforeEach
     public void setUp() {
-        parser = new UpdateAttendanceCommandParser();
+        parser = new MarkAttendanceCommandParser();
     }
 
     @Test

@@ -21,7 +21,7 @@ public class StudentId {
     public StudentId(String value) {
         requireNonNull(value);
         checkArgument(isValidStudentId(value), MESSAGE_CONSTRAINTS);
-        this.value = value;
+        this.value = value.toUpperCase();
     }
 
     public String getValue() {

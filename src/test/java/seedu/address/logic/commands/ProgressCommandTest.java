@@ -13,6 +13,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -38,7 +39,7 @@ public class ProgressCommandTest {
 
         String expectedMessage = String.format(
                 ProgressCommand.MESSAGE_UPDATE_PROGRESS_SUCCESS,
-                updatedPerson.getName(),
+                Messages.format(updatedPerson),
                 updatedPerson.getProgress());
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
@@ -60,7 +61,7 @@ public class ProgressCommandTest {
 
         String expectedMessage = String.format(
                 ProgressCommand.MESSAGE_UPDATE_PROGRESS_SUCCESS,
-                updatedPerson.getName(),
+                Messages.format(updatedPerson),
                 updatedPerson.getProgress());
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
@@ -86,7 +87,7 @@ public class ProgressCommandTest {
 
         String expectedMessage = String.format(
                 ProgressCommand.MESSAGE_CLEAR_PROGRESS_SUCCESS,
-                clearedPerson.getName());
+                Messages.format(clearedPerson));
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(personWithProgress, clearedPerson);
@@ -130,7 +131,7 @@ public class ProgressCommandTest {
 
         String expectedMessage = String.format(
                 ProgressCommand.MESSAGE_UPDATE_PROGRESS_SUCCESS,
-                updatedPerson.getName(),
+                Messages.format(updatedPerson),
                 updatedPerson.getProgress());
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());

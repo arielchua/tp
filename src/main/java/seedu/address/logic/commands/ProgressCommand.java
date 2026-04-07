@@ -6,6 +6,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDE
 import java.util.List;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
@@ -27,7 +28,8 @@ public class ProgressCommand extends Command {
             + "Format: " + COMMAND_WORD + " INDEX p/PROGRESS\n"
             + "Example: " + COMMAND_WORD + " 1 p/on_track";
 
-    public static final String MESSAGE_UPDATE_PROGRESS_SUCCESS = "Updated progress for student: %1$s to %2$s";
+    public static final String MESSAGE_UPDATE_PROGRESS_SUCCESS = "Updated progress for student: %1$s.\n"
+            + "New progress: %2$s";
     public static final String MESSAGE_CLEAR_PROGRESS_SUCCESS = "Cleared progress for student: %1$s";
 
     private final Index index;
@@ -61,11 +63,11 @@ public class ProgressCommand extends Command {
 
         if (progress == Progress.NOT_SET) {
             return new CommandResult(String.format(
-                    MESSAGE_CLEAR_PROGRESS_SUCCESS, editedPerson.getName()));
+                    MESSAGE_CLEAR_PROGRESS_SUCCESS, Messages.format(editedPerson)));
         }
 
         return new CommandResult(String.format(
-                MESSAGE_UPDATE_PROGRESS_SUCCESS, editedPerson.getName(), editedPerson.getProgress()));
+                MESSAGE_UPDATE_PROGRESS_SUCCESS, Messages.format(editedPerson), editedPerson.getProgress()));
     }
 
     /**

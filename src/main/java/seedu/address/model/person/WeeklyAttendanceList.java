@@ -29,6 +29,12 @@ public interface WeeklyAttendanceList extends Comparable<WeeklyAttendanceList> ,
     public void markAsCancelled(int index);
 
     /**
+     * Uncancel for specific week.
+     * @param index the zero-based index of the week.
+     */
+    public void markAsUncancelled(int index);
+
+    /**
      * Calculates the week attendance rate as a percentage.
      * @return the attendance percentage.
      */

@@ -93,17 +93,15 @@
               <VBox styleClass="command-card" spacing="8.0">
                 <Label text="Command: find" styleClass="command-title"/>
                 <Label text="Format: find KEYWORD [MORE_KEYWORDS]..." wrapText="true" styleClass="command-format"/>
-                <Label text="Finds students whose names contain words that start with the given keywords (case-insensitive)."
+                <Label text="Finds students whose names contain words that start with any of the given keywords (case-insensitive)."
                        wrapText="true" styleClass="command-description"/>
-                <Label text="Example: find al bob  -- lists students with names starting 'al' or 'bob'"
-                       wrapText="true" styleClass="command-example"/>
               </VBox>
 
               <VBox styleClass="command-card" spacing="8.0">
                 <Label text="Command: filter" styleClass="command-title"/>
-                <Label text="Format: filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS]" wrapText="true"
+                <Label text="Format: filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]" wrapText="true"
                        styleClass="command-format"/>
-                <Label text="Filters students. Progress: on_track, needs_attention, at_risk, clear." wrapText="true"
+                <Label text="Filters students based on the given prefixes.Any combination of prefixes can be provided but only one value per prefix is allowed.The filter by abs prefix checks for students >= ABSENCE_COUNT" wrapText="true"
                        styleClass="command-description"/>
               </VBox>
 
@@ -131,6 +129,8 @@
                 <Label text="Command: updateprogress" styleClass="command-title"/>
                 <Label text="Format: updateprogress INDEX p/PROGRESS" wrapText="true" styleClass="command-format"/>
                 <Label text="Updates a student's progress status." wrapText="true" styleClass="command-description"/>
+                <Label text="Available progress values: on_track, needs_attention, at_risk, clear." wrapText="true" styleClass="command-description"/>
+                <Label text="Use 'clear' to unset a previously set progress (resets to not_set/clear)." wrapText="true" styleClass="command-description"/>
                 <Label text="Example: updateprogress 1 p/on_track  -- set student at index 1 to 'on_track'"
                        wrapText="true" styleClass="command-example"/>
               </VBox>
