@@ -19,7 +19,9 @@ public class UserPrefs implements ReadOnlyUserPrefs {
     /**
      * Creates a {@code UserPrefs} with default values.
      */
-    public UserPrefs() {}
+    public UserPrefs() {
+        setGuiSettings(new GuiSettings(1400.0, 850.0, 0, 0));
+    }
 
     /**
      * Creates a {@code UserPrefs} with the prefs in {@code userPrefs}.

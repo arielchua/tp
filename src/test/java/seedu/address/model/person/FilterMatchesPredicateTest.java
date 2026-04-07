@@ -2,6 +2,7 @@ package seedu.address.model.person;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
@@ -22,37 +23,58 @@ public class FilterMatchesPredicateTest {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(courseId, tGroup, progress, absenceCount);
 
         // same object -> returns true
-        assertTrue(predicate.equals(predicate));
+        assertEquals(predicate, predicate);
 
         // same values -> returns true
         FilterMatchesPredicate predicateCopy = new FilterMatchesPredicate(courseId, tGroup, progress, absenceCount);
-        assertTrue(predicate.equals(predicateCopy));
+        assertEquals(predicate, predicateCopy);
 
         // different types -> returns false
-        assertFalse(predicate.equals(1));
+        assertNotEquals(1, predicate);
 
         // null -> returns false
-        assertFalse(predicate.equals(null));
+        assertNotEquals(null, predicate);
 
         // different course ID -> returns false
         FilterMatchesPredicate differentCourse = new FilterMatchesPredicate(
                 Optional.of(new CourseId("CS2101")), tGroup, progress, absenceCount);
-        assertFalse(predicate.equals(differentCourse));
+        assertNotEquals(predicate, differentCourse);
 
         // different tutorial group -> returns false
         FilterMatchesPredicate differentTGroup = new FilterMatchesPredicate(
                 courseId, Optional.of(new TGroup("T05")), progress, absenceCount);
-        assertFalse(predicate.equals(differentTGroup));
+        assertNotEquals(predicate, differentTGroup);
 
         // different progress -> returns false
         FilterMatchesPredicate differentProgress = new FilterMatchesPredicate(
                 courseId, tGroup, Optional.of(Progress.AT_RISK), absenceCount);
-        assertFalse(predicate.equals(differentProgress));
+        assertNotEquals(predicate, differentProgress);
 
         // different absence count -> returns false
         FilterMatchesPredicate differentAbsence = new FilterMatchesPredicate(
                 courseId, tGroup, progress, Optional.of(3));
-        assertFalse(predicate.equals(differentAbsence));
+        assertNotEquals(predicate, differentAbsence);
+    }
+
+    @Test
+    public void equals_normalizedCourseIdAndTGroup_areEqualAndHashCodeEqual() {
+        // CourseId comparison should be based on normalized values (stored uppercase).
+        FilterMatchesPredicate upperCoursePredicate = new FilterMatchesPredicate(
+                Optional.of(new CourseId("CS2103T")), Optional.empty(), Optional.empty(), Optional.empty());
+        FilterMatchesPredicate lowerCoursePredicate = new FilterMatchesPredicate(
+                Optional.of(new CourseId("cs2103t")), Optional.empty(), Optional.empty(), Optional.empty());
+
+        assertEquals(upperCoursePredicate, lowerCoursePredicate);
+        assertEquals(upperCoursePredicate.hashCode(), lowerCoursePredicate.hashCode());
+
+        // TGroup comparison should also be based on normalized values (stored uppercase).
+        FilterMatchesPredicate upperTGroupPredicate = new FilterMatchesPredicate(
+                Optional.empty(), Optional.of(new TGroup("T01")), Optional.empty(), Optional.empty());
+        FilterMatchesPredicate lowerTGroupPredicate = new FilterMatchesPredicate(
+                Optional.empty(), Optional.of(new TGroup("t01")), Optional.empty(), Optional.empty());
+
+        assertEquals(upperTGroupPredicate, lowerTGroupPredicate);
+        assertEquals(upperTGroupPredicate.hashCode(), lowerTGroupPredicate.hashCode());
     }
 
     @Test

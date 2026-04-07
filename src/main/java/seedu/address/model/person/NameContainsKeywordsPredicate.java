@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 import seedu.address.commons.util.ToStringBuilder;
 
 /**
- * Tests that a {@code Person}'s {@code Name} matches any of the keywords given.
+ * Tests that a {@code Person}'s {@code Name} contains words starting with any of the given keywords.
  */
 public class NameContainsKeywordsPredicate implements Predicate<Person> {
     private final List<String> keywords;
@@ -28,7 +28,6 @@ public class NameContainsKeywordsPredicate implements Predicate<Person> {
 
         assert this.keywords.stream().allMatch(keyword -> !keyword.isBlank());
     }
-
     /**
      * Returns true if the person's name contains at least one word that starts
      * with any of the stored keywords. Matching is case-insensitive.
@@ -37,6 +36,7 @@ public class NameContainsKeywordsPredicate implements Predicate<Person> {
     public boolean test(Person person) {
         requireNonNull(person);
 
+        // Split name into individual words for prefix comparison
         String[] nameWords = person.getName().fullName.toLowerCase().split("\\s+");
 
         return keywords.stream()
@@ -51,18 +51,14 @@ public class NameContainsKeywordsPredicate implements Predicate<Person> {
             return true;
         }
 
-        // instanceof handles nulls
-        if (!(other instanceof NameContainsKeywordsPredicate)) {
-            return false;
-        }
-
-        NameContainsKeywordsPredicate otherNameContainsKeywordsPredicate = (NameContainsKeywordsPredicate) other;
-        return keywords.equals(otherNameContainsKeywordsPredicate.keywords);
+        return other instanceof NameContainsKeywordsPredicate otherPredicate
+                && keywords.equals(otherPredicate.keywords);
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).add("keywords", keywords).toString();
+        return new ToStringBuilder(this)
+                .add("keywords", keywords)
+                .toString();
     }
 }
-

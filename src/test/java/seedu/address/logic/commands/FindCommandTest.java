@@ -1,7 +1,7 @@
 package seedu.address.logic.commands;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static seedu.address.logic.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
@@ -11,6 +11,8 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.parser.ParserUtil;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -18,7 +20,7 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
 
 /**
  * Contains integration tests for {@code FindCommand}.
- * These tests verify the interaction between the command, predicate, and model.
+ * Verifies interaction between the command, predicate, and model.
  */
 public class FindCommandTest {
 
@@ -114,18 +116,19 @@ public class FindCommandTest {
         FindCommand findFirstCommand = new FindCommand(firstPredicate);
         FindCommand findSecondCommand = new FindCommand(secondPredicate);
 
-        assertTrue(findFirstCommand.equals(findFirstCommand));
-        assertTrue(findFirstCommand.equals(new FindCommand(firstPredicate)));
+        assertEquals(findFirstCommand, findFirstCommand);
+        assertEquals(findFirstCommand, new FindCommand(firstPredicate));
 
-        assertFalse(findFirstCommand.equals(null));
-        assertFalse(findFirstCommand.equals(1));
-        assertFalse(findFirstCommand.equals(findSecondCommand));
+        assertNotEquals(null, findFirstCommand);
+        assertNotEquals(1, findFirstCommand);
+        assertNotEquals(findFirstCommand, findSecondCommand);
     }
 
-    /**
-     * Returns a {@code NameContainsKeywordsPredicate} created from the given user input.
-     */
     private NameContainsKeywordsPredicate preparePredicate(String userInput) {
-        return new NameContainsKeywordsPredicate(Arrays.asList(userInput.split("\\s+")));
+        try {
+            return new NameContainsKeywordsPredicate(ParserUtil.parseKeywords(userInput));
+        } catch (ParseException e) {
+            throw new AssertionError("Test input should be valid.");
+        }
     }
 }

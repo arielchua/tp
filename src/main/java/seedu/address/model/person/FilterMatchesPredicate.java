@@ -2,6 +2,7 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -9,27 +10,22 @@ import seedu.address.commons.util.ToStringBuilder;
 
 /**
  * Tests that a {@code Person} matches the given filter criteria.
- * A person matches if all present filter fields match:
- * <ul>
- *     <li>course ID matches case-insensitively</li>
- *     <li>tutorial group matches case-insensitively</li>
- *     <li>progress matches exactly</li>
- *     <li>absence count is greater than or equal to the given threshold</li>
- * </ul>
+ * All present fields must match (logical AND). Missing fields are ignored.
  */
 public class FilterMatchesPredicate implements Predicate<Person> {
     private final Optional<CourseId> courseId;
     private final Optional<TGroup> tGroup;
     private final Optional<Progress> progress;
     private final Optional<Integer> absenceCount;
-
     /**
      * Creates a {@code FilterMatchesPredicate} with the given filter criteria.
+     * Each criterion is treated as optional; a missing value (empty Optional)
+     * implies that the filter for that specific field is disabled.
      *
-     * @param courseId The course ID to match, or empty if not filtering by course ID.
-     * @param tGroup The tutorial group to match, or empty if not filtering by tutorial group.
-     * @param progress The progress to match, or empty if not filtering by progress.
-     * @param absenceCount The minimum absence count to match, or empty if not filtering by absences.
+     * @param courseId The course identifier to match.
+     * @param tGroup The tutorial group identifier to match.
+     * @param progress The student progress status to match.
+     * @param absenceCount The minimum threshold of absences to filter by.
      */
     public FilterMatchesPredicate(Optional<CourseId> courseId, Optional<TGroup> tGroup,
                                   Optional<Progress> progress, Optional<Integer> absenceCount) {
@@ -48,14 +44,12 @@ public class FilterMatchesPredicate implements Predicate<Person> {
     public boolean test(Person person) {
         requireNonNull(person);
 
-        boolean matchesCourse =
-                courseId.isEmpty() || person.getCourseId().value.equalsIgnoreCase(courseId.get().value);
-        boolean matchesTGroup =
-                tGroup.isEmpty() || person.getTGroup().value.equalsIgnoreCase(tGroup.get().value);
-        boolean matchesProgress =
-                progress.isEmpty() || person.getProgress().equals(progress.get());
-        boolean matchesAbsenceCount =
-                absenceCount.isEmpty() || person.getAbsenceCount() >= absenceCount.get();
+        boolean matchesCourse = courseId.isEmpty() || person.getCourseId().equals(courseId.get());
+        boolean matchesTGroup = tGroup.isEmpty() || person.getTGroup().equals(tGroup.get());
+        boolean matchesProgress = progress.isEmpty() || person.getProgress().equals(progress.get());
+
+        // Absence filter identifies students with count at or above the specified threshold
+        boolean matchesAbsenceCount = absenceCount.isEmpty() || person.getAbsenceCount() >= absenceCount.get();
 
         return matchesCourse && matchesTGroup && matchesProgress && matchesAbsenceCount;
     }
@@ -66,15 +60,19 @@ public class FilterMatchesPredicate implements Predicate<Person> {
             return true;
         }
 
-        if (!(other instanceof FilterMatchesPredicate)) {
+        if (!(other instanceof FilterMatchesPredicate otherPredicate)) {
             return false;
         }
 
-        FilterMatchesPredicate otherPredicate = (FilterMatchesPredicate) other;
         return courseId.equals(otherPredicate.courseId)
                 && tGroup.equals(otherPredicate.tGroup)
                 && progress.equals(otherPredicate.progress)
                 && absenceCount.equals(otherPredicate.absenceCount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(courseId, tGroup, progress, absenceCount);
     }
 
     @Override

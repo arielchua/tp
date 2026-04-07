@@ -13,7 +13,7 @@ public class Week implements WeeklyAttendance {
         Y, // Attended
         A, // Absent
         N, // Not marked
-        C; // Default
+        C; // Cancelled
         public static Status fromString(String value) {
             return Status.valueOf(value.toUpperCase());
         }
@@ -21,6 +21,7 @@ public class Week implements WeeklyAttendance {
 
     private final int weekNo;
     private Status status;
+    private Status prevStatus = Status.N;
 
     /**
      * Constructs a {@code Week} with the specified week number.
@@ -59,11 +60,34 @@ public class Week implements WeeklyAttendance {
     @Override
     public void markAsCancelled() throws IllegalStateException {
         if (status == Status.C) {
-            throw new IllegalStateException("Week attendance is already default");
+            throw new IllegalStateException("Week attendance is already cancelled");
         }
+        prevStatus = status;
         status = Status.C;
     }
+    @Override
+    public void markAsUncancelled() throws IllegalStateException {
+        if (status != Status.C) {
+            throw new IllegalStateException("Week attendance is not cancelled");
+        }
+        status = prevStatus;
+    }
 
+    /**
+     * Getter method for preStatus.
+     * @return Status that might have been removed by cancel
+     */
+    public Status getPrevStatus() {
+        return prevStatus;
+    }
+
+    /**
+     * Setter Method for precStatus
+     * @param oldStatus the prevStatus inputted
+     */
+    public void setPrevStatus(Status oldStatus) {
+        prevStatus = oldStatus;
+    }
     @Override
     public boolean isAttended() {
         return status == Status.Y;
@@ -86,6 +110,9 @@ public class Week implements WeeklyAttendance {
      */
     public String getStatus() {
         return status.name();
+    }
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override

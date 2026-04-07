@@ -10,6 +10,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Remark;
 
 /**
  * Deletes a remark from a person in the address book.
@@ -26,7 +27,7 @@ public class UnremarkCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_UNREMARK + "1 \n";
 
-    public static final String MESSAGE_DELETE_REMARKS_SUCCESS = "Deleted remark from Person: %1$s";
+    public static final String MESSAGE_DELETE_REMARKS_SUCCESS = "Deleted remark from Person: \n%1$s";
 
     public static final String MESSAGE_DELETE_REMARKS_FAILURE = "Failed to delete remark from Person: %1$s";
 
@@ -65,8 +66,10 @@ public class UnremarkCommand extends Command {
             throw new CommandException(MESSAGE_INVALID_REMARK_INDEX);
         }
 
+        Remark deletedRemark = personToEdit.getRemarks().get(remarkIndex.getZeroBased());
         personToEdit.deleteRemark(remarkIndex);
-        return new CommandResult(String.format(MESSAGE_DELETE_REMARKS_SUCCESS, personToEdit));
+        return new CommandResult(String.format(MESSAGE_DELETE_REMARKS_SUCCESS, Messages.format(personToEdit)) + "\n"
+                + "Deleted Remark: " + deletedRemark.getText());
     }
 
     @Override

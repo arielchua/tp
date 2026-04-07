@@ -63,6 +63,15 @@ public class ArgumentMultimap {
     }
 
     /**
+     * Returns true if the given prefix is present but its value (the last value) is blank when trimmed.
+     */
+    public boolean isValueBlank(Prefix prefix) {
+        return getValue(prefix)
+                .map(v -> v.trim().isEmpty())
+                .orElse(false);
+    }
+
+    /**
      * Throws a {@code ParseException} if any of the prefixes given in {@code prefixes} appeared more than
      * once among the arguments.
      */

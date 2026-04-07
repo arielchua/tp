@@ -2,6 +2,9 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Arrays;
+import java.util.List;
+
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -20,13 +23,18 @@ import seedu.address.model.person.Week;
  */
 public class ParserUtil {
 
-
+    public static final String KEYWORDS_VALIDATION_REGEX = "[A-Za-z]+(\\s+[A-Za-z]+)*";
     public static final String MESSAGE_INVALID_INDEX = "Index must be a non-zero unsigned integer.";
     public static final String MESSAGE_MISSING_INDEX = "Missing student index.";
     public static final String MESSAGE_TOO_MANY_ARGUMENTS = "Only one student index is allowed.";
     public static final String MESSAGE_INVALID_PROGRESS =
             "Invalid progress value. Allowed values are: on_track, needs_attention, at_risk, clear.";
-
+    public static final String MESSAGE_INVALID_ABSENCE_COUNT =
+            "Absence count must be a non-negative integer.";
+    public static final String MESSAGE_INVALID_KEYWORDS =
+            "Keywords should contain alphabetic characters separated by spaces only.";
+    public static final String MESSAGE_EMPTY_KEYWORDS =
+            "Find command requires at least one keyword.";
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it.
      * Leading and trailing whitespaces will be trimmed.
@@ -78,6 +86,25 @@ public class ParserUtil {
         }
     }
 
+    /**
+     * Parses {@code keywords} into a list of strings.
+     * Leading and trailing whitespaces will be trimmed.
+     * @throws ParseException if the keywords are empty or invalid.
+     */
+    public static List<String> parseKeywords(String keywords) throws ParseException {
+        requireNonNull(keywords);
+        String trimmed = keywords.trim();
+
+        if (trimmed.isEmpty()) {
+            throw new ParseException(MESSAGE_EMPTY_KEYWORDS);
+        }
+
+        if (!trimmed.matches(KEYWORDS_VALIDATION_REGEX)) {
+            throw new ParseException(MESSAGE_INVALID_KEYWORDS);
+        }
+
+        return Arrays.asList(trimmed.split("\\s+"));
+    }
 
     /**
      * Parses a {@code String name} into a {@code Name}.
@@ -225,7 +252,6 @@ public class ParserUtil {
             throw new ParseException("Week status must be 'Y' (attended), 'A' (absent), or 'N' (not marked).");
         }
     }
-
     /**
      * Parses a {@code String progress} into a {@code Progress}.
      * Leading and trailing whitespaces will be trimmed.
@@ -261,7 +287,7 @@ public class ParserUtil {
         String trimmed = stringAbsenceCount.trim();
 
         if (!trimmed.matches("\\d+")) {
-            throw new ParseException("Absence count must be a non-negative integer.");
+            throw new ParseException(MESSAGE_INVALID_ABSENCE_COUNT);
         }
 
         return Integer.parseInt(trimmed);

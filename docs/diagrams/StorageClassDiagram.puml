@@ -17,9 +17,27 @@ Class StorageManager
 package "AddressBook Storage" #F4F6F6{
 Class "<<interface>>\nAddressBookStorage" as AddressBookStorage
 Class JsonAddressBookStorage
-Class JsonSerializableAddressBook
-Class JsonAdaptedPerson
-Class JsonAdaptedTag
+
+Class JsonSerializableAddressBook {
+    - persons: List<JsonAdaptedPerson>
+    - cancelledWeeks: Map<String, List<Integer>>
+}
+
+Class JsonAdaptedPerson {
+    - name: String
+    - courseId: String
+    - email: String
+    - studentId: String
+    - tGroup: String
+    - tele: String
+    - weekList: String
+    - progress: String
+    - remarks: List<JsonAdaptedRemark>
+}
+
+Class JsonAdaptedRemark {
+    - text: String
+    - date: String
 }
 
 }
@@ -38,6 +56,6 @@ JsonUserPrefsStorage .up.|> UserPrefsStorage
 JsonAddressBookStorage .up.|> AddressBookStorage
 JsonAddressBookStorage ..> JsonSerializableAddressBook
 JsonSerializableAddressBook --> "*" JsonAdaptedPerson
-JsonAdaptedPerson --> "*" JsonAdaptedTag
+JsonAdaptedPerson --> "*" JsonAdaptedRemark
 
 @enduml

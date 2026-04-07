@@ -64,6 +64,12 @@ public class WeekList implements WeeklyAttendanceList {
         assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
         weeks[index].markAsCancelled();
     }
+    @Override
+    public void markAsUncancelled(int index) {
+        assert index >= 0 : "Index must be >= 0";
+        assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
+        weeks[index].markAsUncancelled();
+    }
 
     @Override
     public boolean equals(Object other) {
@@ -71,13 +77,12 @@ public class WeekList implements WeeklyAttendanceList {
             return true;
         }
 
-        if (!(other instanceof WeekList)) {
+        if (!(other instanceof WeekList otherList)) {
             return false;
         }
 
-        WeekList otherList = (WeekList) other;
         for (int i = 0; i < NUMBER_OF_WEEKS; i++) {
-            if (this.weeks[i].isAttended() != otherList.weeks[i].isAttended()) {
+            if (!this.weeks[i].equals(otherList.weeks[i])) {
                 return false;
             }
         }
@@ -92,19 +97,8 @@ public class WeekList implements WeeklyAttendanceList {
         for (int i = 0; i < NUMBER_OF_WEEKS; i++) {
             Week original = (Week) this.weeks[i];
             Week newWeek = new Week(i + 1);
-            switch (original.getStatus()) {
-            case "Y":
-                newWeek.markAsAttended();
-                break;
-            case "A":
-                newWeek.markAsAbsent();
-                break;
-            case "C":
-                newWeek.markAsCancelled();
-                break;
-            default:
-                break;
-            }
+            newWeek.setStatus(Week.Status.valueOf(original.getStatus())); // copy current status
+            newWeek.setPrevStatus(original.getPrevStatus()); // copy previous status
             copiedWeeks[i] = newWeek;
         }
         return new WeekList(copiedWeeks);
@@ -198,20 +192,25 @@ public class WeekList implements WeeklyAttendanceList {
      * @return the attendance percentage.
      */
     public double calculateWeekAttendance() {
-        double count = 0;
+        double attended = 0;
+        double total = 0;
+
         for (WeeklyAttendance week : weeks) {
-            if (week.isAttended()) {
-                count++;
+            if (!week.isCancelled()) {
+                total++;
+                if (week.isAttended()) {
+                    attended++;
+                }
             }
         }
-        return count / NUMBER_OF_WEEKS * 100;
+        return total == 0 ? 0 : attended / total * 100;
     }
     /**
      * Calculates the amount of absences
      * @return the number of absences
      */
-    public double calculateWeekAbsence() {
-        double count = 0;
+    public int calculateWeekAbsence() {
+        int count = 0;
         for (WeeklyAttendance week : weeks) {
             if (week.isAbsent()) {
                 count++;

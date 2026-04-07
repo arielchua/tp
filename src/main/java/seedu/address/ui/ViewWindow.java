@@ -5,11 +5,9 @@ import static java.util.Objects.requireNonNull;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.stage.Stage;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Remark;
@@ -25,7 +23,6 @@ public class ViewWindow extends UiPart<Region> {
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
-    private final Stage stage;
     private Person person;
 
     @FXML
@@ -40,13 +37,11 @@ public class ViewWindow extends UiPart<Region> {
     private GridPane remarksGrid;
 
     /**
-     * Creates a new {@code ViewWindow} with its own {@code Stage}.
+     * Creates a new {@code ViewWindow} that is intended to be embedded inside
+     * the main application window (no separate Stage).
      */
     public ViewWindow() {
         super(FXML);
-        stage = new Stage();
-        stage.setTitle("View - Student Details");
-        stage.setScene(new Scene(getRoot()));
     }
 
     /**
@@ -68,7 +63,7 @@ public class ViewWindow extends UiPart<Region> {
      * @return True if the current person being viewed matches the other person.
      */
     public boolean isViewing(Person other) {
-        return person != null && person.isSamePerson(other);
+        return person != null && person.equals(other);
     }
 
     /**
@@ -131,36 +126,20 @@ public class ViewWindow extends UiPart<Region> {
         remarksGrid.add(dateLabel, 1, rowIndex);
         remarksGrid.add(remarkLabel, 2, rowIndex);
     }
-
     /**
-     * Shows the view window and centers it on the screen.
+     * Clears the current view and resets UI components.
      */
-    public void show() {
-        logger.fine("Showing view window.");
-        stage.show();
-        stage.centerOnScreen();
-    }
-
-    /**
-     * Hides the view window.
-     */
-    public void hide() {
-        stage.hide();
-    }
-
-    /**
-     * Returns true if the view window is currently being shown.
-     *
-     * @return True if the window is showing, false otherwise.
-     */
-    public boolean isShowing() {
-        return stage.isShowing();
-    }
-
-    /**
-     * Focuses on the view window to bring it to the foreground.
-     */
-    public void focus() {
-        stage.requestFocus();
+    public void clear() {
+        this.person = null;
+        nameLabel.setText("");
+        studentIdLabel.setText("");
+        courseIdLabel.setText("");
+        tGroupLabel.setText("");
+        // remove remark rows (preserve header row)
+        remarksGrid.getChildren().removeIf(node -> {
+            Integer rowIndex = GridPane.getRowIndex(node);
+            int effectiveRowIndex = rowIndex == null ? HEADER_ROW_INDEX : rowIndex;
+            return effectiveRowIndex >= FIRST_REMARK_ROW_INDEX;
+        });
     }
 }

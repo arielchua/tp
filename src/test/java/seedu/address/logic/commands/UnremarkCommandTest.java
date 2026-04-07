@@ -63,7 +63,8 @@ public class UnremarkCommandTest {
 
         CommandResult commandResult = command.execute(modelStub);
 
-        assertEquals(String.format(UnremarkCommand.MESSAGE_DELETE_REMARKS_SUCCESS, person),
+        assertEquals(String.format(UnremarkCommand.MESSAGE_DELETE_REMARKS_SUCCESS, Messages.format(person) + "\n"
+                + "Deleted Remark: " + remark.getText()),
                 commandResult.getFeedbackToUser());
         assertEquals(0, person.getRemarks().size());
     }

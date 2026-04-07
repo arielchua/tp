@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
@@ -219,5 +222,47 @@ public class ParserUtilTest {
     public void parseAbsenceCount_validValue_returnsInteger() throws Exception {
         assertEquals(0, ParserUtil.parseAbsenceCount("0"));
         assertEquals(5, ParserUtil.parseAbsenceCount("  5  "));
+    }
+
+    @Test
+    public void parseKeywords_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseKeywords(null));
+    }
+
+    @Test
+    public void parseKeywords_emptyArgs_throwsParseException() {
+        // Test empty string and string with only whitespaces
+        assertThrows(ParseException.class, ParserUtil.MESSAGE_EMPTY_KEYWORDS, ()
+                -> ParserUtil.parseKeywords(""));
+        assertThrows(ParseException.class, ParserUtil.MESSAGE_EMPTY_KEYWORDS, ()
+                -> ParserUtil.parseKeywords("   "));
+    }
+
+    @Test
+    public void parseKeywords_invalidCharacters_throwsParseException() {
+        // Numbers are not allowed
+        assertThrows(ParseException.class, ParserUtil.MESSAGE_INVALID_KEYWORDS, ()
+                -> ParserUtil.parseKeywords("Alice123"));
+        // Special characters (symbols) are not allowed
+        assertThrows(ParseException.class, ParserUtil.MESSAGE_INVALID_KEYWORDS, ()
+                -> ParserUtil.parseKeywords("Alice@Bob"));
+        // Hyphens/Apostrophes (if not allowed by your current regex)
+        assertThrows(ParseException.class, ParserUtil.MESSAGE_INVALID_KEYWORDS, ()
+                -> ParserUtil.parseKeywords("Anne-Marie"));
+    }
+
+    @Test
+    public void parseKeywords_validArgs_returnsKeywordsList() throws Exception {
+        // Single keyword
+        List<String> expectedSingle = List.of("Alice");
+        assertEquals(expectedSingle, ParserUtil.parseKeywords("Alice"));
+
+        // Multiple keywords with varying whitespace
+        List<String> expectedMultiple = Arrays.asList("Alice", "Bob", "Charlie");
+        assertEquals(expectedMultiple, ParserUtil.parseKeywords("  Alice   Bob \n Charlie  "));
+
+        // Mixed case (logic should preserve case, as the Predicate usually handles case-insensitivity)
+        List<String> expectedMixed = Arrays.asList("aLiCe", "bOB");
+        assertEquals(expectedMixed, ParserUtil.parseKeywords("aLiCe bOB"));
     }
 }
