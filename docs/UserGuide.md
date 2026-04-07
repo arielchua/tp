@@ -118,8 +118,10 @@ Format:
 ```
 help
 ```
-Tip: You can also press F1 to open the Help window.
 
+<box type="tip">
+Tip: You can also press F1 to open the Help window!.
+</box>
 
 <a name="list"></a>
 ### Listing all students: `list`
@@ -175,8 +177,9 @@ updateprogress INDEX p/PROGRESS
   * `not_set`
 * Progress is case-insensitive, so values such as `ON_TRACK` and `on_track` are both accepted.
 
-> [!TIP]
-> To remove a student's progress tag, use `not_set`.
+<box type="tip">
+Tip: To remove a student's progress tag, use `not_set` as the progress value.
+</box>
 
 Examples:
 ```
@@ -248,6 +251,10 @@ delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP
 * Deletes the student with the exact matching `STUDENT_ID`, `COURSE_ID`, and `TUTORIAL_GROUP`.
 * The same confirmation flow applies: enter `yes` to confirm or `no` to cancel.
 
+<box type="warning">
+Warning: This method searches the **entire address book**, not just the students currently shown in the list. This means a student can still be deleted even if they are currently hidden by a filter.
+</box>
+
 Example:
 `delete id/A1234567X crs/CS2103T tg/T01` followed by `yes`
 * Deletes the student with student ID `A1234567X`, course `CS2103T`, and tutorial group `T01`.
@@ -302,7 +309,7 @@ Format: `find KEYWORD [MORE_KEYWORDS]...`
 The student list updates instantly to show only matching records, and the Result Box (see Figure X) displays the total count of students found.
 
 <box type="warning">
-Warning: Keywords must be **alphabetic only** (A–Z). Using numbers or symbols (e.g., `find A123`) will result in an error.
+Warning: Keywords must be alphabetic only (A–Z). Using numbers or symbols (e.g., `find A123`) will result in an error.
 </box>
 
 **Note:** The `find` command searches through the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
