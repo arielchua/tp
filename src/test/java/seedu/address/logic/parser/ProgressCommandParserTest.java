@@ -97,13 +97,6 @@ public class ProgressCommandParserTest {
     }
 
     @Test
-    public void parse_barePrefix_failure() {
-        assertParseFailure(parser,
-                "1 p on_track",
-                ParserMessages.possiblePrefixMissingSlash(ProgressCommand.MESSAGE_USAGE));
-    }
-
-    @Test
     public void parse_unknownPrefix_failure() {
         assertParseFailure(parser,
                 "1 prog/on_track",

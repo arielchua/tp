@@ -13,7 +13,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public final class ParserValidators {
 
-    private ParserValidators() {}
+    private ParserValidators() {
+    }
 
     /**
      * Scans the raw input string for tokens that contain a slash and verifies
@@ -68,10 +69,11 @@ public final class ParserValidators {
 
     /**
      * Checks that all prefixes are present.
-     * @param argMultimap the token map
-     * @param prefixes array of Prefix
+     *
+     * @param argMultimap   the token map
+     * @param prefixes      array of Prefix
      * @param prefixStrings human-readable prefix strings (e.g., "crs/")
-     * @param commandUsage command usage to include in the error message
+     * @param commandUsage  command usage to include in the error message
      * @throws ParseException when any prefix is not present
      */
     public static void ensureAllPrefixesPresent(
@@ -91,10 +93,11 @@ public final class ParserValidators {
 
     /**
      * Checks that all prefixes and the Index are present.
-     * @param argMultimap the token map
-     * @param prefixes array of Prefix
+     *
+     * @param argMultimap   the token map
+     * @param prefixes      array of Prefix
      * @param prefixStrings human-readable prefix strings (e.g., "crs/")
-     * @param commandUsage command usage to include in the error message
+     * @param commandUsage  command usage to include in the error message
      * @throws ParseException when any prefix is not present
      */
     public static void ensureIndexAndPrefixesPresent(
@@ -124,7 +127,8 @@ public final class ParserValidators {
     /**
      * Internal helper to identify missing prefixes.
      */
-    private static List<String> getMissingList(ArgumentMultimap argMultimap, Prefix[] prefixes, String[] prefixStrings) {
+    private static List<String> getMissingList(ArgumentMultimap argMultimap,
+                                               Prefix[] prefixes, String[] prefixStrings) {
         List<String> missing = new ArrayList<>();
         for (int i = 0; i < prefixes.length; i++) {
             if (argMultimap.getValue(prefixes[i]).isEmpty()) {
@@ -134,3 +138,4 @@ public final class ParserValidators {
         return missing;
     }
 }
+

@@ -33,7 +33,8 @@ public class FilterCommandParserTest {
     @Test
     public void parse_invalidStructure_failure() {
         // EP: Unexpected preamble before prefixes
-        assertParseFailure(parser, " 123 crs/CS2101", ParserMessages.MESSAGE_UNEXPECTED_PREAMBLE+ "\n" + FilterCommand.MESSAGE_USAGE);
+        assertParseFailure(parser, " 123 crs/CS2101",
+                ParserMessages.MESSAGE_UNEXPECTED_PREAMBLE + "\n" + FilterCommand.MESSAGE_USAGE);
 
         // EP: Duplicate prefixes (Constraint: Only one value per prefix)
         assertParseFailure(parser, " crs/CS2103T crs/CS2101",
