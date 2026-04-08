@@ -1,7 +1,6 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEEK;
 
@@ -14,43 +13,67 @@ import seedu.address.model.person.Week;
  * Parses input arguments and creates a new MarkAttendanceCommand object.
  */
 public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand> {
+    private static final Prefix[] PREFIXES = {PREFIX_WEEK, PREFIX_STATUS};
+
     /**
      * Parses the given {@code String} of arguments in the context of the EditCommand
      * and returns an EditCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
+    @Override
     public MarkAttendanceCommand parse(String args) throws ParseException {
         requireNonNull(args);
+
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_WEEK, PREFIX_STATUS);
+                ArgumentTokenizer.tokenize(args, PREFIXES);
 
-        Index index;
-        try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                            MarkAttendanceCommand.MESSAGE_USAGE), pe);
-        }
+        validateInput(args, argMultimap);
 
-        // Ensure required prefixes exist
-        if (!argMultimap.getValue(PREFIX_WEEK).isPresent()
-                || !argMultimap.getValue(PREFIX_STATUS).isPresent()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                            MarkAttendanceCommand.MESSAGE_USAGE));
-        }
+        Index index = ParserUtil.parseIndex(
+                argMultimap.getPreamble(),
+                MarkAttendanceCommand.MESSAGE_USAGE
+        );
 
-        /*
-         Only check is status command is duplicated
-         index's and weeks to be implemented later
-        */
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_STATUS);
+        Index week = parseWeek(argMultimap);
+        Week.Status status = parseStatus(argMultimap);
 
-        Index weekNumber = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WEEK).get());
-        Week.Status status = ParserUtil.parseAttendanceStatus(
-                argMultimap.getValue(PREFIX_STATUS).get());
+        return new MarkAttendanceCommand(index, week, status);
+    }
 
-        return new MarkAttendanceCommand(index, weekNumber, status);
+    private void validateInput(String args, ArgumentMultimap argMultimap) throws ParseException {
+        ParserValidators.ensureAllPrefixesPresent(
+                argMultimap,
+                PREFIXES,
+                new String[]{"week/", "sta/"},
+                MarkAttendanceCommand.MESSAGE_USAGE
+        );
+
+        ParserValidators.checkForBarePrefixes(argMultimap, PREFIXES,
+                MarkAttendanceCommand.MESSAGE_USAGE);
+
+        ParserValidators.checkForUnknownPrefixTokens(args, PREFIXES,
+                "week/ and sta/",
+                MarkAttendanceCommand.MESSAGE_USAGE);
+
+        ParserValidators.checkForMissingValues(
+                argMultimap,
+                PREFIXES,
+                new String[]{"week/", "sta/"},
+                new String[]{
+                    "Week number cannot be empty.",
+                    "Status cannot be empty."
+                },
+                MarkAttendanceCommand.MESSAGE_USAGE
+        );
+
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIXES);
+    }
+
+    private Index parseWeek(ArgumentMultimap argMultimap) throws ParseException {
+        return ParserUtil.parseWeekIndex(argMultimap.getValue(PREFIX_WEEK).get());
+    }
+
+    private Week.Status parseStatus(ArgumentMultimap argMultimap) throws ParseException {
+        return ParserUtil.parseWeekStatus(argMultimap.getValue(PREFIX_STATUS).get());
     }
 }

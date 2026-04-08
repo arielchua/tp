@@ -24,17 +24,20 @@ public class MarkAttendanceCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Updates attendance of a student.\n"
             + "Parameters: INDEX (positive integer) "
             + PREFIX_WEEK + "WEEK_NUMBER "
-            + PREFIX_STATUS + "STATUS (y = attended, a = absent, n = not marked)\n"
-            + "Example: " + COMMAND_WORD + " 1 week/5 sta/y";
+            + PREFIX_STATUS + "STATUS (Y = attended, A = absent, N = not marked)\n"
+            + "Example: " + COMMAND_WORD + " 1 week/5 sta/Y";
 
-    public static final String MESSAGE_ATTENDED =
-            "Week %1$d marked as attended for: %2$s";
-    public static final String MESSAGE_ABSENT =
-            "Week %1$d marked as absent for: %2$s";
-    public static final String MESSAGE_RESET =
-            "Week %1$d reset to unmarked for: %2$s";
+    public static final String MESSAGE_INVALID_PERSON_INDEX =
+            "The person index provided is invalid.";
+
+    public static final String MESSAGE_WEEK_CANCELLED =
+            "Week %1$d is cancelled and cannot be marked.";
+
     public static final String MESSAGE_DUPLICATE =
-            "Week %1$d already has this status for %2$s";
+            "Week %1$d already has status '%2$s' for %3$s.";
+
+    public static final String MESSAGE_SUCCESS =
+            "Week %1$d marked as %2$s for: %3$s";
 
 
     public final Index index;
@@ -59,55 +62,36 @@ public class MarkAttendanceCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Person> lastShownList = model.getFilteredPersonList();
-        if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException("Invalid person index");
-        }
-        if (weekNumber.getZeroBased() >= WeekList.NUMBER_OF_WEEKS) {
-            throw new CommandException("Invalid Week, there are only 13 weeks");
-        }
-        Person personToEdit = lastShownList.get(index.getZeroBased());
+        List<Person> persons = model.getFilteredPersonList();
+        inputValidation(persons);
+        Person personToEdit = persons.get(index.getZeroBased());
 
-        // Copy current attendance list
-        WeekList weekList = personToEdit
-                .getWeekList().copy();
-        Week week = (Week) weekList.getWeeks()[weekNumber.getZeroBased()];
-        if (week.isCancelled()) {
-            throw new CommandException(
-                    String.format("Week %d has been cancelled and cannot be marked",
-                            weekNumber.getOneBased()));
-        }
-        // update attendance
+        WeekList updatedWeekList = personToEdit.getWeekList().copy();
+
+        int weekIdx = weekNumber.getZeroBased();
+        weekCancelValidation(updatedWeekList, weekIdx);
         try {
-            applyStatusUpdate(weekList);
+            applyStatusUpdate(updatedWeekList, weekIdx);
         } catch (IllegalStateException e) {
-            throw new CommandException(
-                    String.format(MESSAGE_DUPLICATE,
-                            weekNumber.getOneBased(), formatPerson(personToEdit)));
+            throw new CommandException(String.format(MESSAGE_DUPLICATE,
+                            weekNumber.getOneBased(),
+                            status,
+                            formatPerson(personToEdit)));
         }
-
-        // new updated person
-        Person editedPerson = new Person(
-                personToEdit.getName(),
-                personToEdit.getCourseId(),
-                personToEdit.getEmail(),
-                personToEdit.getStudentId(),
-                personToEdit.getTGroup(),
-                personToEdit.getTele(),
-                weekList,
-                personToEdit.getProgress()
-        );
+        Person editedPerson = createEditedPerson(personToEdit, updatedWeekList);
 
         model.setPerson(personToEdit, editedPerson);
-        return new CommandResult(generateSuccessMessage(personToEdit));
+        return new CommandResult(String.format(MESSAGE_SUCCESS,
+                        weekNumber.getOneBased(),
+                        status,
+                        formatPerson(personToEdit))
+        );
     }
 
     /**
      * Applies the correct attendance update based on status.
      */
-    private void applyStatusUpdate(WeekList list) throws CommandException {
-        int index = weekNumber.getZeroBased();
-
+    private void applyStatusUpdate(WeekList list, int index) throws CommandException {
         switch (status) {
         case Y:
             list.markWeekAsAttended(index);
@@ -119,26 +103,48 @@ public class MarkAttendanceCommand extends Command {
             list.markWeekAsDefault(index);
             break;
         default:
-            throw new CommandException("Invalid status");
+            throw new CommandException("Invalid attendance status.");
         }
     }
 
     /**
-     * Generates appropriate success message.
+     * Creates a new Person with updated WeekList.
      */
-    private String generateSuccessMessage(Person person) throws CommandException {
-        String name = formatPerson(person);
-        int week = weekNumber.getOneBased();
+    private Person createEditedPerson(Person original, WeekList updatedWeekList) {
+        return new Person(
+                original.getName(),
+                original.getCourseId(),
+                original.getEmail(),
+                original.getStudentId(),
+                original.getTGroup(),
+                original.getTele(),
+                updatedWeekList,
+                original.getProgress()
+        );
+    }
 
-        switch (status) {
-        case Y:
-            return String.format(MESSAGE_ATTENDED, week, name);
-        case A:
-            return String.format(MESSAGE_ABSENT, week, name);
-        case N:
-            return String.format(MESSAGE_RESET, week, name);
-        default:
-            throw new CommandException("Invalid status");
+    /**
+     * Checks if week number is within valid bounds.
+     */
+    private boolean isValidWeek(Index week) {
+        int zeroBased = week.getZeroBased();
+        return zeroBased >= 0 && zeroBased < WeekList.NUMBER_OF_WEEKS;
+    }
+
+    private void weekCancelValidation(WeekList updatedWeekList, int weekIdx) throws CommandException {
+        Week week = (Week) updatedWeekList.getWeek(weekIdx);
+        if (week.isCancelled()) {
+            throw new CommandException(
+                    String.format(MESSAGE_WEEK_CANCELLED, weekNumber.getOneBased()));
+        }
+    }
+
+    private void inputValidation(List<Person> persons) throws CommandException {
+        if (index.getZeroBased() >= persons.size()) {
+            throw new CommandException(MESSAGE_INVALID_PERSON_INDEX);
+        }
+        if (!isValidWeek(weekNumber)) {
+            throw new CommandException(WeekList.MESSAGE_INVALID_WEEK);
         }
     }
 

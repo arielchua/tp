@@ -58,6 +58,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         requireNonNull(newData);
 
         setPersons(newData.getPersonList());
+        setCancelledWeeksMap(newData.getCancelledWeeksMap());
     }
 
     /**
@@ -72,6 +73,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Setter method to set the Map of (CourseID-Tut) to weeks, of cancelled weeks
      */
     public void setCancelledWeeksMap(Map<String, Set<Integer>> freshCanceledWeekMap) {
+        cancelledWeeksMap.clear();
         cancelledWeeksMap.putAll(freshCanceledWeekMap);
     }
 

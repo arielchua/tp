@@ -19,6 +19,7 @@ import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
 import seedu.address.model.person.Week;
+import seedu.address.model.person.WeekList;
 
 /**
  * Contains unit tests for ParserUtil.
@@ -162,23 +163,17 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseWeekIndex_nonNumeric_throwsParseException() {
-        assertThrows(ParseException.class, "Week index must be a positive integer.", ()
-                -> ParserUtil.parseWeekIndex("abc"));
-    }
-
-    @Test
-    public void parseWeekIndex_zeroOrNegative_throwsParseException() {
-        assertThrows(ParseException.class, "Week index must be a positive integer.", ()
-                -> ParserUtil.parseWeekIndex("0"));
-        assertThrows(ParseException.class, "Week index must be a positive integer.", ()
-                -> ParserUtil.parseWeekIndex("-1"));
+    public void parseWeekIndex_outOfRange_throwsParseException() {
+        assertThrows(ParseException.class, WeekList.MESSAGE_INVALID_WEEK, ()
+                -> ParserUtil.parseWeekIndex("14"));
     }
 
     @Test
     public void parseWeekIndex_validValue_returnsIndex() throws Exception {
         assertEquals(Index.fromOneBased(1), ParserUtil.parseWeekIndex(" 1 "));
+        assertEquals(Index.fromOneBased(13), ParserUtil.parseWeekIndex("13"));
     }
+
 
     @Test
     public void parseWeekStatus_invalidValue_throwsParseException() {

@@ -1,10 +1,14 @@
 package seedu.address.model.person;
 
+import java.util.Objects;
+
 /**
  * Represents a student's attendance status for a single week.
  */
 public class Week implements WeeklyAttendance {
-    public static final String MESSAGE_CONSTRAINTS = "Week status must be Y, A or N";
+    //For marking attendance
+    public static final String MESSAGE_CONSTRAINTS =
+            "Week status must be 'Y' (attended), 'A' (absent), or 'N' (not marked).";
 
     /**
      * use Letters to represent Status of each Week
@@ -14,8 +18,18 @@ public class Week implements WeeklyAttendance {
         A, // Absent
         N, // Not marked
         C; // Cancelled
+
+        /**
+         * Convert a String into the Status Enum
+         * @param value string to be converted to Enum
+         * @return Status Enum that string is converted to
+         */
         public static Status fromString(String value) {
-            return Status.valueOf(value.toUpperCase());
+            try {
+                return Status.valueOf(value.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException(MESSAGE_CONSTRAINTS);
+            }
         }
     }
 
@@ -34,12 +48,18 @@ public class Week implements WeeklyAttendance {
         this.weekNo = weekNo;
         this.status = Status.N;
     }
+    private void markErrorCheck() {
+        if (status == Status.C) {
+            throw new IllegalStateException("Cannot modify a cancelled week");
+        }
+    }
 
     @Override
     public void markAsAttended() throws IllegalStateException {
         if (status == Status.Y) {
             throw new IllegalStateException("Week attendance has already been marked as attended");
         }
+        markErrorCheck();
         status = Status.Y;
     }
 
@@ -48,6 +68,7 @@ public class Week implements WeeklyAttendance {
         if (status == Status.A) {
             throw new IllegalStateException("Week attendance has already been marked as absent");
         }
+        markErrorCheck();
         status = Status.A;
     }
     @Override
@@ -55,6 +76,7 @@ public class Week implements WeeklyAttendance {
         if (status == Status.N) {
             throw new IllegalStateException("Week attendance is already default");
         }
+        markErrorCheck();
         status = Status.N;
     }
     @Override
@@ -108,8 +130,8 @@ public class Week implements WeeklyAttendance {
      * A = absent
      * N = default
      */
-    public String getStatus() {
-        return status.name();
+    public Week.Status getStatus() {
+        return status;
     }
     public void setStatus(Status status) {
         this.status = status;
@@ -129,10 +151,13 @@ public class Week implements WeeklyAttendance {
         return this.weekNo == otherWeek.weekNo
                 && this.status == otherWeek.status;
     }
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(weekNo, status);
+    }
     @Override
     public String toString() {
-        return String.format("W%d: %s", weekNo, getStatus());
+        return String.format("W%d: %s", weekNo, getStatus().toString());
     }
 
     @Override

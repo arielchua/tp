@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.testutil.Assert.assertThrows;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class WeekListTest {
         WeekList list = new WeekList();
         list.markWeekAsAttended(0);
 
-        assertTrue(list.getWeeks()[0].isAttended());
+        assertTrue(list.getWeek(0).isAttended());
     }
 
     @Test
@@ -36,7 +37,7 @@ public class WeekListTest {
         list.markWeekAsAttended(0);
         list.markWeekAsAbsent(0);
 
-        assertFalse(list.getWeeks()[0].isAttended());
+        assertFalse(list.getWeek(0).isAttended());
     }
 
     @Test
@@ -140,7 +141,7 @@ public class WeekListTest {
     public void weekList_defaultConstruction_allWeeksDefault() {
         WeekList weekList = new WeekList();
         for (WeeklyAttendance week : weekList.getWeeks()) {
-            assertEquals("N", week.getStatus());
+            assertEquals("N", week.getStatus().toString());
         }
     }
 
@@ -148,14 +149,14 @@ public class WeekListTest {
     public void weekList_markWeekAsAttended_changesCorrectWeek() {
         WeekList weekList = new WeekList();
         weekList.markWeekAsAttended(2);
-        assertEquals("Y", weekList.getWeeks()[2].getStatus());
+        assertEquals("Y", weekList.getWeek(2).getStatus().toString());
     }
 
     @Test
     public void weekList_markWeekAsAbsent_changesCorrectWeek() {
         WeekList weekList = new WeekList();
         weekList.markWeekAsAbsent(3);
-        assertEquals("A", weekList.getWeeks()[3].getStatus());
+        assertEquals("A", weekList.getWeek(3).getStatus().toString());
     }
 
     @Test
@@ -163,7 +164,7 @@ public class WeekListTest {
         WeekList weekList = new WeekList();
         weekList.markWeekAsAttended(1);
         weekList.markWeekAsDefault(1);
-        assertEquals("N", weekList.getWeeks()[1].getStatus());
+        assertEquals("N", weekList.getWeek(1).getStatus().toString());
     }
 
     @Test
@@ -172,9 +173,9 @@ public class WeekListTest {
         original.markWeekAsAttended(0);
         original.markWeekAsAbsent(1);
         WeekList copy = original.copy();
-        assertEquals("Y", copy.getWeeks()[0].getStatus());
-        assertEquals("A", copy.getWeeks()[1].getStatus());
-        assertEquals("N", copy.getWeeks()[2].getStatus()); // default week
+        assertEquals("Y", copy.getWeek(0).getStatus().toString());
+        assertEquals("A", copy.getWeek(1).getStatus().toString());
+        assertEquals("N", copy.getWeek(2).getStatus().toString()); // default week
     }
 
     @Test
@@ -193,9 +194,9 @@ public class WeekListTest {
     public void weekList_buildWeekListFromString_createsCorrectWeekList() throws IllegalValueException {
         String input = "W1: Y W2: A W3: N W4: N W5: N W6: N W7: N W8: N W9: N W10: N W11: N W12: N W13: N";
         WeekList weekList = WeekList.buildWeekListFromString(input);
-        assertEquals("Y", weekList.getWeeks()[0].getStatus());
-        assertEquals("A", weekList.getWeeks()[1].getStatus());
-        assertEquals("N", weekList.getWeeks()[2].getStatus());
+        assertEquals("Y", weekList.getWeek(0).getStatus().toString());
+        assertEquals("A", weekList.getWeek(1).getStatus().toString());
+        assertEquals("N", weekList.getWeek(2).getStatus().toString());
     }
 
     @Test
@@ -215,5 +216,39 @@ public class WeekListTest {
         list1.markWeekAsAttended(0);
         assertNotEquals(list1, list2);
         assertTrue(list1.compareTo(list2) > 0);
+    }
+
+    @Test
+    public void markWeek_success() {
+        WeekList list = new WeekList();
+        list.markWeekAsAttended(0);
+
+        assertTrue(list.getWeek(0).isAttended());
+    }
+
+    @Test
+    public void invalidIndex_throwsException() {
+        WeekList list = new WeekList();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> list.markWeekAsAttended(20));
+    }
+
+
+    @Test
+    public void calculateAttendance_correct() {
+        WeekList list = new WeekList();
+        list.markWeekAsAttended(0);
+
+        double result = list.calculateWeekAttendance();
+        assertTrue(result > 0);
+    }
+
+    @Test
+    public void cancelWeek_excludedFromAttendance() {
+        WeekList list = new WeekList();
+        list.markAsCancelled(0);
+
+        double result = list.calculateWeekAttendance();
+        assertEquals(0, result);
     }
 }

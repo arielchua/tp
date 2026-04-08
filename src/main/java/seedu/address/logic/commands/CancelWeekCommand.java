@@ -19,16 +19,19 @@ public class CancelWeekCommand extends Command {
     public static final String COMMAND_WORD = "cancelweek";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Cancels the week from attendance table.\n"
-            + "Parameters: [crs/COURSE_ID] [tg/TUTORIAL_ID]"
-            + PREFIX_WEEK + "WEEK_NUMBER\n "
+            + "Parameters: [crs/COURSE_ID] [tg/TUTORIAL_ID] "
+            + PREFIX_WEEK + "WEEK_NUMBER\n"
             + "All parameters must be included\n"
             + "Example: " + COMMAND_WORD + " crs/CS2103T tg/T01 week/5";
 
-    public static final String MESSAGE_SUCCESS =
-            "Week %1$d cancelled for course %2$s tutorial %3$s";
+    public static final String MESSAGE_DUPLICATE =
+            "Week %1$d is already cancelled for course %2$s tutorial %3$s.";
 
-    public final CourseId courseId;
-    public final TGroup tGroup;
+    public static final String MESSAGE_SUCCESS =
+            "Week %1$d cancelled for course %2$s tutorial %3$s.";
+
+    private final CourseId courseId;
+    private final TGroup tGroup;
     private final Index weekNumber;
 
     /**
@@ -39,7 +42,7 @@ public class CancelWeekCommand extends Command {
      * @param tGroup tutorial group of particular course
      */
     public CancelWeekCommand(CourseId courseId, TGroup tGroup, Index weekNumber) {
-        requireAllNonNull(courseId, tGroup);
+        requireAllNonNull(courseId, tGroup, weekNumber);
         this.courseId = courseId;
         this.tGroup = tGroup;
         this.weekNumber = weekNumber;
@@ -48,14 +51,43 @@ public class CancelWeekCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        if (weekNumber.getZeroBased() >= WeekList.NUMBER_OF_WEEKS) {
-            throw new CommandException("Invalid Week, there are only 13 weeks");
+        int weekIdx = weekNumber.getZeroBased();
+        if (!isValidWeek()) {
+            throw new CommandException(WeekList.MESSAGE_INVALID_WEEK);
         }
-        model.addCancelledWeek(courseId, tGroup, weekNumber.getZeroBased());
+        if (model.isWeekCancelled(courseId, tGroup, weekIdx)) {
+            throw new CommandException(String.format(
+                    MESSAGE_DUPLICATE,
+                    weekNumber.getOneBased(),
+                    courseId,
+                    tGroup));
+        }
+        model.addCancelledWeek(courseId, tGroup, weekIdx);
         return new CommandResult(String.format(
                 MESSAGE_SUCCESS,
                 weekNumber.getOneBased(),
                 courseId,
                 tGroup));
+    }
+    /**
+     * Checks if week index is within valid bounds.
+     */
+    private boolean isValidWeek() {
+        int zeroBased = weekNumber.getZeroBased();
+        return zeroBased >= 0 && zeroBased < WeekList.NUMBER_OF_WEEKS;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof CancelWeekCommand)) {
+            return false;
+        }
+        CancelWeekCommand otherCommand = (CancelWeekCommand) other;
+        return courseId.equals(otherCommand.courseId)
+                && tGroup.equals(otherCommand.tGroup)
+                && weekNumber.equals(otherCommand.weekNumber);
     }
 }

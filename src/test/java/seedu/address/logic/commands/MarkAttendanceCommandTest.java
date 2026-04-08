@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -17,6 +18,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.CourseId;
@@ -53,6 +55,11 @@ public class MarkAttendanceCommandTest {
         @Override
         public ObservableList<Person> getFilteredPersonList() {
             return persons;
+        }
+
+        @Override
+        public boolean isWeekCancelled(CourseId courseId, TGroup tGroup, int weekIdx) {
+            return false;
         }
 
         @Override
@@ -133,6 +140,71 @@ public class MarkAttendanceCommandTest {
     }
 
     @Test
+    public void execute_validMark_success() throws Exception {
+        Model model = new ModelManager();
+        Person person = new PersonBuilder().build();
+        model.addPerson(person);
+
+        MarkAttendanceCommand cmd =
+                new MarkAttendanceCommand(Index.fromOneBased(1),
+                        Index.fromOneBased(1),
+                        Week.Status.Y);
+
+        CommandResult result = cmd.execute(model);
+
+        Person updated = model.getFilteredPersonList().get(0);
+        assertEquals(Week.Status.Y,
+                updated.getWeekList().getWeek(0).getStatus());
+
+        assertTrue(result.getFeedbackToUser().contains("marked as Y"));
+    }
+
+    @Test
+    public void execute_invalidIndex_throwsException() {
+        Model model = new ModelManager();
+
+        MarkAttendanceCommand cmd =
+                new MarkAttendanceCommand(Index.fromOneBased(1),
+                        Index.fromOneBased(1),
+                        Week.Status.Y);
+
+        assertThrows(CommandException.class, () -> cmd.execute(model));
+    }
+
+    @Test
+    public void execute_invalidWeek_throwsException() {
+        Model model = new ModelManager();
+        model.addPerson(new PersonBuilder().build());
+
+        MarkAttendanceCommand cmd =
+                new MarkAttendanceCommand(Index.fromOneBased(1),
+                        Index.fromOneBased(20),
+                        Week.Status.Y);
+
+        assertThrows(CommandException.class, () -> cmd.execute(model));
+    }
+
+    @Test
+    public void execute_duplicateStatus_throwsException() throws Exception {
+        Model model = new ModelManager();
+        Person person = new PersonBuilder().build();
+        model.addPerson(person);
+
+        // First mark
+        new MarkAttendanceCommand(Index.fromOneBased(1),
+                Index.fromOneBased(1),
+                Week.Status.Y).execute(model);
+
+        // Duplicate
+        MarkAttendanceCommand cmd =
+                new MarkAttendanceCommand(Index.fromOneBased(1),
+                        Index.fromOneBased(1),
+                        Week.Status.Y);
+
+        assertThrows(CommandException.class, () -> cmd.execute(model));
+    }
+
+    @Test
     public void execute_markWeekAttended_success() throws CommandException {
         ModelStub model = new ModelStub(alice);
         MarkAttendanceCommand command = new MarkAttendanceCommand(Index.fromOneBased(1),
@@ -141,7 +213,7 @@ public class MarkAttendanceCommandTest {
 
         Person editedPerson = model.getFilteredPersonList().get(0);
         WeekList weekList = editedPerson.getWeekList();
-        assertEquals("Y", ((WeekList) weekList).getWeeks()[0].getStatus());
+        assertEquals("Y", ((WeekList) weekList).getWeek(0).getStatus().toString());
     }
 
     @Test
@@ -153,7 +225,7 @@ public class MarkAttendanceCommandTest {
 
         Person editedPerson = model.getFilteredPersonList().get(0);
         WeekList weekList = editedPerson.getWeekList();
-        assertEquals("A", ((WeekList) weekList).getWeeks()[1].getStatus());
+        assertEquals("A", ((WeekList) weekList).getWeek(1).getStatus().toString());
     }
 
     @Test
@@ -172,7 +244,7 @@ public class MarkAttendanceCommandTest {
 
         Person editedPerson = model.getFilteredPersonList().get(0);
         WeekList weekList = editedPerson.getWeekList();
-        assertEquals("N", ((WeekList) weekList).getWeeks()[2].getStatus());
+        assertEquals("N", ((WeekList) weekList).getWeek(2).getStatus().toString());
     }
 
     @Test

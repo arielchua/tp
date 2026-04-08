@@ -47,7 +47,12 @@ public interface WeeklyAttendanceList extends Comparable<WeeklyAttendanceList> ,
     public int calculateWeekAbsence();
 
     /**
-     * @return attendence each week
+     * @return week at index in WeekList
      */
-    WeeklyAttendance[] getWeeks();
+    public WeeklyAttendance getWeek(int index);
+
+    /**
+     * @return attendance each week
+     */
+    public WeeklyAttendance[] getWeeks();
 }

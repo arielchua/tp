@@ -2,6 +2,8 @@ package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,5 +73,20 @@ public class MarkAttendanceCommandParserTest {
         assertThrows(ParseException.class, () ->
                 parser.parse("abc week/1 sta/Y")
         );
+    }
+    @Test
+    public void parse_validArgs_success() {
+        assertParseSuccess(parser,
+                "1 week/2 sta/Y",
+                new MarkAttendanceCommand(Index.fromOneBased(1),
+                        Index.fromOneBased(2),
+                        Week.Status.Y));
+    }
+
+    @Test
+    public void parse_invalidStatus_failure() {
+        assertParseFailure(parser,
+                "1 week/2 sta/X",
+                Week.MESSAGE_CONSTRAINTS);
     }
 }

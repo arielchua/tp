@@ -112,7 +112,7 @@ public class PersonCard extends UiPart<Region> {
 
         // Loop through all weeks
         for (int i = 0; i < WeekList.NUMBER_OF_WEEKS; i++) {
-            Week week = (Week) weekList.getWeeks()[i];
+            Week week = (Week) weekList.getWeek(i);
 
             // Week number label
             Label weekLabel = new Label("W" + (i + 1));
@@ -124,7 +124,7 @@ public class PersonCard extends UiPart<Region> {
             weekVBox.setAlignment(Pos.CENTER);
             weekVBox.setPrefWidth(30);
 
-            switch (week.getStatus()) {
+            switch (week.getStatus().toString()) {
             case "Y" -> {
                 Label weekSquare = new Label();
                 weekSquare.setPrefSize(16, 16);

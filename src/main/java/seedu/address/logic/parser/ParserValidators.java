@@ -114,5 +114,37 @@ public final class ParserValidators {
             }
         }
     }
+
+    /**
+     * Checks that all prefixes are present.
+     * @param argMultimap the token map
+     * @param prefixes array of Prefix
+     * @param prefixStrings human-readable prefix strings (e.g., "crs/")
+     * @param commandUsage command usage to include in the error message
+     * @throws ParseException when any prefix is not present
+     */
+    public static void ensureAllPrefixesPresent(
+            ArgumentMultimap argMultimap,
+            Prefix[] prefixes,
+            String[] prefixStrings,
+            String commandUsage) throws ParseException {
+
+        StringBuilder missing = new StringBuilder();
+
+        for (int i = 0; i < prefixes.length; i++) {
+            if (argMultimap.getValue(prefixes[i]).isEmpty()) {
+                if (!missing.isEmpty()) {
+                    missing.append(", ");
+                }
+                missing.append(prefixStrings[i]);
+            }
+        }
+
+        if (!missing.isEmpty()) {
+            throw new ParseException(
+                    "Missing required prefix(es): " + missing.toString()
+                            + "\n" + commandUsage);
+        }
+    }
 }
 

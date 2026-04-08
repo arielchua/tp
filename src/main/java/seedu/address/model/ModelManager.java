@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -128,11 +129,17 @@ public class ModelManager implements Model {
         addressBook.setPerson(target, updatedPerson);
     }
 
+    //=========== Cancel/Uncancel Week =============================================================
+    @Override
+    public boolean isWeekCancelled(CourseId courseId, TGroup tGroup, int weekIdx) {
+        return getCancelledWeeks(courseId, tGroup).contains(weekIdx);
+    }
     @Override
     public Set<Integer> getCancelledWeeks(CourseId courseId, TGroup tGroup) {
         requireAllNonNull(courseId, tGroup);
         String key = makeKey(courseId, tGroup);
-        return cancelledWeeksMap.getOrDefault(key, new java.util.HashSet<>());
+        return Collections.unmodifiableSet(
+                cancelledWeeksMap.getOrDefault(key, Collections.emptySet()));
     }
     private void deriveCancelledWeekList(CourseId courseId, TGroup tGroup, int weekIndex) {
         List<Person> persons = addressBook.getPersonList();
@@ -150,16 +157,7 @@ public class ModelManager implements Model {
                     continue;
                 }
 
-                Person editedPerson = new Person(
-                        personToEdit.getName(),
-                        personToEdit.getCourseId(),
-                        personToEdit.getEmail(),
-                        personToEdit.getStudentId(),
-                        personToEdit.getTGroup(),
-                        personToEdit.getTele(),
-                        weekList,
-                        personToEdit.getProgress()
-                );
+                Person editedPerson = cloneWithWeekList(personToEdit, weekList);
                 setPerson(personToEdit, editedPerson);
             }
         }
@@ -167,38 +165,53 @@ public class ModelManager implements Model {
     private void deriveUncancelledWeekList(CourseId courseId, TGroup tGroup, int weekIndex) {
         List<Person> persons = addressBook.getPersonList();
         // update existing persons
-        for (Person person : persons) {
-            if (person.getCourseId().equals(courseId)
-                    && person.getTGroup().equals(tGroup)) {
+        for (Person personToEdit : persons) {
+            if (personToEdit.getCourseId().equals(courseId)
+                    && personToEdit.getTGroup().equals(tGroup)) {
 
-                WeekList weekList = person
+                WeekList weekList = personToEdit
                         .getWeekList().copy();
-                weekList.markAsUncancelled(weekIndex);
+                try {
+                    weekList.markAsUncancelled(weekIndex);
+                } catch (IllegalStateException e) {
+                    continue; // skip invalid ones safely
+                }
 
-                Person updated = new Person(
-                        person.getName(),
-                        person.getCourseId(),
-                        person.getEmail(),
-                        person.getStudentId(),
-                        person.getTGroup(),
-                        person.getTele(),
-                        weekList,
-                        person.getProgress()
-                );
+                Person updated = cloneWithWeekList(personToEdit, weekList);
 
-                setPerson(person, updated);
+                setPerson(personToEdit, updated);
             }
         }
+    }
+    private Person cloneWithWeekList(Person p, WeekList list) {
+        Person updated = new Person(
+                p.getName(),
+                p.getCourseId(),
+                p.getEmail(),
+                p.getStudentId(),
+                p.getTGroup(),
+                p.getTele(),
+                list,
+                p.getProgress()
+        );
+
+        for (Remark remark : p.getRemarks()) {
+            updated.addRemark(remark);
+        }
+
+        return updated;
     }
 
     @Override
     public void addCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
         requireAllNonNull(courseId, tGroup);
-        deriveCancelledWeekList(courseId, tGroup, weekIndex);
         String key = makeKey(courseId, tGroup);
         cancelledWeeksMap.putIfAbsent(key, new java.util.HashSet<>());
+        if (cancelledWeeksMap.get(key).contains(weekIndex)) {
+            return;
+        }
+        deriveCancelledWeekList(courseId, tGroup, weekIndex);
         cancelledWeeksMap.get(key).add(weekIndex);
-
         addressBook.getCancelledWeeksMap().putAll(cancelledWeeksMap); // to save
     }
 
@@ -206,12 +219,13 @@ public class ModelManager implements Model {
     public void removeCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
         requireAllNonNull(courseId, tGroup);
         String key = makeKey(courseId, tGroup);
-        if (cancelledWeeksMap.containsKey(key)) {
-            cancelledWeeksMap.get(key).remove(weekIndex);
+        if (!cancelledWeeksMap.containsKey(key)
+                || !cancelledWeeksMap.get(key).contains(weekIndex)) {
+            return;
         }
-
-        addressBook.getCancelledWeeksMap().putAll(cancelledWeeksMap);
+        cancelledWeeksMap.get(key).remove(weekIndex);
         deriveUncancelledWeekList(courseId, tGroup, weekIndex);
+        addressBook.getCancelledWeeksMap().putAll(cancelledWeeksMap);
     }
 
     private Person applyCancelledWeeks(Person person) {
@@ -228,20 +242,7 @@ public class ModelManager implements Model {
             }
         }
 
-        Person updatedPerson = new Person(
-                person.getName(),
-                person.getCourseId(),
-                person.getEmail(),
-                person.getStudentId(),
-                person.getTGroup(),
-                person.getTele(),
-                weekList,
-                person.getProgress()
-        );
-
-        for (Remark remark : person.getRemarks()) {
-            updatedPerson.addRemark(remark);
-        }
+        Person updatedPerson = cloneWithWeekList(person, weekList);
 
         return updatedPerson;
     }
@@ -295,7 +296,4 @@ public class ModelManager implements Model {
                 && userPrefs.equals(otherModelManager.userPrefs)
                 && filteredPersons.equals(otherModelManager.filteredPersons);
     }
-
-
-
 }

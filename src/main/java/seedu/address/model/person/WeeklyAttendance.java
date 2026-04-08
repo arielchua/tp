@@ -50,7 +50,7 @@ public interface WeeklyAttendance {
     /**
      * @return the attendance status of the week session
      */
-    public String getStatus();
+    public Week.Status getStatus();
 
     public boolean isAbsent();
 

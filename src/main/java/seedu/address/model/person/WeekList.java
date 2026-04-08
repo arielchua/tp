@@ -14,6 +14,8 @@ public class WeekList implements WeeklyAttendanceList {
     public static final int NUMBER_OF_WEEKS = 13;
     public static final String MESSAGE_CONSTRAINTS =
             "Week attendance list should be in the format 'W1: Y/N ... W13: Y/N'";
+    public static final String MESSAGE_INVALID_WEEK =
+            "Invalid week number. Valid range: 1 to " + WeekList.NUMBER_OF_WEEKS + ".";
     private final WeeklyAttendance[] weeks;
 
     /**
@@ -38,36 +40,35 @@ public class WeekList implements WeeklyAttendanceList {
         }
         return weekList;
     }
-
+    private void validWeekChecker(int index) {
+        if (index < 0 || index >= NUMBER_OF_WEEKS) {
+            throw new IndexOutOfBoundsException("Invalid week index");
+        }
+    }
     @Override
     public void markWeekAsAttended(int index) {
-        assert index >= 0 : "Index must be >= 0";
-        assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
+        validWeekChecker(index);
         weeks[index].markAsAttended();
     }
 
     @Override
     public void markWeekAsAbsent(int index) {
-        assert index >= 0 : "Index must be >= 0";
-        assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
+        validWeekChecker(index);
         weeks[index].markAsAbsent();
     }
     @Override
     public void markWeekAsDefault(int index) {
-        assert index >= 0 : "Index must be >= 0";
-        assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
+        validWeekChecker(index);
         weeks[index].markAsDefault();
     }
     @Override
     public void markAsCancelled(int index) {
-        assert index >= 0 : "Index must be >= 0";
-        assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
+        validWeekChecker(index);
         weeks[index].markAsCancelled();
     }
     @Override
     public void markAsUncancelled(int index) {
-        assert index >= 0 : "Index must be >= 0";
-        assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
+        validWeekChecker(index);
         weeks[index].markAsUncancelled();
     }
 
@@ -97,7 +98,7 @@ public class WeekList implements WeeklyAttendanceList {
         for (int i = 0; i < NUMBER_OF_WEEKS; i++) {
             Week original = (Week) this.weeks[i];
             Week newWeek = new Week(i + 1);
-            newWeek.setStatus(Week.Status.valueOf(original.getStatus())); // copy current status
+            newWeek.setStatus(original.getStatus()); // copy current status
             newWeek.setPrevStatus(original.getPrevStatus()); // copy previous status
             copiedWeeks[i] = newWeek;
         }
@@ -148,9 +149,9 @@ public class WeekList implements WeeklyAttendanceList {
     }
 
     /**
-     * Uses a String internal representation of Attendancelist to create an attendanceList
+     * Uses a String internal representation of Attendance list to create an attendanceList
      * @return WeekList
-     * @throws IllegalValueException
+     * @throws IllegalValueException if WeekList is not valid
      */
     public static WeekList buildWeekListFromString(String weeklyAttendanceList) throws IllegalValueException {
         requireNonNull(weeklyAttendanceList);
@@ -183,6 +184,11 @@ public class WeekList implements WeeklyAttendanceList {
         return new WeekList(weeks);
     }
 
+    @Override
+    public WeeklyAttendance getWeek(int index) {
+        return weeks[index];
+    }
+    @Override
     public WeeklyAttendance[] getWeeks() {
         return weeks;
     }
@@ -226,7 +232,7 @@ public class WeekList implements WeeklyAttendanceList {
     public List<TrackerColour> getTrackerColours() {
         List<TrackerColour> colours = new ArrayList<>();
         for (WeeklyAttendance week : weeks) {
-            String status = week.getStatus();
+            String status = week.getStatus().toString();
             TrackerColour colour = switch (status) {
             case "Y" -> TrackerColour.GREEN;
             case "A" -> TrackerColour.RED;
