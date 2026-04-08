@@ -16,6 +16,7 @@ import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
 import seedu.address.model.person.Week;
+import seedu.address.model.person.WeekList;
 
 
 /**
@@ -212,21 +213,18 @@ public class ParserUtil {
     /**
      * Parses a {@code String} into an {@code Index} representing a week number.
      *
-     * @param input The input string, e.g., "1" for week 1.
+     * @param oneBasedWeek The input string, e.g., "1" for week 1.
      * @return Index corresponding to the week number.
      * @throws ParseException if the input is not a positive integer.
      */
-    public static Index parseWeekIndex(String input) throws ParseException {
-        requireNonNull(input);
-        try {
-            int value = Integer.parseInt(input.trim());
-            if (value <= 0) {
-                throw new ParseException("Week index must be a positive integer.");
-            }
-            return Index.fromOneBased(value);
-        } catch (NumberFormatException e) {
-            throw new ParseException("Week index must be a positive integer.", e);
+    public static Index parseWeekIndex(String oneBasedWeek) throws ParseException {
+        Index index = parseIndex(oneBasedWeek);
+
+        if (index.getOneBased() > 13) {
+            throw new ParseException(WeekList.MESSAGE_INVALID_WEEK);
         }
+
+        return index;
     }
 
     /**

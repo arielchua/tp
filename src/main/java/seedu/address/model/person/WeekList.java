@@ -14,6 +14,8 @@ public class WeekList implements WeeklyAttendanceList {
     public static final int NUMBER_OF_WEEKS = 13;
     public static final String MESSAGE_CONSTRAINTS =
             "Week attendance list should be in the format 'W1: Y/N ... W13: Y/N'";
+    public static final String MESSAGE_INVALID_WEEK =
+            "Invalid week number. Valid range: 1 to " + WeekList.NUMBER_OF_WEEKS + ".";
     private final WeeklyAttendance[] weeks;
 
     /**

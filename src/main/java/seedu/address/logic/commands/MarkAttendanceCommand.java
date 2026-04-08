@@ -30,9 +30,6 @@ public class MarkAttendanceCommand extends Command {
     public static final String MESSAGE_INVALID_PERSON_INDEX =
             "The person index provided is invalid.";
 
-    public static final String MESSAGE_INVALID_WEEK =
-            "Invalid week number. Valid range: 1 to " + WeekList.NUMBER_OF_WEEKS + ".";
-
     public static final String MESSAGE_WEEK_CANCELLED =
             "Week %1$d is cancelled and cannot be marked.";
 
@@ -147,7 +144,7 @@ public class MarkAttendanceCommand extends Command {
             throw new CommandException(MESSAGE_INVALID_PERSON_INDEX);
         }
         if (!isValidWeek(weekNumber)) {
-            throw new CommandException(MESSAGE_INVALID_WEEK);
+            throw new CommandException(WeekList.MESSAGE_INVALID_WEEK);
         }
     }
 

@@ -23,10 +23,6 @@ public class UnCancelWeekCommand extends Command {
             + PREFIX_WEEK + "WEEK_NUMBER\n"
             + "All parameters must be included\n"
             + "Example: " + COMMAND_WORD + " crs/CS2103T tg/T01 week/5";
-
-    public static final String MESSAGE_INVALID_WEEK =
-            "Invalid week number. Valid range: 1 to " + WeekList.NUMBER_OF_WEEKS + ".";
-
     public static final String MESSAGE_NOT_CANCELLED =
             "Week %1$d is not cancelled for course %2$s tutorial %3$s.";
 
@@ -52,7 +48,7 @@ public class UnCancelWeekCommand extends Command {
         requireNonNull(model);
         int weekIdx = weekNumber.getZeroBased();
         if (!isValidWeek(weekIdx)) {
-            throw new CommandException(MESSAGE_INVALID_WEEK);
+            throw new CommandException(WeekList.MESSAGE_INVALID_WEEK);
         }
         if (!model.isWeekCancelled(courseId, tGroup, weekIdx)) {
             throw new CommandException(String.format(
