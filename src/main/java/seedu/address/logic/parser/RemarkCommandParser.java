@@ -25,17 +25,25 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
     public RemarkCommand parse(String args) throws ParseException {
         requireNonNull(args);
 
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_REMARK);
+        String trimmedArgs = args.trim();
+        String prefix = PREFIX_REMARK.toString();
+        int prefixPosition = trimmedArgs.indexOf(prefix);
 
-        if (argMultimap.getPreamble().isBlank() || argMultimap.getValue(PREFIX_REMARK).isEmpty()) {
+        if (prefixPosition == -1) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
         }
 
-        Index index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        String remarkText = argMultimap.getValue(PREFIX_REMARK).get().trim();
+        String indexPart = trimmedArgs.substring(0, prefixPosition).trim();
+        String remarkText = trimmedArgs.substring(prefixPosition + prefix.length()).trim();
 
-        if (remarkText.isEmpty()) {
+        if (indexPart.isEmpty() || remarkText.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+        }
+
+        Index index = ParserUtil.parseIndex(indexPart);
+
+        if (!Remark.isValidText(remarkText)) {
+            throw new ParseException(Remark.MESSAGE_TEXT_CONSTRAINTS);
         }
 
         Remark remark = new Remark(remarkText, LocalDate.now());

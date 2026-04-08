@@ -17,6 +17,19 @@ public class RemarkCommandParserTest {
     private final RemarkCommandParser parser = new RemarkCommandParser();
 
     @Test
+    public void parse_remarkContainingPrefixText_returnsSuccess() {
+        Remark remark = new Remark("See txt/notes", LocalDate.now());
+        assertParseSuccess(parser, "1 txt/See txt/notes",
+                new RemarkCommand(Index.fromOneBased(1), remark));
+    }
+
+    @Test
+    public void parse_longRemark_returnsFailure() {
+        assertParseFailure(parser, "1 txt/" + "a".repeat(101),
+                Remark.MESSAGE_TEXT_CONSTRAINTS);
+    }
+
+    @Test
     public void parse_emptyArgs_returnsFailure() {
         assertParseFailure(parser, "", String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
     }
