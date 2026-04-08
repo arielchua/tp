@@ -10,10 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ProgressCommand;
-import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Progress;
-import seedu.address.model.person.StudentId;
-import seedu.address.model.person.TGroup;
 
 /**
  * Contains unit tests for {@code ProgressCommandParser}.
@@ -34,28 +31,6 @@ public class ProgressCommandParserTest {
         assertParseSuccess(parser,
                 "1 p/clear",
                 new ProgressCommand(Index.fromOneBased(1), Progress.NOT_SET));
-    }
-
-    @Test
-    public void parse_validIdentityMode_success() {
-        assertParseSuccess(parser,
-                " id/A0301200M crs/CS2103 tg/T01 p/on_track",
-                new ProgressCommand(
-                        new StudentId("A0301200M"),
-                        new CourseId("CS2103"),
-                        new TGroup("T01"),
-                        Progress.ON_TRACK));
-    }
-
-    @Test
-    public void parse_validIdentityModeClear_success() {
-        assertParseSuccess(parser,
-                " id/A0301200M crs/CS2103 tg/T01 p/clear",
-                new ProgressCommand(
-                        new StudentId("A0301200M"),
-                        new CourseId("CS2103"),
-                        new TGroup("T01"),
-                        Progress.NOT_SET));
     }
 
     @Test
@@ -80,49 +55,38 @@ public class ProgressCommandParserTest {
     }
 
     @Test
-    public void parse_indexModeWithoutIndex_failure() {
+    public void parse_missingIndex_failure() {
         assertParseFailure(parser,
                 " p/on_track",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, ProgressCommand.MESSAGE_USAGE));
     }
 
     @Test
+    public void parse_nonNumericPreamble_failure() {
+        assertParseFailure(parser,
+                "abc p/on_track",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ProgressCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_indexAndIdentityMixed_failure() {
+        assertParseFailure(parser,
+                "1 id/A0301200M crs/CS2103 tg/T01 p/on_track",
+                ParserMessages.invalidPrefix("p/", ProgressCommand.MESSAGE_USAGE));
+    }
+
+    @Test
     public void parse_invalidIndex_failure() {
-        assertParseFailure(parser, "0 p/on_track", MESSAGE_INVALID_INDEX);
+        assertParseFailure(parser,
+                "0 p/on_track",
+                MESSAGE_INVALID_INDEX);
     }
 
     @Test
     public void parse_invalidProgress_failure() {
         assertParseFailure(parser,
-                "1 p/bad_status", MESSAGE_INVALID_PROGRESS);
-    }
-
-    @Test
-    public void parse_identityModeMissingStudentId_failure() {
-        assertParseFailure(parser,
-                " crs/CS2103 tg/T01 p/on_track",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ProgressCommand.MESSAGE_USAGE));
-    }
-
-    @Test
-    public void parse_identityModeMissingCourseId_failure() {
-        assertParseFailure(parser,
-                " id/A0301200M tg/T01 p/on_track",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ProgressCommand.MESSAGE_USAGE));
-    }
-
-    @Test
-    public void parse_identityModeMissingTGroup_failure() {
-        assertParseFailure(parser,
-                " id/A0301200M crs/CS2103 p/on_track",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ProgressCommand.MESSAGE_USAGE));
-    }
-
-    @Test
-    public void parse_identityModeWithPreamble_failure() {
-        assertParseFailure(parser,
-                " 1 id/A0301200M crs/CS2103 tg/T01 p/on_track",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ProgressCommand.MESSAGE_USAGE));
+                "1 p/bad_status",
+                MESSAGE_INVALID_PROGRESS);
     }
 
     @Test
@@ -133,16 +97,16 @@ public class ProgressCommandParserTest {
     }
 
     @Test
-    public void parse_duplicateStudentIdPrefix_failure() {
+    public void parse_barePrefix_failure() {
         assertParseFailure(parser,
-                " id/A0301200M id/A0123456X crs/CS2103 tg/T01 p/on_track",
-                "Multiple values specified for the following single-valued field(s): id/");
+                "1 p on_track",
+                ParserMessages.possiblePrefixMissingSlash(ProgressCommand.MESSAGE_USAGE));
     }
 
     @Test
-    public void parse_indexAndIdentityMixed_failure() {
+    public void parse_unknownPrefix_failure() {
         assertParseFailure(parser,
-                "1 id/A0301200M crs/CS2103 tg/T01 p/on_track",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ProgressCommand.MESSAGE_USAGE));
+                "1 prog/on_track",
+                ParserMessages.invalidPrefix("p/", ProgressCommand.MESSAGE_USAGE));
     }
 }

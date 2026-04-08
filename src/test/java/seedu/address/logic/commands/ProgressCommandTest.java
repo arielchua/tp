@@ -116,84 +116,6 @@ public class ProgressCommandTest {
     }
 
     @Test
-    public void execute_validIdentityUnfilteredList_success() {
-        Person personToUpdate = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person updatedPerson = new PersonBuilder(personToUpdate)
-                .withProgress(Progress.NEEDS_ATTENTION)
-                .build();
-
-        ProgressCommand progressCommand = new ProgressCommand(
-                personToUpdate.getStudentId(),
-                personToUpdate.getCourseId(),
-                personToUpdate.getTGroup(),
-                Progress.NEEDS_ATTENTION);
-
-        String expectedMessage = String.format(
-                ProgressCommand.MESSAGE_UPDATE_PROGRESS_SUCCESS,
-                Messages.format(updatedPerson),
-                updatedPerson.getProgress());
-
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        expectedModel.setPerson(personToUpdate, updatedPerson);
-
-        assertCommandSuccess(progressCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_validIdentityFilteredList_success() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
-
-        Person personToUpdate = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person updatedPerson = new PersonBuilder(personToUpdate)
-                .withProgress(Progress.ON_TRACK)
-                .build();
-
-        ProgressCommand progressCommand = new ProgressCommand(
-                personToUpdate.getStudentId(),
-                personToUpdate.getCourseId(),
-                personToUpdate.getTGroup(),
-                Progress.ON_TRACK);
-
-        String expectedMessage = String.format(
-                ProgressCommand.MESSAGE_UPDATE_PROGRESS_SUCCESS,
-                Messages.format(updatedPerson),
-                updatedPerson.getProgress());
-
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        showPersonAtIndex(expectedModel, INDEX_FIRST_PERSON);
-        expectedModel.setPerson(personToUpdate, updatedPerson);
-
-        assertCommandSuccess(progressCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_identityNotFoundUnfilteredList_failure() {
-        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-
-        ProgressCommand progressCommand = new ProgressCommand(
-                new PersonBuilder(firstPerson).withStudentId("A9999999Z").build().getStudentId(),
-                firstPerson.getCourseId(),
-                firstPerson.getTGroup(),
-                Progress.ON_TRACK);
-
-        assertCommandFailure(progressCommand, model, ProgressCommand.MESSAGE_STUDENT_NOT_FOUND);
-    }
-
-    @Test
-    public void execute_identityNotFoundInFilteredList_failure() {
-        Person secondPerson = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
-
-        ProgressCommand progressCommand = new ProgressCommand(
-                secondPerson.getStudentId(),
-                secondPerson.getCourseId(),
-                secondPerson.getTGroup(),
-                Progress.ON_TRACK);
-
-        assertCommandFailure(progressCommand, model, ProgressCommand.MESSAGE_STUDENT_NOT_FOUND);
-    }
-
-    @Test
     public void execute_overwriteExistingProgress_success() {
         Person personToUpdate = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person personWithProgress = new PersonBuilder(personToUpdate)
@@ -220,37 +142,16 @@ public class ProgressCommandTest {
 
     @Test
     public void equals() {
-        ProgressCommand firstIndexCommand = new ProgressCommand(INDEX_FIRST_PERSON, Progress.ON_TRACK);
-        ProgressCommand firstIndexCommandCopy = new ProgressCommand(INDEX_FIRST_PERSON, Progress.ON_TRACK);
-        ProgressCommand secondIndexCommand = new ProgressCommand(INDEX_SECOND_PERSON, Progress.ON_TRACK);
+        ProgressCommand firstCommand = new ProgressCommand(INDEX_FIRST_PERSON, Progress.ON_TRACK);
+        ProgressCommand firstCommandCopy = new ProgressCommand(INDEX_FIRST_PERSON, Progress.ON_TRACK);
+        ProgressCommand secondCommand = new ProgressCommand(INDEX_SECOND_PERSON, Progress.ON_TRACK);
+        ProgressCommand differentProgressCommand = new ProgressCommand(INDEX_FIRST_PERSON, Progress.AT_RISK);
 
-        Person person = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        ProgressCommand firstIdentityCommand = new ProgressCommand(
-                person.getStudentId(),
-                person.getCourseId(),
-                person.getTGroup(),
-                Progress.ON_TRACK);
-        ProgressCommand firstIdentityCommandCopy = new ProgressCommand(
-                person.getStudentId(),
-                person.getCourseId(),
-                person.getTGroup(),
-                Progress.ON_TRACK);
-        ProgressCommand differentProgressIdentityCommand = new ProgressCommand(
-                person.getStudentId(),
-                person.getCourseId(),
-                person.getTGroup(),
-                Progress.AT_RISK);
-
-        assertTrue(firstIndexCommand.equals(firstIndexCommand));
-        assertTrue(firstIndexCommand.equals(firstIndexCommandCopy));
-        assertFalse(firstIndexCommand.equals(secondIndexCommand));
-
-        assertTrue(firstIdentityCommand.equals(firstIdentityCommand));
-        assertTrue(firstIdentityCommand.equals(firstIdentityCommandCopy));
-        assertFalse(firstIdentityCommand.equals(differentProgressIdentityCommand));
-
-        assertFalse(firstIndexCommand.equals(firstIdentityCommand));
-        assertFalse(firstIndexCommand.equals(null));
-        assertFalse(firstIndexCommand.equals(1));
+        assertTrue(firstCommand.equals(firstCommand));
+        assertTrue(firstCommand.equals(firstCommandCopy));
+        assertFalse(firstCommand.equals(secondCommand));
+        assertFalse(firstCommand.equals(differentProgressCommand));
+        assertFalse(firstCommand.equals(null));
+        assertFalse(firstCommand.equals(1));
     }
 }

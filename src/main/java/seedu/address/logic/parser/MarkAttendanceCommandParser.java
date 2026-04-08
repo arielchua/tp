@@ -41,7 +41,7 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
     }
 
     private void validateInput(String args, ArgumentMultimap argMultimap) throws ParseException {
-        ParserValidators.ensureAllPrefixesPresent(
+        ParserValidators.ensureIndexAndPrefixesPresent(
                 argMultimap,
                 PREFIXES,
                 new String[]{"week/", "sta/"},

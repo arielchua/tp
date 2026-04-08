@@ -12,7 +12,9 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.person.CourseId;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.TGroup;
+import seedu.address.testutil.PersonBuilder;
 
 public class UnCancelWeekCommandTest {
 
@@ -25,11 +27,18 @@ public class UnCancelWeekCommandTest {
         model = new ModelManager();
         courseId = new CourseId("CS2103T");
         tGroup = new TGroup("T01");
+
+        // IMPORTANT: Add a person so hasCourseTGroup() passes
+        Person person = new PersonBuilder()
+                .withCourseId("CS2103T")
+                .withTGroup("T01")
+                .build();
+
+        model.addPerson(person);
     }
 
     @Test
     public void execute_validUncancel_success() throws Exception {
-        // simulate cancelled week
         model.addCancelledWeek(courseId, tGroup, 0);
 
         UnCancelWeekCommand cmd =
@@ -55,14 +64,16 @@ public class UnCancelWeekCommandTest {
 
     @Test
     public void execute_uncancelLastWeek_success() throws Exception {
-        model.addCancelledWeek(courseId, tGroup, 12);
+        int lastWeekIndex = 12; // assumes WeekList.NUMBER_OF_WEEKS = 13
+
+        model.addCancelledWeek(courseId, tGroup, lastWeekIndex);
 
         UnCancelWeekCommand cmd =
-                new UnCancelWeekCommand(courseId, tGroup, Index.fromOneBased(13));
+                new UnCancelWeekCommand(courseId, tGroup, Index.fromOneBased(lastWeekIndex + 1));
 
         cmd.execute(model);
 
-        assertFalse(model.isWeekCancelled(courseId, tGroup, 12));
+        assertFalse(model.isWeekCancelled(courseId, tGroup, lastWeekIndex));
     }
 
     @Test
@@ -130,7 +141,6 @@ public class UnCancelWeekCommandTest {
 
         cmd.execute(model);
 
-        // second time should fail
         assertThrows(CommandException.class, () -> cmd.execute(model));
     }
 
@@ -154,10 +164,6 @@ public class UnCancelWeekCommandTest {
 
     @Test
     public void integration_cancelThenUncancel_success() throws Exception {
-        Model model = new ModelManager();
-        CourseId courseId = new CourseId("CS2103T");
-        TGroup tGroup = new TGroup("T01");
-
         model.addCancelledWeek(courseId, tGroup, 0);
 
         assertTrue(model.isWeekCancelled(courseId, tGroup, 0));
@@ -170,16 +176,12 @@ public class UnCancelWeekCommandTest {
 
     @Test
     public void integration_partialUncancel_success() throws Exception {
-        Model model = new ModelManager();
-        CourseId c = new CourseId("CS2103T");
-        TGroup t = new TGroup("T01");
+        model.addCancelledWeek(courseId, tGroup, 0);
+        model.addCancelledWeek(courseId, tGroup, 1);
 
-        model.addCancelledWeek(c, t, 0);
-        model.addCancelledWeek(c, t, 1);
+        new UnCancelWeekCommand(courseId, tGroup, Index.fromOneBased(1)).execute(model);
 
-        new UnCancelWeekCommand(c, t, Index.fromOneBased(1)).execute(model);
-
-        assertFalse(model.isWeekCancelled(c, t, 0));
-        assertTrue(model.isWeekCancelled(c, t, 1));
+        assertFalse(model.isWeekCancelled(courseId, tGroup, 0));
+        assertTrue(model.isWeekCancelled(courseId, tGroup, 1));
     }
 }

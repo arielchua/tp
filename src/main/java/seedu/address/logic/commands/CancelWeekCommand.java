@@ -27,6 +27,9 @@ public class CancelWeekCommand extends Command {
     public static final String MESSAGE_DUPLICATE =
             "Week %1$d is already cancelled for course %2$s tutorial %3$s.";
 
+    public static final String MESSAGE_COURSE_TUT_INVALID =
+            "Course %s with tutorial %s does not exist and cannot be cancelled.";
+
     public static final String MESSAGE_SUCCESS =
             "Week %1$d cancelled for course %2$s tutorial %3$s.";
 
@@ -35,11 +38,13 @@ public class CancelWeekCommand extends Command {
     private final Index weekNumber;
 
     /**
-     * Creates an CancelWeekCommand to cancel the week in attendance list
-     * of all students with the same courseID and tGroup
+     * Creates a {@code CancelWeekCommand} to mark a specific week as cancelled
+     * for all students belonging to the given course and tutorial group.
      *
-     * @param courseId ID of a particular course
-     * @param tGroup tutorial group of particular course
+     * @param courseId The course identifier of the students whose attendance week will be cancelled.
+     * @param tGroup The tutorial group within the specified course.
+     * @param weekNumber The week number to be cancelled (1-based index).
+     * @throws NullPointerException if any of the arguments are null.
      */
     public CancelWeekCommand(CourseId courseId, TGroup tGroup, Index weekNumber) {
         requireAllNonNull(courseId, tGroup, weekNumber);
@@ -47,11 +52,39 @@ public class CancelWeekCommand extends Command {
         this.tGroup = tGroup;
         this.weekNumber = weekNumber;
     }
-
+    /**
+     * Executes the cancel week command.
+     * Validates the input parameters and cancels the specified week for all students
+     * in the given course and tutorial group.
+     *
+     * @param model The model containing the data of the application.
+     * @return A {@code CommandResult} containing a success message.
+     * @throws CommandException If:
+     *     <ul>
+     *     <li>The specified course and tutorial group does not exist.</li>
+     *     <li>The week number is invalid (out of range).</li>
+     *     <li>The week is already cancelled for the given course and tutorial group.</li>
+     *     </ul>
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         int weekIdx = weekNumber.getZeroBased();
+        parsedInputValidation(model, weekIdx);
+        model.addCancelledWeek(courseId, tGroup, weekIdx);
+        return new CommandResult(String.format(
+                MESSAGE_SUCCESS,
+                weekNumber.getOneBased(),
+                courseId,
+                tGroup));
+    }
+
+    private void parsedInputValidation(Model model, int weekIdx) throws CommandException {
+        if (!model.hasCourseTGroup(courseId, tGroup)) {
+            throw new CommandException(
+                    String.format(MESSAGE_COURSE_TUT_INVALID,
+                            courseId, tGroup));
+        }
         if (!isValidWeek()) {
             throw new CommandException(WeekList.MESSAGE_INVALID_WEEK);
         }
@@ -62,13 +95,8 @@ public class CancelWeekCommand extends Command {
                     courseId,
                     tGroup));
         }
-        model.addCancelledWeek(courseId, tGroup, weekIdx);
-        return new CommandResult(String.format(
-                MESSAGE_SUCCESS,
-                weekNumber.getOneBased(),
-                courseId,
-                tGroup));
     }
+
     /**
      * Checks if week index is within valid bounds.
      */
@@ -77,6 +105,13 @@ public class CancelWeekCommand extends Command {
         return zeroBased >= 0 && zeroBased < WeekList.NUMBER_OF_WEEKS;
     }
 
+    /**
+     * Compares this {@code CancelWeekCommand} with another object for equality.
+     *
+     * @param other The object to compare with.
+     * @return {@code true} if both commands have the same courseId, tutorial group,
+     *         and week number; {@code false} otherwise.
+     */
     @Override
     public boolean equals(Object other) {
         if (other == this) {

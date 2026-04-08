@@ -130,10 +130,45 @@ public class ModelManager implements Model {
     }
 
     //=========== Cancel/Uncancel Week =============================================================
+    /**
+     * Returns {@code true} if there exists at least one {@code Person} in the model
+     * with the specified course ID and tutorial group.
+     *
+     * @param courseId The course identifier.
+     * @param tGroup The tutorial group.
+     * @return {@code true} if a matching course–tutorial pair exists, {@code false} otherwise.
+     */
+    @Override
+    public boolean hasCourseTGroup(CourseId courseId, TGroup tGroup) {
+        ObservableList<Person> persons = addressBook.getPersonList();
+        return persons.stream()
+                .anyMatch(p -> p.getCourseId().equals(courseId)
+                        && p.getTGroup().equals(tGroup));
+    }
+    /**
+     * Returns {@code true} if the specified week is marked as cancelled
+     * for the given course ID and tutorial group.
+     *
+     * @param courseId The course identifier.
+     * @param tGroup The tutorial group.
+     * @param weekIdx The week index (0-based).
+     * @return {@code true} if the week is cancelled, {@code false} otherwise.
+     */
     @Override
     public boolean isWeekCancelled(CourseId courseId, TGroup tGroup, int weekIdx) {
         return getCancelledWeeks(courseId, tGroup).contains(weekIdx);
     }
+    /**
+     * Returns an unmodifiable set of cancelled week indices for the specified
+     * course ID and tutorial group.
+     *
+     * <p>If no cancelled weeks exist for the given pair, an empty set is returned.
+     *
+     * @param courseId The course identifier.
+     * @param tGroup The tutorial group.
+     * @return An unmodifiable {@code Set} of cancelled week indices (0-based).
+     * @throws NullPointerException if any argument is {@code null}.
+     */
     @Override
     public Set<Integer> getCancelledWeeks(CourseId courseId, TGroup tGroup) {
         requireAllNonNull(courseId, tGroup);
@@ -202,6 +237,22 @@ public class ModelManager implements Model {
         return updated;
     }
 
+    /**
+     * Adds a cancelled week for the specified course ID and tutorial group.
+     *
+     * <p>This method:
+     * <ul>
+     *     <li>Ensures the course–tutorial pair exists in the internal map</li>
+     *     <li>Ignores the operation if the week is already marked as cancelled</li>
+     *     <li>Propagates the cancellation to all matching {@code Person} objects</li>
+     *     <li>Updates the persistent cancelled weeks map in the address book</li>
+     * </ul>
+     *
+     * @param courseId The course identifier.
+     * @param tGroup The tutorial group.
+     * @param weekIndex The week index to cancel (0-based).
+     * @throws NullPointerException if {@code courseId} or {@code tGroup} is {@code null}.
+     */
     @Override
     public void addCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
         requireAllNonNull(courseId, tGroup);
@@ -215,6 +266,22 @@ public class ModelManager implements Model {
         addressBook.getCancelledWeeksMap().putAll(cancelledWeeksMap); // to save
     }
 
+    /**
+     * Removes a cancelled week for the specified course ID and tutorial group.
+     *
+     * <p>This method:
+     * <ul>
+     *     <li>Does nothing if the course–tutorial pair or week does not exist</li>
+     *     <li>Removes the week from the cancelled weeks map</li>
+     *     <li>Propagates the uncancellation to all matching {@code Person} objects</li>
+     *     <li>Updates the persistent cancelled weeks map in the address book</li>
+     * </ul>
+     *
+     * @param courseId The course identifier.
+     * @param tGroup The tutorial group.
+     * @param weekIndex The week index to uncancel (0-based).
+     * @throws NullPointerException if {@code courseId} or {@code tGroup} is {@code null}.
+     */
     @Override
     public void removeCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
         requireAllNonNull(courseId, tGroup);

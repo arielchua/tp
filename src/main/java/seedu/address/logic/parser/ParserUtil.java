@@ -218,6 +218,13 @@ public class ParserUtil {
      * @throws ParseException if the input is not a positive integer.
      */
     public static Index parseWeekIndex(String oneBasedWeek) throws ParseException {
+        requireNonNull(oneBasedWeek);
+        // For clearer error Messages
+        String trimmedIndex = oneBasedWeek.trim();
+        if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
+            throw new ParseException(WeekList.MESSAGE_INVALID_WEEK);
+        }
+
         Index index = parseIndex(oneBasedWeek);
 
         if (index.getOneBased() > 13) {

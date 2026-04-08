@@ -12,7 +12,9 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.person.CourseId;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.TGroup;
+import seedu.address.testutil.PersonBuilder;
 
 public class CancelWeekCommandTest {
 
@@ -25,6 +27,14 @@ public class CancelWeekCommandTest {
         model = new ModelManager();
         courseId = new CourseId("CS2103T");
         tGroup = new TGroup("T01");
+
+        // IMPORTANT: Ensure hasCourseTGroup() passes
+        Person person = new PersonBuilder()
+                .withCourseId("CS2103T")
+                .withTGroup("T01")
+                .build();
+
+        model.addPerson(person);
     }
 
     // =========================
@@ -54,12 +64,14 @@ public class CancelWeekCommandTest {
 
     @Test
     public void execute_cancelLastWeek_success() throws Exception {
+        int lastWeekIndex = 12; // assumes WeekList.NUMBER_OF_WEEKS = 13
+
         CancelWeekCommand cmd =
-                new CancelWeekCommand(courseId, tGroup, Index.fromOneBased(13));
+                new CancelWeekCommand(courseId, tGroup, Index.fromOneBased(lastWeekIndex + 1));
 
         cmd.execute(model);
 
-        assertTrue(model.isWeekCancelled(courseId, tGroup, 12));
+        assertTrue(model.isWeekCancelled(courseId, tGroup, lastWeekIndex));
     }
 
     // =========================
@@ -84,6 +96,25 @@ public class CancelWeekCommandTest {
         assertThrows(CommandException.class, () -> cmd.execute(model));
     }
 
+    @Test
+    public void execute_wrongCourseId_throwsException() {
+        CancelWeekCommand cmd =
+                new CancelWeekCommand(new CourseId("CS9999"),
+                        tGroup,
+                        Index.fromOneBased(1));
+
+        assertThrows(CommandException.class, () -> cmd.execute(model));
+    }
+
+    @Test
+    public void execute_wrongTGroup_throwsException() {
+        CancelWeekCommand cmd =
+                new CancelWeekCommand(courseId,
+                        new TGroup("T99"),
+                        Index.fromOneBased(1));
+
+        assertThrows(CommandException.class, () -> cmd.execute(model));
+    }
 
     // =========================
     // EDGE CASES
@@ -135,25 +166,26 @@ public class CancelWeekCommandTest {
         assertFalse(cmd1.equals(null));
         assertFalse(cmd1.equals(new Object()));
     }
+
+    // =========================
+    // INTEGRATION TEST
+    // =========================
+
     @Test
     public void integration_cancelUncancelCancel_flow() throws Exception {
-        Model model = new ModelManager();
-        CourseId c = new CourseId("CS2103T");
-        TGroup t = new TGroup("T01");
-
         CancelWeekCommand cancel =
-                new CancelWeekCommand(c, t, Index.fromOneBased(1));
+                new CancelWeekCommand(courseId, tGroup, Index.fromOneBased(1));
 
         UnCancelWeekCommand uncancel =
-                new UnCancelWeekCommand(c, t, Index.fromOneBased(1));
+                new UnCancelWeekCommand(courseId, tGroup, Index.fromOneBased(1));
 
         cancel.execute(model);
-        assertTrue(model.isWeekCancelled(c, t, 0));
+        assertTrue(model.isWeekCancelled(courseId, tGroup, 0));
 
         uncancel.execute(model);
-        assertFalse(model.isWeekCancelled(c, t, 0));
+        assertFalse(model.isWeekCancelled(courseId, tGroup, 0));
 
         cancel.execute(model);
-        assertTrue(model.isWeekCancelled(c, t, 0));
+        assertTrue(model.isWeekCancelled(courseId, tGroup, 0));
     }
 }

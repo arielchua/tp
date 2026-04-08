@@ -15,7 +15,7 @@ import seedu.address.model.person.Week;
 import seedu.address.model.person.WeekList;
 
 /**
- * Marks the specified week (tutorial) as attended or not attended for a person.
+ * Marks the attendance status of a specific week for a student.
  */
 public class MarkAttendanceCommand extends Command {
 
@@ -45,12 +45,12 @@ public class MarkAttendanceCommand extends Command {
     public final Week.Status status;
 
     /**
-     * Creates an MarkAttendanceCommand to update the attendance status
-     * of a specific week for a student identified by their index.
+     * Creates a {@code MarkAttendanceCommand} to update the attendance status
+     * of a specific week for a student.
      *
      * @param index Index of the student in the displayed person list.
-     * @param weekNumber Index of the week to update (1-based index from user input).
-     * @param status The attendance status to assign for the specified week.
+     * @param weekNumber Week number to update (1-based index from user input).
+     * @param status The attendance status to assign.
      */
     public MarkAttendanceCommand(Index index, Index weekNumber, Week.Status status) {
         requireAllNonNull(index, weekNumber, status);
@@ -59,6 +59,27 @@ public class MarkAttendanceCommand extends Command {
         this.status = status;
     }
 
+    /**
+     * Executes the mark attendance command.
+     *
+     * <p>Performs the following steps:
+     * <ul>
+     *     <li>Validates the student index and week number</li>
+     *     <li>Ensures the selected week is not cancelled</li>
+     *     <li>Updates the attendance status for the specified week</li>
+     *     <li>Replaces the original {@code Person} with the updated one in the model</li>
+     * </ul>
+     *
+     * @param model The model which the command should operate on.
+     * @return A {@code CommandResult} containing the success message.
+     * @throws CommandException If:
+     *     <ul>
+     *         <li>The index is invalid</li>
+     *         <li>The week number is invalid</li>
+     *         <li>The week is cancelled</li>
+     *         <li>The same status is already assigned (duplicate)</li>
+     *     </ul>
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
@@ -152,6 +173,13 @@ public class MarkAttendanceCommand extends Command {
         return person.getName() + " (" + person.getStudentId() + ")";
     }
 
+    /**
+     * Compares this command with another object for equality.
+     *
+     * @param other The object to compare with.
+     * @return {@code true} if {@code other} is a {@code MarkAttendanceCommand}
+     *         with the same index, week number, and status.
+     */
     @Override
     public boolean equals(Object other) {
         if (other == this) {

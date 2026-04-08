@@ -127,9 +127,7 @@
 
               <VBox styleClass="command-card" spacing="8.0">
                 <Label text="Command: updateprogress" styleClass="command-title"/>
-                <Label text="Format 1: updateprogress INDEX p/PROGRESS" wrapText="true" styleClass="command-format"/>
-                <Label text="Format 2: updateprogress id/SID crs/CID tg/TG p/PROGRESS" wrapText="true"
-                       styleClass="command-format"/>
+                <Label text="Format: updateprogress INDEX p/PROGRESS" wrapText="true" styleClass="command-format"/>
                 <Label text="Updates a student's progress status." wrapText="true" styleClass="command-description"/>
                 <Label text="Available progress values: on_track, needs_attention, at_risk, clear." wrapText="true" styleClass="command-description"/>
                 <Label text="Use 'clear' to unset a previously set progress (resets to not_set/clear)." wrapText="true" styleClass="command-description"/>
