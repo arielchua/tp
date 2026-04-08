@@ -28,7 +28,6 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
     public RemarkCommand parse(String args) throws ParseException {
         requireNonNull(args);
 
-<<<<<<< HEAD
         String trimmedArgs = args.trim();
         String prefix = PREFIX_REMARK.toString();
         int prefixPosition = trimmedArgs.indexOf(prefix);
@@ -41,26 +40,12 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
                                     RemarkCommand.MESSAGE_USAGE));
                 }
             }
-=======
-        ParserValidators.checkForUnknownPrefixTokens(
-            args,
-            ALLOWED_PREFIXES,
-            ALLOWED_PREFIXES_HUMAN_READABLE,
-            RemarkCommand.MESSAGE_USAGE
-        );
-
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_REMARK);
-        String preamble = argMultimap.getPreamble();
-
-        if (preamble.isEmpty()) {
->>>>>>> b3c4f13c (Fix merge conflict)
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
         }
 
         String indexPart = trimmedArgs.substring(0, prefixPosition).trim();
         String remarkText = trimmedArgs.substring(prefixPosition + prefix.length()).trim();
 
-<<<<<<< HEAD
         if (indexPart.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
         }
@@ -74,22 +59,6 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
 
         Index index = ParserUtil.parseIndex(indexPart);
 
-=======
-        ParserValidators.checkForMissingValues(
-            argMultimap,
-            ALLOWED_PREFIXES,
-            new String[] {"txt/"},
-            new String[] {"Remark text cannot be empty."},
-            RemarkCommand.MESSAGE_USAGE);
-
-        Index index = ParserUtil.parseIndex(preamble);
-        String remarkText = argMultimap.getValue(PREFIX_REMARK).get().trim();
-
-        if (remarkText.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
-        }
-
->>>>>>> b3c4f13c (Fix merge conflict)
         if (!Remark.isValidText(remarkText)) {
             throw new ParseException(Remark.MESSAGE_TEXT_CONSTRAINTS);
         }
