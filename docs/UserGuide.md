@@ -126,7 +126,8 @@ The following pop-up should show:
 <img src="images/helpWindow.png" alt="help window" width="600">
 
 <box type="tip">
-    Tip: You can also press `F1` to open the Help Window.
+**Tip**:
+    You can also press `F1` to open the Help Window.
 </box>
 
 <a name="list"></a>
@@ -159,6 +160,7 @@ Parameter Constraints:
 * ..... add on
 
 <box type="warning"> 
+**Warning**:
     What makes a student a duplicate?
     A student cannot be added if another student with the same 3 parameters `STUDENT_ID`, `COURSE_ID`, and `TUTORIAL_GROUP` already exists in TeachAssist. 
 </box>
@@ -204,10 +206,14 @@ Format: `find KEYWORD [MORE_KEYWORDS]...`
 The student list updates instantly to show only matching records, and the Result Box (see Figure X) displays the total count of students found.
 
 <box type="warning">
-Warning: Keywords must be alphabetic only (A–Z). Using numbers or symbols (e.g., `find A123`) will result in an error.
+**Warning**: 
+    Keywords must be alphabetic only (A–Z). Using numbers or symbols (e.g., `find A123`) will result in an error.
 </box>
 
-**Note:** The `find` command searches through the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
+<box type="info">
+**Note**: 
+    The `find` command searches through the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
+</box>
 
 
 
@@ -228,10 +234,14 @@ Behaviour:
 * Multiple filters combine with AND semantics — a student must satisfy every provided filter to be included in the results.
 
 <box type="warning">
-    Warning: At least one filter parameter must be provided; using no parameters will result in an error.
+**Warning**: 
+    At least one filter parameter must be provided; using no parameters will result in an error.
 </box>
 
-**Note:** the `filter` command applies to the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
+<box type="info">
+**Note**: 
+    The `filter` command applies to the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
+</box>
 
 **Examples:**
 
@@ -248,7 +258,8 @@ The student list updates instantly. The Result Box will display the total count:
 `There are 5 students matching this filter.`
 
 <box type="tip">
-    Tip: If a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
+**Tip**: 
+    If a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
 </box>
 
 <a name="edit"></a>
@@ -282,6 +293,7 @@ After setting up your student list, the next thing you will likely do throughout
 TeachAssist provides three attendance-related commands. Use `markattendance` to update an individual student's attendance for a specific week, `cancelweek` to cancel a tutorial week for an entire class, and `uncancelweek` to restore a previously cancelled week.
 
 <box type="info">
+**Note**:
     In line with the NUS academic calendar, each student added to TeachAssist starts with a default attendance record covering 13 teaching weeks. These weekly records can then be updated, cancelled, or restored using the attendance commands below.
 </box>
 
@@ -335,9 +347,10 @@ Sometimes, a tutorial may not take place for a particular week, for example due 
 * If the week is already cancelled, the command will have no additional effect.
 
 <box type="info">
-The cancellation is applied to:
-    - All existing students in that course and tutorial group.
-    - All future students added to the same course and tutorial group.
+**Note**:
+    The cancellation is applied to:
+        - All existing students in that course and tutorial group.
+        - All future students added to the same course and tutorial group.
 </box>
 
 **Example:**
@@ -393,7 +406,8 @@ updateprogress INDEX p/PROGRESS
 * Progress is case-insensitive, so values such as `ON_TRACK` and `on_track` are both accepted.
 
 <box type="tip">
-    Tip: To remove a student's progress tag, use `not_set`.
+**Tip**: 
+    To remove a student's progress tag, use `not_set`.
 </box>
 
 **Examples:**
@@ -426,7 +440,8 @@ remark INDEX txt/REMARK
 * A student can have multiple remarks attached to their record.
 
 <box type="warning">
-    Warning: If multiple `txt/` prefixes are provided, only the first `txt/` is treated as a prefix, subsequent `txt/` prefixes will be treated as part of the remark.
+**Warning**: 
+    If multiple `txt/` prefixes are provided, only the first `txt/` is treated as a prefix, subsequent `txt/` prefixes will be treated as part of the remark.
     e.g. `remark 1 txt/Needs more practice on txt/recursion` will be stored as the remark `Needs more practice on txt/recursion`
 </box>
 
