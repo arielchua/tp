@@ -13,17 +13,19 @@ TeachAssist is a desktop application designed for full-time University Teaching 
 And the best part? No technical expertise needed—just basic computer skills like installing software and navigating files.
 
 ## Table of contents
+- [Quick start](#quick-start)
 - [Features](#features)
   - [Viewing help: `help`](#help)
   - [Listing all students: `list`](#list)
   - [Adding a student: `add`](#add)
-  - [Finding students by name: `find`](#finding-students-by-name-find)
+  - [Finding students by name: `find`](#find)
   - [Filtering students: `filter`](#filter)
   - [Editing a student: `edit`](#edit)
-  - [Marking a student's attendance: `markattendance`](#mark-attendance)
+  - [Updating students' attendance](#attendance)
+    - [Marking a student's attendance: `markattendance`](#mark-attendance)
+    - [Cancelling a tutorial's week: `cancelweek`](#cancel-week)
+    - [Uncancelling a tutorial's week: `uncancelweek`](#uncancel-week)
   - [Updating a student's progress: `updateprogress`](#update-progress)
-  - [Cancelling a tutorial's week: `cancelweek`](#cancel-week)
-  - [Unancelling a tutorial's week: `uncancelweek`](#uncancel-week)
   - [Remarks](#remarks)
     - [Adding a remark: `remark`](#remark)
     - [Deleting a remark: `unremark`](#unremark)
@@ -33,8 +35,8 @@ And the best part? No technical expertise needed—just basic computer skills li
     - [Delete by student details](#deletebydetails)
   - [Clearing all students: `clear`](#clear)
   - [Exiting the app: `exit`](#exit)
+  - [Saving the data](#saving-the-data)
 - [Command Summary](#command-summary)
-- [Parameter Summary](#parameter-summary)
 - [FAQ](#faq)
 ---
 ## Quick start
@@ -157,9 +159,78 @@ If any required fields are missing or the index is wrong, an error will be shown
 
 ![add error](images/errorAdd.png)
 
-<find>
+<a name="find"></a>
+### Finding students by name: `find`
 
-<filter>
+Instantly locate students by typing the beginning of any word in their name.
+
+Format: `find KEYWORD [MORE_KEYWORDS]...`
+
+**Search Rules:**
+* The search is case-insensitive. e.g. `hans` matches `Hans`
+* The order of keywords does not matter. e.g. `Hans Bo` matches `Bo Hans`
+* Only the name field is searched
+* Keywords match the **start of words** in names (prefix matching).Substrings in the middle of words are not matched.
+    * e.g. `Han` matches `Hans`
+    * `an` will not match `Hans`
+* If you provide multiple keywords, TeachAssist will find students that match any of them (e.g., find Al Bob finds both Albert and Bobby)
+
+**Example:** `find jo doe` — Finds **Jo**hn **Doe** and **Jo**anne **Doe**bertson.
+
+**Expected Output:**
+The student list updates instantly to show only matching records, and the Result Box (see Figure X) displays the total count of students found.
+
+<box type="warning">
+Warning: Keywords must be alphabetic only (A–Z). Using numbers or symbols (e.g., `find A123`) will result in an error.
+</box>
+
+**Note:** The `find` command searches through the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
+
+
+
+<a name="filter"></a>
+### Filtering students: `filter`
+
+Narrow down your student list by Course ID, Tutorial Group, Progress, or Absence count. This is the most efficient way to identify "at-risk" students or specific tutorial sections.
+
+Format:
+```
+filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]`
+```
+
+Behaviour:
+* Course ID (`crs/`) and tutorial group (`tg/`) are matched case-insensitively.
+* Progress (`p/`) must be one of the supported tokens(case insensitive): `on_track`, `needs_attention`, `at_risk`, or `clear` (alias `not_set`).
+* Absence count (`abs/`) matches students whose absence count is greater than or equal to the provided number.
+* Multiple filters combine with AND semantics — a student must satisfy every provided filter to be included in the results.
+
+**Warning:**At least one filter parameter must be provided; using no parameters will result in an error.
+** Note:** the `filter` command applies to the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
+
+Examples:
+* `filter crs/CS2103T` — returns students enrolled in CS2103T.
+* `filter crs/CS2103T tg/T01` — returns students in CS2103T and tutorial group T01.
+* `filter p/on_track` — returns students whose progress is `on_track`.
+* `filter abs/2` — returns students with 2 or more absences.
+* `filter crs/CS2103T tg/T02 p/needs_attention abs/1` — returns students matching all four criteria.
+
+**Examples:**
+
+filter crs/CS2103T — Returns all students enrolled in CS2103T.
+
+filter crs/CS2103T tg/T01 — Returns students in CS2103T and tutorial group T01.
+
+filter abs/2 — Returns students with 2 or more absences.
+
+filter crs/CS2103T tg/T02 p/needs_attention abs/1 — Returns students matching all four criteria.
+
+**Expected Output:**
+The student list updates instantly. The Result Box will display the total count:
+
+`There are 5 students matching this filter.`
+
+**Tip:** if a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
+
 
 <a name="edit"></a>
 ### Editing a student: `edit`
@@ -188,20 +259,26 @@ If any required fields are missing or wrong, an error will be shown:
 
 ![edit error no field](images/errorEditNoField.png)
 
-<markattendance>
-### Marks a students attendance: `markattendance`
-![MarkAttendanceUI.png](images/MarkAttendanceUI.png)
-**Update attendance by index, week, status**
+<a name="attendance"></a>
+### Updating students' attendance
 
-Format:
-```
-markattendance INDEX week/WEEK sta/STATUS
-```
+TeachAssist provides three attendance-related commands. Use `markattendance` to update an individual student's attendance for a specific week, `cancelweek` to cancel a tutorial week for an entire class, and `uncancelweek` to restore a previously cancelled week.
+
+<a name="mark-attendance"></a>
+#### Marking a student's attendance: `markattendance`
+
+Use this command to update the attendance of a specific student for a specific week.
+
+Format: `markattendance INDEX week/WEEK sta/STATUS`
 
 * Updates the attendance of student at the specified `INDEX` and `WEEK` to `STATUS`.
 * The index refers to the index number shown in the currently displayed student list.
 * The index **must be a positive integer** 1, 2, 3, …
 * The week referes to school weeks, which are visible to the right of teachassist
+- Supported attendance statuses:
+    - `y` for present
+    - `a` for absent
+    - `n` for unmarked
 
 **Examples**:
 `markattendance 1 week/3 sta/y`
@@ -213,17 +290,12 @@ markattendance INDEX week/WEEK sta/STATUS
 `markattendance 4 week/4 sta/n`
 * marks the attendance of the 4th student's attendance in week 4 as unmarked -> Grey.
 
-##
-<cancelweek>
 <a name="cancel-week"></a>
-### Cancelling a tutorial's week: `cancelweek`
-![CancelWeekUI.png](images/CancelWeekUI.png)
-Marks a specific week as **cancelled** for all students in a given course and tutorial group.
+#### Cancelling a tutorial's week: `cancelweek`
 
-Format:
+Use this command when a tutorial week does not take place and should be marked as cancelled for all students in a specific course and tutorial group.
 
-cancelweek crs/COURSE_ID tg/TUTORIAL_GROUP week/WEEK
-
+Format: `cancelweek crs/COURSE_ID tg/TUTORIAL_GROUP week/WEEK`
 
 * Cancels the specified `WEEK` for **all students** in the matching `COURSE_ID` and `TUTORIAL_GROUP`.
 * A cancelled week will be reflected in each student’s attendance record.
@@ -232,22 +304,15 @@ cancelweek crs/COURSE_ID tg/TUTORIAL_GROUP week/WEEK
     * Existing students in that course and tutorial group.
     * Future students added to the same course and tutorial group.
 
-**Examples**:
+Example:
+- `cancelweek crs/CS2103T tg/T01 week/5` — cancels week 5 for all students in course `CS2103T` and tutorial group `T01`.
 
-cancelweek crs/CS2103T tg/T01 week/5
-
-* Cancels week 5 for all students in CS2103T tutorial group T01.
-
-##
-<uncancelweek>
 <a name="uncancel-week"></a>
-### Uncancelling a tutorial's week: `uncancelweek`
-Reverts a previously cancelled week for a specific course and tutorial group.
+#### Uncancelling a tutorial's week: `uncancelweek`
 
-Format:
+Use this command to restore a previously cancelled tutorial week for all students in a specific course and tutorial group.
 
-uncancelweek crs/COURSE_ID tg/TUTORIAL_GROUP week/WEEK
-
+Format: `uncancelweek crs/COURSE_ID tg/TUTORIAL_GROUP week/WEEK`
 
 * Removes the cancelled status for the specified `WEEK`.
 * The week will return to a normal attendance state for all students in the matching course and tutorial group.
@@ -256,11 +321,8 @@ uncancelweek crs/COURSE_ID tg/TUTORIAL_GROUP week/WEEK
     * Future students (the week will no longer be auto-marked as cancelled).
 * If the week was not previously cancelled, the command will have no effect.
 
-**Examples**:
-
-uncancelweek crs/CS2103T tg/T01 week/5
-
-* Restores week 5 as a normal week for all students in CS2103T tutorial group T01.
+Example:
+- `uncancelweek crs/CS2103T tg/T01 week/5` — restores week 5 as a normal week for all students in course `CS2103T` and tutorial group `T01`.
 
 <a name="update-progress"></a>
 ### Updating a student's progress : `updateprogress`
@@ -344,7 +406,26 @@ unremark 1 r/2
 ```
 
 
-<view>
+<a name="view"></a>
+### Viewing a student: `view`
+
+If you need to see a student's remarks history, use the view command to display their information in the side panel.
+
+Format:
+```
+view INDEX
+```
+**Example:** `view 1` — Displays the full details of the first student in the list.
+
+**Expected Output:**
+The **View Window** on the right side of the application updates to show the selected student's details. A confirmation message also appears in the Result Box:
+> `Viewing student: John Doe; ID: A0123456X; ...`
+
+**Note** The `view` command works on the *currently filtered* list. If you have filtered the list to show only "At Risk" students, `view 1` will show the first student in that filtered sub-list.
+
+<box type="warning">
+**Warning:** If the index provided is larger than the number of students currently visible (e.g., typing `view 10` when only 5 students are listed), TeachAssist will show an "Invalid index" error.
+</box>
 
 <a name="delete"></a>
 ### Deleting a student: `delete`
@@ -430,205 +511,6 @@ exit
 ### Saving the data
 
 TeachAssist data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
-
-[end]
-
-
-<a name="find"></a>
-### Finding students by name: `find`
-
-Instantly locate students by typing the beginning of any word in their name.
-
-Format: `find KEYWORD [MORE_KEYWORDS]...`
-
-**Search Rules:**
-* The search is case-insensitive. e.g. `hans` matches `Hans`
-* The order of keywords does not matter. e.g. `Hans Bo` matches `Bo Hans`
-* Only the name field is searched
-* Keywords match the **start of words** in names (prefix matching).Substrings in the middle of words are not matched.
-    * e.g. `Han` matches `Hans`
-    * `an` will not match `Hans`
-* If you provide multiple keywords, TeachAssist will find students that match any of them (e.g., find Al Bob finds both Albert and Bobby)
-
-**Example:** `find jo doe` — Finds **Jo**hn **Doe** and **Jo**anne **Doe**bertson.
-
-**Expected Output:**
-The student list updates instantly to show only matching records, and the Result Box (see Figure X) displays the total count of students found.
-
-<box type="warning">
-Warning: Keywords must be **alphabetic only** (A–Z). Using numbers or symbols (e.g., `find A123`) will result in an error.
-</box>
-
-**Note:** The `find` command searches through the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
-
-<a name="filter"></a>
-### Filtering students: `filter`
-
-Narrow down your student list by Course ID, Tutorial Group, Progress, or Absence count. This is the most efficient way to identify "at-risk" students or specific tutorial sections.
-
-Format:
-```
-filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]`
-```
-
-Behaviour:
-* Course ID (`crs/`) and tutorial group (`tg/`) are matched case-insensitively.
-* Progress (`p/`) must be one of the supported tokens(case insensitive): `on_track`, `needs_attention`, `at_risk`, or `clear` (alias `not_set`).
-* Absence count (`abs/`) matches students whose absence count is greater than or equal to the provided number.
-* Multiple filters combine with AND semantics — a student must satisfy every provided filter to be included in the results.
-
-**Warning:**At least one filter parameter must be provided; using no parameters will result in an error.
-** Note:** the `filter` command applies to the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
-
-Examples:
-* `filter crs/CS2103T` — returns students enrolled in CS2103T.
-* `filter crs/CS2103T tg/T01` — returns students in CS2103T and tutorial group T01.
-* `filter p/on_track` — returns students whose progress is `on_track`.
-* `filter abs/2` — returns students with 2 or more absences.
-* `filter crs/CS2103T tg/T02 p/needs_attention abs/1` — returns students matching all four criteria.
-
-**Examples:**
-
-filter crs/CS2103T — Returns all students enrolled in CS2103T.
-
-filter crs/CS2103T tg/T01 — Returns students in CS2103T and tutorial group T01.
-
-filter abs/2 — Returns students with 2 or more absences.
-
-filter crs/CS2103T tg/T02 p/needs_attention abs/1 — Returns students matching all four criteria.
-
-**Expected Output:**
-The student list updates instantly. The Result Box will display the total count:
-
-`There are 5 students matching this filter.`
-
-**Tip:** if a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
-
-##
-
-<a name="edit"></a>
-### Editing a student: `edit`
-
-Edit fields of the students at the given index. At least one field to edit must be provided.
-
-Format:
-```
-edit INDEX [n/NAME] [id/STUDENT_ID] [e/EMAIL] [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [tel/TELEGRAM_USERNAME]
-```
-
-Examples:
-* `edit 1 n/John Tan` - Edits the name of the 1st student to `John Tan`.
-* `edit 2 e1384397@u.nus.edu` - Edits the email of the 2nd student.
-* `edit 3 tel/@john_tan` - Edits the Telegram username of the 3rd student.
-* `edit 4 crs/CS2103T tg/T03` - Edits the course ID and tutorial group of the 4th student.
-* `edit 5 n/John Tan e1384397@u.nus.edu` - Edits the name and email of the 5th student.
-* `edit 6 id/A1234567B crs/CS2040S tg/T12` - Edits the student ID, course ID, and tutorial group of the 6th student.
-* `edit 7 n/John Tan id/A1234567B e1384397@u.nus.edu crs/CS2105 tg/T08 tel/@john_tan` - Edits all editable fields of the 7th student.
-
-##
-
-<a name="view"></a>
-### Viewing a student: `view`
-
-If you need to see a student's remarks history, use the view command to display their information in the side panel.
-
-Format:
-```
-view INDEX
-```
-**Example:** `view 1` — Displays the full details of the first student in the list.
-
-**Expected Output:**
-The **View Window** on the right side of the application updates to show the selected student's details. A confirmation message also appears in the Result Box:
-> `Viewing student: John Doe; ID: A0123456X; ...`
-
-**Note** The `view` command works on the *currently filtered* list. If you have filtered the list to show only "At Risk" students, `view 1` will show the first student in that filtered sub-list.
-
-<box type="warning">
-**Warning:** If the index provided is larger than the number of students currently visible (e.g., typing `view 10` when only 5 students are listed), TeachAssist will show an "Invalid index" error.
-</box>
-
-<a name="mark-attendance"></a>
-
-
-
-<a name="update-progress"></a>
-### Updating a student's progress : `updateprogress`
-
-Updates a student's progress.
-
-Format:
-```
-updateprogress INDEX p/PROGRESS
-```
-
-* Supported progress values:
-  * `on_track`
-  * `needs_attention`
-  * `at_risk`
-  * `not_set` (alias: `clear`)
-
-* Parsing is case-insensitive (e.g `ON_TRACK` and `on_track` are both accepted)
-* To remove a progress tag use `not_set` or `clear`.
-
-Examples:
-```
-updateprogress 1 p/on_track
-```
-
-<a name="progressbydetails"></a>
-**Update progress by student details**
-
-Format:
-```
-updateprogress id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP p/PROGRESS
-```
-
-* Updates the progress of the student with the exact details match for `STUDENT_ID`, `COURSE_ID`, and `TUTORIAL_GROUP` to `PROGRESS`.
-
-**Examples**:
-* `updateprogress 1 p/on_track` - Sets the progress of the 1st student in the currently displayed student list to `on_track`.
-* `updateprogress id/A1234567X crs/CS2103T tg/T01 p/needs_attention` - Sets the progress of the student with student ID A1234567X, course CS2103T, and tutorial group T01 to `needs_attention`.
-* `updateprogress 2 p/not_set` - Clears the progress status of the 2nd student in the currently displayed student list.
-
-##
-
-
-<div markdown="span" class="alert alert-primary"></div>
-:bulb: **Tip:**<br><br>
-
-<a name='remark'></a>
-### Adding a remark: `remark`
-
-* Adds a remark to the student at a particular index
-
-<a name="attendancebyindex"></a>
-**Update attendance by index, week, status**
-
-Format:
-```
-markattendance INDEX week/WEEK sta/STATUS
-```
-
-* Updates the attendance of student at the specified `INDEX` and `WEEK` to `STATUS`.
-* The index refers to the index number shown in the currently displayed student list.
-* The index **must be a positive integer** 1, 2, 3, …
-* The week referes to school weeks, which are visible to the right of teachassist
-
-**Examples**:
-`markattendance 1 week/3 sta/y`
-* marks the attendance of the 1st student's attendance in week 3 as present -> Green.
-
-`markattendance 2 week/6 sta/a`
-* marks the attendance of the 2nd student's attendance in week 6 as absent -> Red.
-
-`markattendance 4 week/4 sta/n`
-* marks the attendance of the 4th student's attendance in week 4 as unmarked -> Grey.
-
-<a name='unremark'></a>
-### Deleting a remark: `unremark`
-
-* Removes the remark of a student at a particular index
 
 
 --------------------------------------------------------------------------------------------------------------------
