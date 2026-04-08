@@ -9,6 +9,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TELE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TGROUP;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -28,6 +29,27 @@ public class EditCommandParser implements Parser<EditCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL,
                         PREFIX_COURSEID, PREFIX_TGROUP, PREFIX_TELE);
+
+        Prefix[] allowedPrefixes = {
+            PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL,
+            PREFIX_COURSEID, PREFIX_TGROUP, PREFIX_TELE
+        };
+        String allowedReadable = "n/, sid/, e/, crs/, tg/, tele/";
+
+        ParserValidators.checkForUnknownPrefixTokens(args, allowedPrefixes,
+                allowedReadable, AddCommand.MESSAGE_USAGE);
+        ParserValidators.checkForBarePrefixes(argMultimap, allowedPrefixes,
+                AddCommand.MESSAGE_USAGE);
+        ParserValidators.checkForMissingValues(argMultimap,
+                new Prefix[]{
+                    PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL, PREFIX_COURSEID, PREFIX_TGROUP},
+                new String[]{
+                    "n/", "sid/", "e/", "crs/", "tg/"},
+                new String[]{
+                    "Name cannot be empty.", "Student ID cannot be empty.",
+                    "Email cannot be empty.", "Course ID cannot be empty.",
+                    "Tutorial group cannot be empty."},
+                AddCommand.MESSAGE_USAGE);
 
         Index index;
 
@@ -60,6 +82,21 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (argMultimap.getValue(PREFIX_TELE).isPresent()) {
             editPersonDescriptor.setTele(ParserUtil.parseTele(argMultimap.getValue(PREFIX_TELE).get()));
         }
+
+        ParserValidators.checkForUnknownPrefixTokens(args, allowedPrefixes,
+                allowedReadable, AddCommand.MESSAGE_USAGE);
+        ParserValidators.checkForBarePrefixes(argMultimap, allowedPrefixes,
+                AddCommand.MESSAGE_USAGE);
+        ParserValidators.checkForMissingValues(argMultimap,
+                new Prefix[] {
+                    PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL, PREFIX_COURSEID, PREFIX_TGROUP },
+                new String[] {
+                    "n/", "sid/", "e/", "crs/", "tg/" },
+                new String[] {
+                    "Name cannot be empty.", "Student ID cannot be empty.",
+                    "Email cannot be empty.", "Course ID cannot be empty.",
+                    "Tutorial group cannot be empty." },
+                AddCommand.MESSAGE_USAGE);
 
         return new EditCommand(index, editPersonDescriptor);
     }

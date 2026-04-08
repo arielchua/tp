@@ -36,6 +36,30 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL,
                         PREFIX_COURSEID, PREFIX_TGROUP, PREFIX_TELE);
+        Prefix[] allowedPrefixes = {
+            PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL,
+            PREFIX_COURSEID, PREFIX_TGROUP, PREFIX_TELE
+        };
+        String allowedReadable = "n/, sid/, e/, crs/, tg/, tele/";
+
+        ParserValidators.checkForUnknownPrefixTokens(args, allowedPrefixes,
+                allowedReadable, AddCommand.MESSAGE_USAGE);
+        ParserValidators.checkForBarePrefixes(argMultimap, allowedPrefixes,
+                AddCommand.MESSAGE_USAGE);
+
+        Prefix[] requiredPrefixes = {
+            PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL, PREFIX_COURSEID, PREFIX_TGROUP
+        };
+        String[] requiredPrefixStrings = {
+            "n/", "sid/", "e/", "crs/", "tg/"
+        };
+        String[] requiredPrefixDetails = {
+            "Name cannot be empty.",
+            "Student ID cannot be empty.",
+            "Email cannot be empty.",
+            "Course ID cannot be empty.",
+            "Tutorial group cannot be empty."
+        };
 
         if (!argMultimap.arePrefixesPresent(PREFIX_NAME, PREFIX_STUDENTID,
                 PREFIX_EMAIL, PREFIX_COURSEID, PREFIX_TGROUP)
@@ -55,6 +79,8 @@ public class AddCommandParser implements Parser<AddCommand> {
         if (argMultimap.getValue(PREFIX_TELE).isPresent()) {
             tele = ParserUtil.parseTele(argMultimap.getValue(PREFIX_TELE).get());
         }
+        ParserValidators.checkForMissingValues(argMultimap, requiredPrefixes,
+                requiredPrefixStrings, requiredPrefixDetails, AddCommand.MESSAGE_USAGE);
 
         Person person = new Person(name, courseId, email, studentId, tGroup, tele, new WeekList(), Progress.NOT_SET);
 
