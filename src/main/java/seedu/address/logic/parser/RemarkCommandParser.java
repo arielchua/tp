@@ -36,8 +36,9 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
             for (String token : trimmedArgs.split("\\s+")) {
                 if (token.contains("/")) {
                     throw new ParseException(
-                            ParserMessages.invalidPrefix(ALLOWED_PREFIXES_HUMAN_READABLE,
-                                    RemarkCommand.MESSAGE_USAGE));
+                        ParserMessages.invalidPrefix(
+                            ALLOWED_PREFIXES_HUMAN_READABLE,
+                            RemarkCommand.MESSAGE_USAGE));
                 }
             }
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
@@ -55,6 +56,7 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
                     "txt/",
                     "Remark text cannot be empty.",
                     RemarkCommand.MESSAGE_USAGE));
+        }
 
         Index index = ParserUtil.parseIndex(indexPart);
 
