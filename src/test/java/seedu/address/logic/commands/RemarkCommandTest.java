@@ -41,7 +41,7 @@ public class RemarkCommandTest {
     @Test
     public void constructor_nullRemark_throwsNullPointerException() {
         Index index = Index.fromOneBased(1);
-        assertThrows(NullPointerException.class, () -> new RemarkCommand(index, null));
+        assertThrows(NullPointerException.class, () -> new RemarkCommand(index, (Remark) null));
     }
 
     @Test

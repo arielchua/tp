@@ -27,22 +27,22 @@ public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
 
-    private static final String WELCOME_MESSAGE = "Welcome to TeachAssist!\n"
-            + "Manage student attendance, progress, and remarks across multiple courses in one place.\n"
-            + "Type 'help' to see the list of available commands.";
+    private static final String WELCOME_MESSAGE = """
+            Welcome to TeachAssist!
+            Manage student attendance, progress, and remarks across multiple courses in one place.
+            Type 'help' to see the list of available commands.""";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
-    private Stage primaryStage;
-    private Logic logic;
+    private final Stage primaryStage;
+    private final Logic logic;
 
     // Independent Ui parts residing in this Ui container
     private PersonListPanel personListPanel;
     private ResultDisplay resultDisplay;
-    private HelpWindow helpWindow;
+    private final HelpWindow helpWindow;
     private CommandBox commandBox;
-
-    private ViewWindow viewWindow;
+    private final ViewWindow viewWindow;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -110,19 +110,13 @@ public class MainWindow extends UiPart<Stage> {
         menuItem.setAccelerator(keyCombination);
 
         /*
-         * TODO: the code below can be removed once the bug reported here
-         * https://bugs.openjdk.java.net/browse/JDK-8131666
-         * is fixed in later version of SDK.
+         * Workaround for a bug in JavaFX [JDK-8131666], where function-key events are
+         * consumed by TextInputControl (TextField, TextArea). This prevents accelerators
+         * like F1 from working when the focus is in the CommandBox or ResultDisplay.
          *
-         * According to the bug report, TextInputControl (TextField, TextArea) will
-         * consume function-key events. Because CommandBox contains a TextField, and
-         * ResultDisplay contains a TextArea, thus some accelerators (e.g F1) will
-         * not work when the focus is in them because the key event is consumed by
-         * the TextInputControl(s).
-         *
-         * For now, we add following event filter to capture such key events and open
-         * help window purposely so to support accelerators even when focus is
-         * in CommandBox or ResultDisplay.
+         * We use an event filter to capture such key events and trigger the action
+         * manually. This ensures that accelerators work globally, even when focus
+         * is on a text input control.
          */
         getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getTarget() instanceof TextInputControl && keyCombination.match(event)) {
@@ -199,7 +193,6 @@ public class MainWindow extends UiPart<Stage> {
         // This keeps the UI selection (blue highlight) in sync with the embedded view.
         if (personListPanel != null && personListPanel.getPersonListView() != null) {
             personListPanel.getPersonListView().getSelectionModel().select(person);
-            personListPanel.getPersonListView().scrollTo(person);
         }
     }
 
@@ -225,13 +218,6 @@ public class MainWindow extends UiPart<Stage> {
             viewWindowPlaceholder.getChildren().clear();
         }
         primaryStage.hide();
-    }
-
-    /**
-     * Returns the person list panel displayed in this window.
-     */
-    public PersonListPanel getPersonListPanel() {
-        return personListPanel;
     }
 
     /**
@@ -264,11 +250,11 @@ public class MainWindow extends UiPart<Stage> {
      * Processes the outcome of a command execution.
      */
     private void handleCommandResult(CommandResult commandResult) {
-        if (commandResult.isShowView()) {
+        if (commandResult.shouldShowView()) {
             handleView(commandResult.getPersonToView());
         }
 
-        if (commandResult.isShowHelp()) {
+        if (commandResult.isHelpRequest()) {
             handleHelp();
         }
 
@@ -285,23 +271,34 @@ public class MainWindow extends UiPart<Stage> {
             return;
         }
 
-        boolean stillViewing = logic.getFilteredPersonList().stream()
-                .filter(p -> viewWindow.isViewing(p))
-                .findFirst()
-                .map(updatedPerson -> {
-                    viewWindow.setPerson(updatedPerson);
-                    // Keep list selection in sync when view is auto-refreshed
-                    if (personListPanel != null && personListPanel.getPersonListView() != null) {
-                        personListPanel.getPersonListView().getSelectionModel().select(updatedPerson);
-                        personListPanel.getPersonListView().scrollTo(updatedPerson);
-                    }
-                    return true;
-                })
-                .orElse(false);
+        findUpdatedPersonInList().ifPresentOrElse(
+                this::syncListSelection,
+                this::clearViewWindow
+        );
+    }
 
-        if (!stillViewing) {
-            clearViewWindow();
-        }
+    /**
+     * Searches the filtered person list for the person currently being viewed
+     * and returns an {@code Optional} containing the updated person if found.
+     *
+     * @return An {@code Optional} with the updated person, or empty if not found.
+     */
+    private java.util.Optional<Person> findUpdatedPersonInList() {
+        return logic.getFilteredPersonList().stream()
+                .filter(viewWindow::isViewing)
+                .findFirst();
+    }
+
+    /**
+     * Synchronizes the person list selection and view window with the given person.
+     *
+     * @param person The person to display and select.
+     */
+    private void syncListSelection(Person person) {
+        viewWindow.setPerson(person);
+        assert personListPanel != null : "personListPanel should not be null";
+        assert personListPanel.getPersonListView() != null : "personListPanel's ListView should not be null";
+        personListPanel.getPersonListView().getSelectionModel().select(person);
     }
 
     /**
@@ -311,9 +308,8 @@ public class MainWindow extends UiPart<Stage> {
         viewWindow.clear();
         viewWindowPlaceholder.getChildren().clear();
         // Also clear selection in the person list to avoid stale blue highlight
-        if (personListPanel != null && personListPanel.getPersonListView() != null) {
-            personListPanel.getPersonListView().getSelectionModel().clearSelection();
-        }
+        assert personListPanel != null : "personListPanel should not be null";
+        assert personListPanel.getPersonListView() != null : "personListPanel's ListView should not be null";
+        personListPanel.getPersonListView().getSelectionModel().clearSelection();
     }
 }
-

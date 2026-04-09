@@ -99,7 +99,7 @@ public class ViewCommandTest {
             CommandResult result = viewCommand.execute(model);
             assertEquals(expectedMessage, result.getFeedbackToUser());
             assertEquals(personToView, result.getPersonToView());
-            assertTrue(result.isShowView());
+            assertTrue(result.shouldShowView());
         } catch (Exception e) {
             throw new AssertionError("Execution of command should not fail.", e);
         }

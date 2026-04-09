@@ -31,7 +31,7 @@ public class ParserUtil {
     public static final String MESSAGE_INVALID_PROGRESS =
             "Invalid progress value. Allowed values are: on_track, needs_attention, at_risk, clear.";
     public static final String MESSAGE_INVALID_ABSENCE_COUNT =
-            "Absence count must be a non-negative integer.";
+            "Absence count must be a non-negative integer and at most 13.";
     public static final String MESSAGE_INVALID_KEYWORDS =
             "Keywords should contain alphabetic characters separated by spaces only.";
     public static final String MESSAGE_EMPTY_KEYWORDS =
@@ -298,7 +298,11 @@ public class ParserUtil {
         }
 
         try {
-            return Integer.parseInt(trimmed);
+            int count = Integer.parseInt(trimmed);
+            if (count > 13) {
+                throw new ParseException(MESSAGE_INVALID_ABSENCE_COUNT);
+            }
+            return count;
         } catch (NumberFormatException e) {
             throw new ParseException("Absence count is too large.", e);
         }

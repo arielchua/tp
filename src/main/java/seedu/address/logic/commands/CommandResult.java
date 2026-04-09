@@ -15,7 +15,7 @@ public class CommandResult {
     private final String feedbackToUser;
 
     /** Help information should be shown to the user. */
-    private final boolean showHelp;
+    private final boolean helpRequest;
 
     /** The application should exit. */
     private final boolean exit;
@@ -51,7 +51,7 @@ public class CommandResult {
     public CommandResult(String feedbackToUser, Person personToView, boolean showHelp, boolean exit) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.personToView = personToView;
-        this.showHelp = showHelp;
+        this.helpRequest = showHelp;
         this.exit = exit;
 
         assert !(showHelp && exit) : "CommandResult cannot show help and exit at the same time";
@@ -61,11 +61,11 @@ public class CommandResult {
         return feedbackToUser;
     }
 
-    public boolean isShowHelp() {
-        return showHelp;
+    public boolean isHelpRequest() {
+        return helpRequest;
     }
 
-    public boolean isShowView() {
+    public boolean shouldShowView() {
         return personToView != null;
     }
 
@@ -91,21 +91,21 @@ public class CommandResult {
         }
 
         return feedbackToUser.equals(otherCommandResult.feedbackToUser)
-                && showHelp == otherCommandResult.showHelp
+                && helpRequest == otherCommandResult.helpRequest
                 && exit == otherCommandResult.exit
                 && Objects.equals(personToView, otherCommandResult.personToView);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackToUser, showHelp, exit, personToView);
+        return Objects.hash(feedbackToUser, helpRequest, exit, personToView);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .add("feedbackToUser", feedbackToUser)
-                .add("showHelp", showHelp)
+                .add("helpRequest", helpRequest)
                 .add("personToView", personToView)
                 .add("exit", exit)
                 .toString();

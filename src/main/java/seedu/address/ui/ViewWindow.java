@@ -20,9 +20,11 @@ public class ViewWindow extends UiPart<Region> {
     private static final String FXML = "ViewWindow.fxml";
     private static final int HEADER_ROW_INDEX = 0;
     private static final int FIRST_REMARK_ROW_INDEX = 1;
+    private static final int COL_INDEX_ID = 0;
+    private static final int COL_INDEX_DATE = 1;
+    private static final int COL_INDEX_TEXT = 2;
 
     private final Logger logger = LogsCenter.getLogger(getClass());
-
     private Person person;
 
     @FXML
@@ -51,6 +53,7 @@ public class ViewWindow extends UiPart<Region> {
      */
     public void setPerson(Person person) {
         requireNonNull(person);
+        logger.info("Updating ViewWindow to display: " + person.getName());
         this.person = person;
         updateDisplay();
     }
@@ -70,6 +73,7 @@ public class ViewWindow extends UiPart<Region> {
      * Updates all UI components with the data from the current person.
      */
     private void updateDisplay() {
+        assert person != null : "Person cannot be null here";
         updateMetadata();
         refreshRemarksGrid();
     }
@@ -78,6 +82,7 @@ public class ViewWindow extends UiPart<Region> {
      * Updates the text labels in the header section with the person's basic information.
      */
     private void updateMetadata() {
+        assert person != null : "Person should not be null when updating metadata";
         nameLabel.setText(person.getName().fullName);
         studentIdLabel.setText(person.getStudentId().value);
         courseIdLabel.setText(person.getCourseId().value);
@@ -89,12 +94,8 @@ public class ViewWindow extends UiPart<Region> {
      * The header row is defined in FXML and preserved.
      */
     private void refreshRemarksGrid() {
-        remarksGrid.getChildren().removeIf(node -> {
-            Integer rowIndex = GridPane.getRowIndex(node);
-            int effectiveRowIndex = rowIndex == null ? HEADER_ROW_INDEX : rowIndex;
-            return effectiveRowIndex >= FIRST_REMARK_ROW_INDEX;
-        });
-
+        assert person != null : "Person should not be null when refreshing remarks";
+        clearRemarksOnly();
         int rowIndex = FIRST_REMARK_ROW_INDEX;
         for (Remark remark : person.getRemarks()) {
             addRemarkRow(remark, rowIndex);
@@ -110,22 +111,30 @@ public class ViewWindow extends UiPart<Region> {
      */
     private void addRemarkRow(Remark remark, int rowIndex) {
         int displayIndex = rowIndex - FIRST_REMARK_ROW_INDEX + 1;
-        Label indexLabel = new Label(String.valueOf(displayIndex));
-        indexLabel.getStyleClass().add("index-cell");
-        indexLabel.setMaxWidth(Double.MAX_VALUE);
-
-        Label dateLabel = new Label(remark.getDate().toString());
-        dateLabel.getStyleClass().add("date-cell");
-        dateLabel.setMaxWidth(Double.MAX_VALUE);
-
-        Label remarkLabel = new Label(remark.getText());
-        remarkLabel.getStyleClass().add("remark-cell");
+        Label indexLabel = createCellLabel(String.valueOf(displayIndex), "index-cell");
+        Label dateLabel = createCellLabel(remark.getDate().toString(), "date-cell");
+        Label remarkLabel = createCellLabel(remark.getText(), "remark-cell");
         remarkLabel.setWrapText(true);
-        remarkLabel.setMaxWidth(Double.MAX_VALUE);
-        remarksGrid.add(indexLabel, 0, rowIndex);
-        remarksGrid.add(dateLabel, 1, rowIndex);
-        remarksGrid.add(remarkLabel, 2, rowIndex);
+
+        remarksGrid.add(indexLabel, COL_INDEX_ID, rowIndex);
+        remarksGrid.add(dateLabel, COL_INDEX_DATE, rowIndex);
+        remarksGrid.add(remarkLabel, COL_INDEX_TEXT, rowIndex);
     }
+
+    /**
+     * Creates a styled {@code Label} for a grid cell.
+     *
+     * @param text The text for the label.
+     * @param styleClass The CSS style class to apply.
+     * @return A new {@code Label} instance.
+     */
+    private Label createCellLabel(String text, String styleClass) {
+        Label label = new Label(text);
+        label.getStyleClass().add(styleClass);
+        label.setMaxWidth(Double.MAX_VALUE);
+        return label;
+    }
+
     /**
      * Clears the current view and resets UI components.
      */
@@ -135,9 +144,17 @@ public class ViewWindow extends UiPart<Region> {
         studentIdLabel.setText("");
         courseIdLabel.setText("");
         tGroupLabel.setText("");
-        // remove remark rows (preserve header row)
+        clearRemarksOnly();
+    }
+
+    /**
+     * Clears only the remark rows from the grid, preserving the header.
+     */
+    private void clearRemarksOnly() {
         remarksGrid.getChildren().removeIf(node -> {
             Integer rowIndex = GridPane.getRowIndex(node);
+            // If rowIndex is null, it's considered to be in the first row (header).
+            // This is a defensive check for nodes added without an explicit row index.
             int effectiveRowIndex = rowIndex == null ? HEADER_ROW_INDEX : rowIndex;
             return effectiveRowIndex >= FIRST_REMARK_ROW_INDEX;
         });

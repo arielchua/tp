@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import seedu.address.commons.core.index.Index;
@@ -46,6 +47,16 @@ public class RemarkCommand extends Command {
         requireNonNull(remark);
         this.targetIndex = targetIndex;
         this.remark = remark;
+    }
+
+    /**
+     * Overloaded constructor for RemarkCommand.
+     *
+     * @param targetIndex
+     * @param remark
+     */
+    public RemarkCommand(Index targetIndex, String remark) {
+        this(targetIndex, new Remark(remark, LocalDate.now()));
     }
 
     @Override

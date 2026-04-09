@@ -235,6 +235,17 @@ public class FilterMatchesPredicateTest {
     }
 
     @Test
+    public void test_absenceCountMatchesThresholdExactly_returnsTrue() {
+        // BV: Testing the exact threshold value
+        int threshold = 5;
+        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(threshold));
+
+        // The requirement says "at or above" (>=)
+        assertTrue(predicate.test(new PersonBuilder().withAbsences(threshold).build()));
+    }
+
+    @Test
     public void test_toString() {
         Optional<CourseId> courseId = Optional.of(new CourseId("CS2103T"));
         Optional<TGroup> tGroup = Optional.of(new TGroup("T01"));
