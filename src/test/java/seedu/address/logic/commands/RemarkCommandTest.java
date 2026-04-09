@@ -62,11 +62,13 @@ public class RemarkCommandTest {
         RemarkCommand command = new RemarkCommand(Index.fromOneBased(1), remark);
 
         CommandResult commandResult = command.execute(modelStub);
+        Person updatedPerson = modelStub.getFilteredPersonList().get(0);
 
-        assertEquals(String.format(RemarkCommand.MESSAGE_ADD_REMARKS_SUCCESS, Messages.format(person) + "\n"
+        assertEquals(String.format(RemarkCommand.MESSAGE_ADD_REMARKS_SUCCESS,
+            Messages.format(updatedPerson) + "\n"
                 + "Remark: " + remark.getText()), commandResult.getFeedbackToUser());
-        assertEquals(1, person.getRemarks().size());
-        assertEquals(remark, person.getRemarks().get(0));
+        assertEquals(1, updatedPerson.getRemarks().size());
+        assertEquals(remark, updatedPerson.getRemarks().get(0));
     }
 
     @Test
@@ -234,6 +236,12 @@ public class RemarkCommandTest {
         @Override
         public ReadOnlyAddressBook getAddressBook() {
             return new AddressBook();
+        }
+
+        @Override
+        public void setPerson(Person target, Person editedPerson) {
+            int index = filteredPersons.indexOf(target);
+            filteredPersons.set(index, editedPerson);
         }
     }
 }

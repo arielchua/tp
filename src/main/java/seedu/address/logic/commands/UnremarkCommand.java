@@ -29,7 +29,7 @@ public class UnremarkCommand extends Command {
 
     public static final String MESSAGE_DELETE_REMARKS_SUCCESS = "Deleted remark from Person: \n%1$s";
 
-    public static final String MESSAGE_DELETE_REMARKS_FAILURE = "Failed to delete remark from Person: %1$s";
+    // public static final String MESSAGE_DELETE_REMARKS_FAILURE = "Failed to delete remark from Person: %1$s";
 
     public static final String MESSAGE_INVALID_REMARK_INDEX = "The remark index provided is invalid.";
 
@@ -60,6 +60,7 @@ public class UnremarkCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
+        Person editedPerson = new Person(personToEdit);
 
         // check if the remark index is valid
         if (remarkIndex.getZeroBased() >= personToEdit.getRemarks().size()) {
@@ -67,8 +68,9 @@ public class UnremarkCommand extends Command {
         }
 
         Remark deletedRemark = personToEdit.getRemarks().get(remarkIndex.getZeroBased());
-        personToEdit.deleteRemark(remarkIndex);
-        return new CommandResult(String.format(MESSAGE_DELETE_REMARKS_SUCCESS, Messages.format(personToEdit)) + "\n"
+        editedPerson.deleteRemark(remarkIndex);
+        model.setPerson(personToEdit, editedPerson);
+        return new CommandResult(String.format(MESSAGE_DELETE_REMARKS_SUCCESS, Messages.format(editedPerson)) + "\n"
                 + "Deleted Remark: " + deletedRemark.getText());
     }
 

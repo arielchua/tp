@@ -620,6 +620,20 @@ Action | Format, Examples
 
 --------------------------------------------------------------------------------------------------------------------
 
+## Parameter summary
+
+Parameter             | Prefix  | Constraints                                                                                                                  | Examples
+----------------------|---------|------------------------------------------------------------------------------------------------------------------------------|------------------------------
+**NAME**              | `n/`    | Alphabets and spaces only; must not be blank. Stored in title case.                                                          | `John Doe`, `Mary Ann`
+**STUDENT_ID**        | `id/`   | Starts with `A`, followed by exactly 7 digits, ends with a letter. Case-insensitive; stored in uppercase.                   | `A0123456X`, `a9876543b`
+**EMAIL**             | `e/`    | Format `local-part@u.nus.edu`. Local part: alphanumeric plus `+`, `_`, `.`, `-`; cannot start or end with a special character. | `e1234567@u.nus.edu`
+**COURSE_ID**         | `crs/`  | Alphanumeric characters only (no spaces or special characters). Stored in uppercase.                                         | `CS2103T`, `MA1521`
+**TUTORIAL_GROUP**    | `tg/`   | Alphanumeric characters only. Stored in uppercase.                                                                           | `T01`, `B03`
+**TELEGRAM_USERNAME** | `tel/`  | Alphanumeric characters and underscores; optional leading `@`; must not be blank. (Optional field)                          | `@johndoe`, `john_doe`
+
+
+--------------------------------------------------------------------------------------------------------------------
+
 ## FAQ
 
 **Q: Do I need to enter parameters in a fixed order?**

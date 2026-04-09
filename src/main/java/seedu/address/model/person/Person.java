@@ -44,6 +44,24 @@ public class Person {
         this.remarks = new ArrayList<>();
     }
 
+    /**
+    * Copy constructor.
+    * Creates a new Person object with the same field values as the given Person.
+    *
+    * @param source the Person to copy
+    */
+    public Person(Person other) {
+        this.name = other.name;
+        this.courseId = other.courseId;
+        this.email = other.email;
+        this.studentId = other.studentId;
+        this.tGroup = other.tGroup;
+        this.tele = other.tele;
+        this.weekList = other.weekList;
+        this.progress = other.progress;
+        this.remarks = new ArrayList<>(other.remarks);
+    }
+
     public Name getName() {
         return name;
     }

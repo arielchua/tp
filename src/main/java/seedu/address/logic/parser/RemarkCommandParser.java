@@ -16,7 +16,7 @@ import seedu.address.model.person.Remark;
  */
 public class RemarkCommandParser implements Parser<RemarkCommand> {
 
-    private static final Prefix[] ALLOWED_PREFIXES = {PREFIX_REMARK};
+    // private static final Prefix[] ALLOWED_PREFIXES = {PREFIX_REMARK};
     private static final String ALLOWED_PREFIXES_HUMAN_READABLE = "txt/";
 
     /**

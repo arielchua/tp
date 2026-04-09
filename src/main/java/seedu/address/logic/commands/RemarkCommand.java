@@ -30,8 +30,7 @@ public class RemarkCommand extends Command {
     //replace Person with toString of person
     public static final String MESSAGE_ADD_REMARKS_SUCCESS = "Added remark to Person: \n%1$s";
 
-    //replace Person with toString of person
-    public static final String MESSAGE_ADD_REMARKS_FAILURE = "Failed to add remark to Person: %1$s";
+    // public static final String MESSAGE_ADD_REMARKS_FAILURE = "Failed to add remark to Person: %1$s";
 
     private final Index targetIndex;
     private final Remark remark;
@@ -60,9 +59,11 @@ public class RemarkCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
+        Person editedPerson = new Person(personToEdit);
 
-        personToEdit.addRemark(remark);
-        return new CommandResult(String.format(MESSAGE_ADD_REMARKS_SUCCESS, Messages.format(personToEdit) + "\n"
+        editedPerson.addRemark(remark);
+        model.setPerson(personToEdit, editedPerson);
+        return new CommandResult(String.format(MESSAGE_ADD_REMARKS_SUCCESS, Messages.format(editedPerson) + "\n"
                 + "Remark: " + this.remark.getText()));
     }
 

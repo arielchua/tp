@@ -10,35 +10,6 @@
 .zebra-row {
     -fx-background-color: #fafafa;
 }
-.index-cell {
-    -fx-text-fill: #000000;
-    -fx-font-size: 13px;
-    -fx-font-weight: normal;
-    -fx-padding: 10 8 10 8;
-    -fx-border-color: #000000;
-    -fx-border-width: 0 1 1 0;
-    -fx-alignment: CENTER_RIGHT;
-}
-.remark-cell {
-    -fx-text-fill: #000000;
-    -fx-font-size: 13px;
-    -fx-font-weight: normal;
-    -fx-padding: 10 15 10 15;
-    -fx-border-color: #666666;
-    -fx-border-width: 0 0 1 0;
-    -fx-alignment: CENTER;
-    -fx-text-alignment: CENTER;
-}
-.date-cell {
-    -fx-text-fill: #000000;
-    -fx-font-size: 13px;
-    -fx-font-weight: normal;
-    -fx-padding: 10 15 10 15;
-    -fx-border-color: #666666;
-    -fx-border-width: 0 1 1 0;
-    -fx-alignment: CENTER;
-    -fx-text-alignment: CENTER;
-}
 .header-left-pad {
     -fx-border-color: #000000;
     -fx-border-width: 0 1 1 0;
@@ -134,4 +105,35 @@
 }
     -fx-background-color: #cccccc;
     -fx-background-radius: 5px;
+}
+.index-cell {
+    -fx-text-fill: #000000;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-padding: 10 8 10 8;
+    -fx-border-color: #000000;
+    -fx-border-width: 0 1 1 0;
+    -fx-alignment: CENTER;
+}
+
+.date-cell {
+    -fx-text-fill: #000000;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-padding: 10 15 10 15;
+    -fx-border-color: #666666;
+    -fx-border-width: 0 1 1 0;
+    -fx-alignment: CENTER;
+    -fx-text-alignment: CENTER;
+}
+
+.remark-cell {
+    -fx-text-fill: #000000;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-padding: 10 15 10 15;
+    -fx-border-color: #666666;
+    -fx-border-width: 0 0 1 0;
+    -fx-alignment: CENTER;
+    -fx-text-alignment: CENTER;
 }
