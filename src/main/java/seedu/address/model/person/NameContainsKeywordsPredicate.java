@@ -26,7 +26,7 @@ public class NameContainsKeywordsPredicate implements Predicate<Person> {
                 .map(String::toLowerCase)
                 .toList();
 
-        assert this.keywords.stream().allMatch(keyword -> !keyword.isBlank());
+        assert this.keywords.stream().noneMatch(String::isBlank);
     }
     /**
      * Returns true if the person's name contains at least one word that starts
@@ -40,9 +40,18 @@ public class NameContainsKeywordsPredicate implements Predicate<Person> {
         String[] nameWords = person.getName().fullName.toLowerCase().split("\\s+");
 
         return keywords.stream()
-                .anyMatch(keyword ->
-                        Arrays.stream(nameWords)
-                                .anyMatch(nameWord -> nameWord.startsWith(keyword)));
+                .anyMatch(keyword -> isKeywordPrefixOfAnyWord(keyword, nameWords));
+    }
+
+    /**
+     * Returns true if the given keyword is a prefix of any of the words in the given array.
+     *
+     * @param keyword The keyword to check.
+     * @param nameWords The array of words to check against.
+     * @return True if the keyword is a prefix of any word, false otherwise.
+     */
+    private boolean isKeywordPrefixOfAnyWord(String keyword, String[] nameWords) {
+        return Arrays.stream(nameWords).anyMatch(word -> word.startsWith(keyword));
     }
 
     @Override
