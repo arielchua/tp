@@ -49,21 +49,18 @@ public class RemarkCommandParserTest {
     @Test
     public void parse_invalidPrefix_returnsFailure() {
         assertParseFailure(parser, "1 r/Participates actively in class",
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE)
+            ParserMessages.invalidPrefix("txt/", RemarkCommand.MESSAGE_USAGE)
         );
     }
 
     @Test
     public void parse_missingRemarkAfterPrefix_returnsFailure() {
         assertParseFailure(parser, "1 txt/",
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+            ParserMessages.missingPrefixValue(
+                "txt/",
+                "Remark text cannot be empty.",
+                RemarkCommand.MESSAGE_USAGE));
     }
-
-    // @Test
-    // public void parse_longRemark_returnsFailure() {
-    //     assertParseFailure(parser, "1 txt/" + "a".repeat(101),
-    //         "Remark is too long. Maximum length is 100 characters.");
-    // }
 
     @Test
     public void parse_missingIndex_returnsFailure() {

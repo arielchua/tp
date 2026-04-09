@@ -16,6 +16,9 @@ import seedu.address.model.person.Remark;
  */
 public class RemarkCommandParser implements Parser<RemarkCommand> {
 
+    private static final Prefix[] ALLOWED_PREFIXES = {PREFIX_REMARK};
+    private static final String ALLOWED_PREFIXES_HUMAN_READABLE = "txt/";
+
     /**
      * Parses the given {@code String} of arguments in the context of the RemarkCommand
      * and returns a RemarkCommand object for execution.
@@ -30,14 +33,29 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
         int prefixPosition = trimmedArgs.indexOf(prefix);
 
         if (prefixPosition == -1) {
+            for (String token : trimmedArgs.split("\\s+")) {
+                if (token.contains("/")) {
+                    throw new ParseException(
+                        ParserMessages.invalidPrefix(
+                            ALLOWED_PREFIXES_HUMAN_READABLE,
+                            RemarkCommand.MESSAGE_USAGE));
+                }
+            }
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
         }
 
         String indexPart = trimmedArgs.substring(0, prefixPosition).trim();
         String remarkText = trimmedArgs.substring(prefixPosition + prefix.length()).trim();
 
-        if (indexPart.isEmpty() || remarkText.isEmpty()) {
+        if (indexPart.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+        }
+
+        if (remarkText.isEmpty()) {
+            throw new ParseException(ParserMessages.missingPrefixValue(
+                    "txt/",
+                    "Remark text cannot be empty.",
+                    RemarkCommand.MESSAGE_USAGE));
         }
 
         Index index = ParserUtil.parseIndex(indexPart);

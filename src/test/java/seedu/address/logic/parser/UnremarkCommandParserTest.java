@@ -58,13 +58,17 @@ public class UnremarkCommandParserTest {
     @Test
     public void parse_invalidPrefix_returnsFailure() {
         assertParseFailure(parser, "1 txt/1",
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnremarkCommand.MESSAGE_USAGE));
+            ParserMessages.invalidPrefix("r/", UnremarkCommand.MESSAGE_USAGE)
+        );
     }
 
     @Test
     public void parse_missingRemarkIndex_returnsFailure() {
         assertParseFailure(parser, "1 r/",
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnremarkCommand.MESSAGE_USAGE));
+            ParserMessages.missingPrefixValue(
+                "r/",
+                "Remark index cannot be empty.",
+                UnremarkCommand.MESSAGE_USAGE));
     }
 
     @Test
