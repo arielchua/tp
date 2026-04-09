@@ -46,15 +46,15 @@
           </padding>
         </StackPane>
 
-        <SplitPane dividerPositions="0.4" VBox.vgrow="ALWAYS">
-          <VBox fx:id="personList" styleClass="pane-with-border" minWidth="550" prefWidth="550">
+        <SplitPane dividerPositions="0.5" VBox.vgrow="ALWAYS">
+          <VBox fx:id="personList" styleClass="pane-with-border">
             <padding>
               <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
+            <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="ALWAYS" minWidth="550"/>
           </VBox>
 
-          <StackPane fx:id="viewWindowPlaceholder" styleClass="pane-with-border" VBox.vgrow="ALWAYS">
+          <StackPane fx:id="viewWindowPlaceholder" styleClass="pane-with-border" minWidth="550" prefWidth="550" VBox.vgrow="ALWAYS">
             <padding>
               <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
