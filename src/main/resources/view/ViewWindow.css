@@ -7,38 +7,19 @@
     -fx-background-color: transparent;
     -fx-width: 8px;
 }
-.zebra-row {
-    -fx-background-color: #fafafa;
-}
-.header-left-pad {
-    -fx-border-color: #000000;
-    -fx-border-width: 0 1 1 0;
-}
-.column-header {
-    -fx-text-fill: #333333;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-padding: 12 15 12 15;
-    -fx-background-color: #d9d9d9;
-    -fx-border-color: #000000;
-    -fx-border-width: 0 1 1 0;
-    -fx-alignment: CENTER;
-    -fx-text-alignment: CENTER;
-}
+
 .remarks-scroll-pane {
     -fx-background-color: #ffffff;
     -fx-background: #ffffff;
     -fx-border-color: transparent;
     -fx-viewport-fill: #ffffff;
 }
-.white-body-wrapper {
+
+.view-container {
     -fx-background-color: #ffffff;
 }
-.meta-value {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 14px;
-}
-.view-container {
+
+.white-body-wrapper {
     -fx-background-color: #ffffff;
 }
 
@@ -66,21 +47,24 @@
     -fx-font-size: 14px;
 }
 
-.white-body-wrapper {
-    -fx-background-color: #ffffff;
+.header-left-pad {
+    -fx-border-color: #000000;
+    -fx-border-width: 0 1 1 0;
 }
 
-.remarks-scroll-pane {
-    -fx-background-color: #ffffff;
-    -fx-background: #ffffff;
-    -fx-font-size: 11px;
-    -fx-font-weight: bold;
-}
-    -fx-font-size: 13px;
-    -fx-font-weight: normal;
-    -fx-padding: 10 15 10 15;
-    -fx-border-color: #666666;
+.header-right-pad {
+    -fx-border-color: #000000;
     -fx-border-width: 0 0 1 0;
+}
+
+.column-header {
+    -fx-text-fill: #333333;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 15 12 15;
+    -fx-background-color: #d9d9d9;
+    -fx-border-color: #000000;
+    -fx-border-width: 0 1 1 0;
     -fx-alignment: CENTER;
     -fx-text-alignment: CENTER;
 }
@@ -92,28 +76,8 @@
     -fx-padding: 10 8 10 8;
     -fx-border-color: #000000;
     -fx-border-width: 0 1 1 0;
-    -fx-alignment: CENTER_RIGHT;
-}
-
-.zebra-row {
-    -fx-background-color: #fafafa;
-}
-
-.header-right-pad {
-    -fx-border-color: #000000;
-    -fx-border-width: 0 0 1 0;
-}
-    -fx-background-color: #cccccc;
-    -fx-background-radius: 5px;
-}
-.index-cell {
-    -fx-text-fill: #000000;
-    -fx-font-size: 13px;
-    -fx-font-weight: normal;
-    -fx-padding: 10 8 10 8;
-    -fx-border-color: #000000;
-    -fx-border-width: 0 1 1 0;
     -fx-alignment: CENTER;
+    -fx-text-alignment: CENTER;
 }
 
 .date-cell {
@@ -136,4 +100,8 @@
     -fx-border-width: 0 0 1 0;
     -fx-alignment: CENTER;
     -fx-text-alignment: CENTER;
+}
+
+.zebra-row {
+    -fx-background-color: #fafafa;
 }

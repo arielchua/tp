@@ -111,6 +111,7 @@ public class ViewWindow extends UiPart<Region> {
      */
     private void addRemarkRow(Remark remark, int rowIndex) {
         int displayIndex = rowIndex - FIRST_REMARK_ROW_INDEX + 1;
+
         Label indexLabel = createCellLabel(String.valueOf(displayIndex), "index-cell");
         Label dateLabel = createCellLabel(remark.getDate().toString(), "date-cell");
         Label remarkLabel = createCellLabel(remark.getText(), "remark-cell");
@@ -119,6 +120,13 @@ public class ViewWindow extends UiPart<Region> {
         remarksGrid.add(indexLabel, COL_INDEX_ID, rowIndex);
         remarksGrid.add(dateLabel, COL_INDEX_DATE, rowIndex);
         remarksGrid.add(remarkLabel, COL_INDEX_TEXT, rowIndex);
+
+        GridPane.setFillWidth(indexLabel, true);
+        GridPane.setFillHeight(indexLabel, true);
+        GridPane.setFillWidth(dateLabel, true);
+        GridPane.setFillHeight(dateLabel, true);
+        GridPane.setFillWidth(remarkLabel, true);
+        GridPane.setFillHeight(remarkLabel, true);
     }
 
     /**
@@ -132,6 +140,9 @@ public class ViewWindow extends UiPart<Region> {
         Label label = new Label(text);
         label.getStyleClass().add(styleClass);
         label.setMaxWidth(Double.MAX_VALUE);
+        label.setMaxHeight(Double.MAX_VALUE);
+        label.setMinWidth(Region.USE_PREF_SIZE);
+        label.setMinHeight(Region.USE_PREF_SIZE);
         return label;
     }
 
@@ -153,8 +164,6 @@ public class ViewWindow extends UiPart<Region> {
     private void clearRemarksOnly() {
         remarksGrid.getChildren().removeIf(node -> {
             Integer rowIndex = GridPane.getRowIndex(node);
-            // If rowIndex is null, it's considered to be in the first row (header).
-            // This is a defensive check for nodes added without an explicit row index.
             int effectiveRowIndex = rowIndex == null ? HEADER_ROW_INDEX : rowIndex;
             return effectiveRowIndex >= FIRST_REMARK_ROW_INDEX;
         });
