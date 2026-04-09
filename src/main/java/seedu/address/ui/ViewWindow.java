@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -110,22 +111,44 @@ public class ViewWindow extends UiPart<Region> {
      */
     private void addRemarkRow(Remark remark, int rowIndex) {
         int displayIndex = rowIndex - FIRST_REMARK_ROW_INDEX + 1;
+
         Label indexLabel = new Label(String.valueOf(displayIndex));
         indexLabel.getStyleClass().add("index-cell");
         indexLabel.setMaxWidth(Double.MAX_VALUE);
+        indexLabel.setMaxHeight(Double.MAX_VALUE);
+        indexLabel.setWrapText(false);
+        indexLabel.setAlignment(Pos.TOP_RIGHT);
 
         Label dateLabel = new Label(remark.getDate().toString());
         dateLabel.getStyleClass().add("date-cell");
         dateLabel.setMaxWidth(Double.MAX_VALUE);
+        dateLabel.setMaxHeight(Double.MAX_VALUE);
+        dateLabel.setWrapText(false);
+        dateLabel.setAlignment(Pos.TOP_CENTER);
 
         Label remarkLabel = new Label(remark.getText());
         remarkLabel.getStyleClass().add("remark-cell");
         remarkLabel.setWrapText(true);
         remarkLabel.setMaxWidth(Double.MAX_VALUE);
+        remarkLabel.setMaxHeight(Double.MAX_VALUE);
+        remarkLabel.setPrefWidth(0);
+        remarkLabel.setMinHeight(Region.USE_PREF_SIZE);
+        remarkLabel.setAlignment(Pos.TOP_LEFT);
+
+        GridPane.setFillWidth(indexLabel, true);
+        GridPane.setFillHeight(indexLabel, true);
+
+        GridPane.setFillWidth(dateLabel, true);
+        GridPane.setFillHeight(dateLabel, true);
+
+        GridPane.setFillWidth(remarkLabel, true);
+        GridPane.setFillHeight(remarkLabel, true);
+
         remarksGrid.add(indexLabel, 0, rowIndex);
         remarksGrid.add(dateLabel, 1, rowIndex);
         remarksGrid.add(remarkLabel, 2, rowIndex);
     }
+
     /**
      * Clears the current view and resets UI components.
      */
@@ -135,7 +158,7 @@ public class ViewWindow extends UiPart<Region> {
         studentIdLabel.setText("");
         courseIdLabel.setText("");
         tGroupLabel.setText("");
-        // remove remark rows (preserve header row)
+
         remarksGrid.getChildren().removeIf(node -> {
             Integer rowIndex = GridPane.getRowIndex(node);
             int effectiveRowIndex = rowIndex == null ? HEADER_ROW_INDEX : rowIndex;
