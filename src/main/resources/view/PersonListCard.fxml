@@ -12,30 +12,32 @@
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <GridPane HBox.hgrow="ALWAYS">
     <columnConstraints>
-      <ColumnConstraints hgrow="ALWAYS" minWidth="10" />
-      <ColumnConstraints hgrow="NEVER" minWidth="220" prefWidth="220" maxWidth="220" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
     </columnConstraints>
-
     <VBox alignment="CENTER_LEFT" minHeight="105" GridPane.columnIndex="0">
       <padding>
         <Insets top="5" right="5" bottom="5" left="15" />
       </padding>
-
       <HBox spacing="8" alignment="CENTER_LEFT">
         <Label fx:id="id" styleClass="cell_big_label">
           <minWidth>
             <Region fx:constant="USE_PREF_SIZE" />
           </minWidth>
         </Label>
-
-        <Label fx:id="name" styleClass="cell_big_label"
+        <Label fx:id="name"
+               styleClass="cell_big_label"
                textOverrun="ELLIPSIS"
-               maxWidth="1.7976931348623157E308"
-               HBox.hgrow="ALWAYS" />
+               wrapText="false"
+               minWidth="0"
+               HBox.hgrow="ALWAYS"/>
+        <Region HBox.hgrow="ALWAYS"/>
 
-        <Label fx:id="progress" />
+        <Label fx:id="progress">
+          <minWidth>
+            <Region fx:constant="USE_PREF_SIZE"/>
+          </minWidth>
+        </Label>
       </HBox>
-
       <FlowPane fx:id="tags" />
       <Label fx:id="studentId" styleClass="cell_small_label" text="$studentId" wrapText="true" maxWidth="200" />
       <Label fx:id="email" styleClass="cell_small_label" text="$email" wrapText="true" maxWidth="200" />
@@ -43,10 +45,8 @@
       <Label fx:id="tGroup" styleClass="cell_small_label" text="$tGroup" wrapText="true" maxWidth="200" />
       <Label fx:id="tele" styleClass="cell_small_label" text="$tele" wrapText="true" maxWidth="200" />
     </VBox>
-
     <FlowPane fx:id="weekAttendance" GridPane.columnIndex="1"
               hgap="5" vgap="5" alignment="CENTER"
-              prefWrapLength="220"
-              minWidth="220" prefWidth="220" maxWidth="220" />
+              prefWrapLength="220" HBox.hgrow="ALWAYS"/>
   </GridPane>
 </HBox>
