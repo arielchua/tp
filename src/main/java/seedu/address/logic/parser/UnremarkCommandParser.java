@@ -54,9 +54,6 @@ public class UnremarkCommandParser implements Parser<UnremarkCommand> {
         Index personIndex = ParserUtil.parseIndex(argMultimap.getPreamble());
 
         String remarkIndexString = argMultimap.getValue(PREFIX_UNREMARK).get().trim();
-        if (remarkIndexString.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnremarkCommand.MESSAGE_USAGE));
-        }
 
         Index remarkIndex = ParserUtil.parseIndex(remarkIndexString);
 

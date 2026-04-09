@@ -65,7 +65,11 @@ public class RemarkCommandParserTest {
     @Test
     public void parse_longRemark_returnsFailure() {
         assertParseFailure(parser, "1 txt/" + "a".repeat(101),
+<<<<<<< HEAD
             "Remark is too long. Maximum length is 100 characters.");
+=======
+            Remark.MESSAGE_TEXT_CONSTRAINTS);
+>>>>>>> b92e21ee (Fix parser validation)
     }
 
     @Test

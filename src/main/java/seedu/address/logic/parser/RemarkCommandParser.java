@@ -55,7 +55,6 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
                     "txt/",
                     "Remark text cannot be empty.",
                     RemarkCommand.MESSAGE_USAGE));
-        }
 
         Index index = ParserUtil.parseIndex(indexPart);
 
