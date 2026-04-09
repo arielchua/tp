@@ -38,6 +38,7 @@ And the best part? No technical expertise needed—just basic computer skills li
   - [Saving the data](#saving-the-data)
   - [Known Issues](#known-issues)
 - [Command Summary](#command-summary)
+- [Parameter Summary](#parameter-summary)
 - [FAQ](#faq)
 ---
 ## Quick start
@@ -127,7 +128,7 @@ The following pop-up should show:
 <img src="images/helpWindow.png" alt="help window" width="600">
 
 <box type="tip">
-**Tip**:
+Tip:
     You can also press `F1` to open the Help Window.
 </box>
 
@@ -162,7 +163,7 @@ Parameter Constraints:
 * ..... add on
 
 <box type="warning"> 
-**Warning**:
+Warning:
     What makes a student a duplicate?
     A student cannot be added if another student with the same 3 parameters `STUDENT_ID`, `COURSE_ID`, and `TUTORIAL_GROUP` already exists in TeachAssist. 
 </box>
@@ -174,13 +175,16 @@ add n/JOHN DOE id/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01 tel/@JOHNDOE
 
 When a student is added successfully, you will receive a confirmation message:
 
-<img src="images/addSuccess.png" alt="add success" width="700">
+> New person added: John Doe; Student ID: A0123456X; Email: johnd@u.nus.edu; Course ID: CS2103T; TGroup: T01; Tele: @JOHNDOE
 
 If any required fields are missing or the index is wrong, an error will be shown:
 
 i.e. If you use an email domain that isnt @u.nus.edu:
 
-<img src="images/addError.png" alt="add error" width="700">
+> Emails should be of the format local-part@domain and adhere to the following constraints:
+> 1.The local-part should only contain alphanumeric characters and these special characters, excluding the parentheses, (+_.-). The local-part may not start or end with any special characters.
+> 2.This is followed by a '@' and then the NUS domain: u.nus.edu
+>      Example: e1234567@u.nus.edu
 
 <a name="find"></a>
 ### Finding students by name: `find`
@@ -198,6 +202,7 @@ Format: `find KEYWORD [MORE_KEYWORDS]...`
     * e.g. `Han` matches `Hans`
     * `an` will not match `Hans`
 * If you provide multiple keywords, TeachAssist will find students that match any of them (e.g., find Al Bob finds both Albert and Bobby)
+* Keywords must be **alphabetic only (A–Z)**. Using numbers or symbols (e.g., `find A123`) will result in an error.
 
 **Example:** 
 
@@ -207,13 +212,8 @@ Format: `find KEYWORD [MORE_KEYWORDS]...`
 
 The student list updates instantly to show only matching records, and the Result Box (see Figure X) displays the total count of students found.
 
-<box type="warning">
-**Warning**: 
-    Keywords must be alphabetic only (A–Z). Using numbers or symbols (e.g., `find A123`) will result in an error.
-</box>
-
 <box type="info">
-**Note**: 
+Note: 
     The `find` command searches through the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
 </box>
 
@@ -229,19 +229,19 @@ Narrow down your student list by Course ID, Tutorial Group, Progress, or Absence
 filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]`
 ```
 
-Behaviour:
+<box type="warning">
+Warning: 
+    At least one filter parameter must be provided; using no parameters will result in an error.
+</box>
+
+**Behaviour:**
 * Course ID (`crs/`) and tutorial group (`tg/`) are matched case-insensitively.
 * Progress (`p/`) must be one of the following(case-insensitive): `on_track`, `needs_attention`, `at_risk`, or `clear` (alias `not_set`).
 * Absence count (`abs/`) matches students whose absence count is greater than or equal to the provided number.
 * Multiple filters combine with AND semantics — a student must satisfy every provided filter to be included in the results.
 
-<box type="warning">
-**Warning**: 
-    At least one filter parameter must be provided; using no parameters will result in an error.
-</box>
-
 <box type="info">
-**Note**: 
+Note: 
     The `filter` command applies to the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
 </box>
 
@@ -260,7 +260,7 @@ The student list updates instantly. The Result Box will display the total count:
 `There are 5 students matching this filter.`
 
 <box type="tip">
-**Tip**: 
+Tip: 
     If a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
 </box>
 
@@ -295,7 +295,7 @@ After setting up your student list, the next thing you will likely do throughout
 TeachAssist provides three attendance-related commands. Use `markattendance` to update an individual student's attendance for a specific week, `cancelweek` to cancel a tutorial week for an entire class, and `uncancelweek` to restore a previously cancelled week.
 
 <box type="info">
-**Note**:
+Note:
     In line with the NUS academic calendar, each student added to TeachAssist starts with a default attendance record covering 13 teaching weeks. These weekly records can then be updated, cancelled, or restored using the attendance commands below.
 </box>
 
@@ -349,7 +349,7 @@ Sometimes, a tutorial may not take place for a particular week, for example due 
 * If the week is already cancelled, the command will have no additional effect.
 
 <box type="info">
-**Note**:
+Note:
     The cancellation is applied to:
         - All existing students in that course and tutorial group.
         - All future students added to the same course and tutorial group.
@@ -408,7 +408,7 @@ updateprogress INDEX p/PROGRESS
 * Progress is case-insensitive, so values such as `ON_TRACK` and `on_track` are both accepted.
 
 <box type="tip">
-**Tip**: 
+Tip: 
     To remove a student's progress tag, use `not_set`.
 </box>
 
@@ -441,11 +441,6 @@ remark INDEX txt/REMARK
 * Each remark is automatically tagged with the date it was added.
 * A student can have multiple remarks attached to their record.
 
-<box type="warning">
-**Warning**: 
-    If multiple `txt/` prefixes are provided, only the first `txt/` is treated as a prefix, subsequent `txt/` prefixes will be treated as part of the remark.
-    e.g. `remark 1 txt/Needs more practice on txt/recursion` will be stored as the remark `Needs more practice on txt/recursion`
-</box>
 
 **Examples:**
 
@@ -473,7 +468,7 @@ Over time, some remarks may become outdated, unnecessary, or incorrect. The `unr
 unremark INDEX r/REMARK_INDEX
 ```
 - Removes the remark at `REMARK_INDEX` from the student at the specified `INDEX`.
-- The index refers to the index number shown in the currently displayed student list.
+- The index refers to the index number shown iabs/14n the currently displayed student list.
 - The remark index refers to the position of the remark in that student's remark list.
 - Both `INDEX` and `REMARK_INDEX` must be positive integers 1, 2, 3, …
 
@@ -562,8 +557,8 @@ delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP
 - `delete id/A1234567X crs/CS2103T tg/T01` followed by `yes` - deletes the student with student ID `A1234567X`, course `CS2103T`, and tutorial group `T01`.
 
 <box type="info">
-**Note**:
-    This method searches the **entire TeachAssist list**, not just the students currently displayed. This means a student can still be deleted even if they are currently hidden by a filter.
+Note:
+    This method searches the entire TeachAssist list, not just the students currently displayed. This means a student can still be deleted even if they are currently hidden by a filter.
 </box>
 
 <a name="clear"></a>
@@ -620,17 +615,21 @@ Action | Format, Examples
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Parameter summary
-
-Parameter             | Prefix  | Constraints                                                                                                                  | Examples
-----------------------|---------|------------------------------------------------------------------------------------------------------------------------------|------------------------------
-**NAME**              | `n/`    | Alphabets and spaces only; must not be blank. Stored in title case.                                                          | `John Doe`, `Mary Ann`
-**STUDENT_ID**        | `id/`   | Starts with `A`, followed by exactly 7 digits, ends with a letter. Case-insensitive; stored in uppercase.                   | `A0123456X`, `a9876543b`
+## Parameter Summary
+Parameter             | Prefix  | Constraints                                                                                                                    | Examples
+----------------------|---------|--------------------------------------------------------------------------------------------------------------------------------|------------------------------
+**NAME**              | `n/`    | Alphabets and spaces only; must not be blank. Stored in title case.                                                            | `John Doe`, `Mary Ann`
+**STUDENT_ID**        | `id/`   | Starts with `A`, followed by exactly 7 digits, ends with a letter. Case-insensitive; stored in uppercase.                      | `A0123456X`, `a9876543b`
 **EMAIL**             | `e/`    | Format `local-part@u.nus.edu`. Local part: alphanumeric plus `+`, `_`, `.`, `-`; cannot start or end with a special character. | `e1234567@u.nus.edu`
-**COURSE_ID**         | `crs/`  | Alphanumeric characters only (no spaces or special characters). Stored in uppercase.                                         | `CS2103T`, `MA1521`
-**TUTORIAL_GROUP**    | `tg/`   | Alphanumeric characters only. Stored in uppercase.                                                                           | `T01`, `B03`
-**TELEGRAM_USERNAME** | `tel/`  | Alphanumeric characters and underscores; optional leading `@`; must not be blank. (Optional field)                          | `@johndoe`, `john_doe`
-
+**COURSE_ID**         | `crs/`  | Alphanumeric characters only (no spaces or special characters). Stored in uppercase.                                           | `CS2103T`, `MA1521`
+**TUTORIAL_GROUP**    | `tg/`   | Alphanumeric characters only. Stored in uppercase.                                                                             | `T01`, `B03`
+**TELEGRAM_USERNAME** | `tel/`  | Alphanumeric characters and underscores; optional leading `@`; must not be blank. (Optional field)                             | `@johndoe`, `john_doe`
+**PROGRESS**          | `p/`    | One of `on_track`, `needs_attention`, `at_risk`, or `not_set`. Case-insensitive.                                               | `on_track`, `AT_RISK`
+**WEEK**              | `week/` | Integer from `1` to `13` inclusive.                                                                                            | `1`, `7`, `13`
+**STATUS**            | `sta/`  | One of `y` (present), `a` (absent), or `n` (unmarked). Case-insensitive.                                                       | `y`, `a`, `n`
+**ABSENCE_COUNT**     | `abs/`  | Integer from `0` to `13` inclusive.                                                                                            | `0`, `2`, `13`
+**REMARK**            | `txt/`  | Any text up to 100 characters; must not be blank.                                                                              | `Needs help with finals`
+**REMARK_INDEX**      | `r/`    | Positive integer; must not exceed the number of remarks the student currently has.                                             | `1`, `2`
 
 --------------------------------------------------------------------------------------------------------------------
 
