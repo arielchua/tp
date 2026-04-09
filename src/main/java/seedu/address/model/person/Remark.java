@@ -27,6 +27,7 @@ public class Remark {
      * @param date The remark date.
      */
     public Remark(String text, LocalDate date) {
+        requireNonNull(text);
         requireNonNull(date);
         checkArgument(isValidText(text), MESSAGE_TEXT_CONSTRAINTS);
         this.text = text;

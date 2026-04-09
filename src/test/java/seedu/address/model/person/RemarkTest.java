@@ -33,31 +33,24 @@ public class RemarkTest {
 
     @Test
     public void isValidText() {
-        // null text
+        // EP: null text
         assertFalse(Remark.isValidText(null));
 
-        // invalid text
-        assertFalse(Remark.isValidText("")); // empty string (is blank)
-        assertFalse(Remark.isValidText("  ")); // spaces only (is blank)
-        assertFalse(Remark.isValidText("a".repeat(Remark.MAX_LENGTH + 1))); // too long
+        // EP: Blank text (Invalid)
+        assertFalse(Remark.isValidText("")); // empty string
+        assertFalse(Remark.isValidText("  ")); // spaces only
 
-        // valid text
-        assertTrue(Remark.isValidText("Good progress"));
-        assertTrue(Remark.isValidText("A")); // minimal valid length
-        assertTrue(Remark.isValidText("a".repeat(Remark.MAX_LENGTH))); // maximum valid length
+        // EP: Length-based constraints (BV)
+        assertTrue(Remark.isValidText("A")); // BV: Minimal valid length (1)
+        assertTrue(Remark.isValidText("a".repeat(Remark.MAX_LENGTH))); // BV: Maximum valid length (100)
+        assertFalse(Remark.isValidText("a".repeat(Remark.MAX_LENGTH + 1))); // BV: Exceeds maximum (101)
 
-        // text with emojis (Unicode)
+        // EP: Special characters (Unicode/Emoji)
         assertTrue(Remark.isValidText("Needs follow-up ⚠️"));
-        assertTrue(Remark.isValidText("Progress: 100% ✅"));
 
-        // text with leading and trailing whitespace (should be valid as long as length <= 100)
+        // EP: Formatting (Trailing/Leading whitespace)
+        // Note: This is valid as long as the total length including spaces is <= 100
         assertTrue(Remark.isValidText("  Good progress  "));
-
-        // text with special symbols/punctuation
-        assertTrue(Remark.isValidText("Wait... what?! (Ref: #123)"));
-
-        // boundary case: whitespace only (handled by isBlank() in your Remark class)
-        assertFalse(Remark.isValidText("   "));
     }
 
     @Test
