@@ -17,12 +17,12 @@ import seedu.address.model.person.WeekList;
  */
 public class UnCancelWeekCommand extends Command {
 
-    public static final String COMMAND_WORD = "uncancelweek";
+    public static final String COMMAND_WORD = "uncancelw";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Uncancels the week from attendance table.\n"
-            + "Parameters: [crs/COURSE_ID] [tg/TUTORIAL_ID] "
+            + "Parameters: crs/COURSE_ID tg/TUTORIAL_ID "
             + PREFIX_WEEK + "WEEK_NUMBER\n"
             + "All parameters must be included\n"
-            + "Example: " + COMMAND_WORD + " crs/CS2103T tg/T01 week/5";
+            + "Example: " + COMMAND_WORD + " crs/CS2103T tg/T01 wk/5";
     public static final String MESSAGE_NOT_CANCELLED =
             "Week %1$d is not cancelled for course %2$s tutorial %3$s.";
     public static final String MESSAGE_COURSE_TUT_INVALID =

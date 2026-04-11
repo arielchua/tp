@@ -37,12 +37,12 @@ public class UnCancelWeekCommandParser implements Parser<UnCancelWeekCommand> {
         ParserValidators.ensureAllPrefixesPresent(
                 argMultimap,
                 PREFIXES,
-                new String[]{"crs/", "tg/", "week/"},
+                new String[]{"crs/", "tg/", "wk/"},
                 UnCancelWeekCommand.MESSAGE_USAGE
         );
 
         ParserValidators.checkForUnknownPrefixTokens(args, PREFIXES,
-                "crs/, tg/, and week/",
+                "crs/, tg/, and wk/",
                 UnCancelWeekCommand.MESSAGE_USAGE);
 
         ParserValidators.checkForUnexpectedPreamble(argMultimap,
@@ -51,7 +51,7 @@ public class UnCancelWeekCommandParser implements Parser<UnCancelWeekCommand> {
         ParserValidators.checkForMissingValues(
                 argMultimap,
                 PREFIXES,
-                new String[]{"crs/", "tg/", "week/"},
+                new String[]{"crs/", "tg/", "wk/"},
                 new String[]{
                     "Course ID cannot be empty.",
                     "Tutorial group cannot be empty.",

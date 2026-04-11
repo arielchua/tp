@@ -44,18 +44,18 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
         ParserValidators.ensureIndexAndPrefixesPresent(
                 argMultimap,
                 PREFIXES,
-                new String[]{"week/", "sta/"},
+                new String[]{"wk/", "s/"},
                 MarkAttendanceCommand.MESSAGE_USAGE
         );
 
         ParserValidators.checkForUnknownPrefixTokens(args, PREFIXES,
-                "week/ and sta/",
+                "wk/ and s/",
                 MarkAttendanceCommand.MESSAGE_USAGE);
 
         ParserValidators.checkForMissingValues(
                 argMultimap,
                 PREFIXES,
-                new String[]{"week/", "sta/"},
+                new String[]{"wk/", "s/"},
                 new String[]{
                     "Week number cannot be empty.",
                     "Status cannot be empty."

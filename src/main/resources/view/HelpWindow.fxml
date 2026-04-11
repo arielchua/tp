@@ -117,12 +117,12 @@
                      style="-fx-text-fill: black; -fx-font-weight: bold;"/>
 
               <VBox styleClass="command-card" spacing="8.0">
-                <Label text="Command: markattendance" styleClass="command-title"/>
-                <Label text="Format: markattendance INDEX week/WEEK_NUMBER sta/STATUS" wrapText="true"
+                <Label text="Command: marka" styleClass="command-title"/>
+                <Label text="Format: marka INDEX wk/WEEK_NUMBER s/STATUS" wrapText="true"
                        styleClass="command-format"/>
                 <Label text="Updates attendance. Status: y (present), a (absent), n (reset to unmarked)."
                        wrapText="true" styleClass="command-description"/>
-                <Label text="Example: markattendance 1 week/5 sta/y  -- mark week 5 as present for student at index 1"
+                <Label text="Example: marka 1 wk/5 s/y  -- mark week 5 as present for student at index 1"
                        wrapText="true" styleClass="command-example"/>
               </VBox>
 
@@ -155,22 +155,22 @@
               </VBox>
 
               <VBox styleClass="command-card" spacing="8.0">
-                <Label text="Command: cancelweek" styleClass="command-title"/>
-                <Label text="Format: cancelweek crs/COURSE_ID tg/TUTORIAL_ID week/WEEK_NUMBER" wrapText="true"
+                <Label text="Command: cancelw" styleClass="command-title"/>
+                <Label text="Format: cancelw crs/COURSE_ID tg/TUTORIAL_ID wk/WEEK_NUMBER" wrapText="true"
                        styleClass="command-format"/>
                 <Label text="Marks a week as cancelled. Cancelled weeks cannot be marked for attendance."
                        wrapText="true" styleClass="command-description"/>
-                <Label text="Example: cancelweek crs/CS2103T tg/T01 week/5  -- cancel week 5 for CS2103T T01"
+                <Label text="Example: cancelw crs/CS2103T tg/T01 wk/5  -- cancel week 5 for CS2103T T01"
                        wrapText="true" styleClass="command-example"/>
               </VBox>
 
               <VBox styleClass="command-card" spacing="8.0">
-                <Label text="Command: uncancelweek" styleClass="command-title"/>
-                <Label text="Format: uncancelweek crs/COURSE_ID tg/TUTORIAL_ID week/WEEK_NUMBER" wrapText="true"
+                <Label text="Command: uncancelw" styleClass="command-title"/>
+                <Label text="Format: uncancelw crs/COURSE_ID tg/TUTORIAL_ID wk/WEEK_NUMBER" wrapText="true"
                        styleClass="command-format"/>
                 <Label text="Reverts a previously cancelled tutorial week." wrapText="true"
                        styleClass="command-description"/>
-                <Label text="Example: uncancelweek crs/CS2103T tg/T01 week/5  -- uncancel week 5 for CS2103T T01"
+                <Label text="Example: uncancelw crs/CS2103T tg/T01 wk/5  -- uncancel week 5 for CS2103T T01"
                        wrapText="true" styleClass="command-example"/>
               </VBox>
 

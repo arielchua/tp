@@ -11,6 +11,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Remark;
 import seedu.address.model.person.Week;
 import seedu.address.model.person.WeekList;
 
@@ -19,13 +20,13 @@ import seedu.address.model.person.WeekList;
  */
 public class MarkAttendanceCommand extends Command {
 
-    public static final String COMMAND_WORD = "markattendance";
+    public static final String COMMAND_WORD = "marka";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Updates attendance of a student.\n"
             + "Parameters: INDEX (positive integer) "
             + PREFIX_WEEK + "WEEK_NUMBER "
             + PREFIX_STATUS + "STATUS (Y = attended, A = absent, N = not marked)\n"
-            + "Example: " + COMMAND_WORD + " 1 week/5 sta/Y";
+            + "Example: " + COMMAND_WORD + " 1 wk/5 s/Y";
 
     public static final String MESSAGE_INVALID_PERSON_INDEX =
             "The person index provided is invalid.";
@@ -100,7 +101,9 @@ public class MarkAttendanceCommand extends Command {
                             formatPerson(personToEdit)));
         }
         Person editedPerson = createEditedPerson(personToEdit, updatedWeekList);
-
+        for (Remark remark : personToEdit.getRemarks()) {
+            editedPerson.addRemark(remark);
+        }
         model.setPerson(personToEdit, editedPerson);
         String statusMessage = getStatuMessage();
         return new CommandResult(String.format(MESSAGE_SUCCESS,
