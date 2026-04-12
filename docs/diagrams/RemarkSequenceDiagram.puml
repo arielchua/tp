@@ -1,0 +1,84 @@
+@startuml
+!theme plain
+
+skinparam BackgroundColor #F4F4F4
+skinparam Shadowing false
+skinparam RoundCorner 0
+skinparam SequenceMessageAlign center
+skinparam ResponseMessageBelowArrow true
+skinparam MaxMessageSize 80
+
+skinparam sequence {
+    ArrowColor #222222
+    LifeLineBorderColor #666666
+    LifeLineBackgroundColor #F4F4F4
+    ParticipantBorderColor #1E2AA8
+    ParticipantBackgroundColor #2D36C9
+    ParticipantFontColor white
+    ActorBorderColor #1E2AA8
+    ActorBackgroundColor #2D36C9
+    ActorFontColor white
+    GroupBorderColor #888888
+    GroupBackgroundColor #C9C6F2
+    GroupHeaderFontColor white
+    GroupHeaderBackgroundColor #B7B2E8
+    BoxBorderColor #888888
+    BoxBackgroundColor #C9C6F2
+    DividerBorderColor #888888
+    DividerBackgroundColor #DDDDDD
+}
+
+actor User
+
+box "Logic" #C9C6F2
+participant "rc:RemarkCommand" as RemarkCommand
+end box
+
+box "Storage" #C9C6F2
+participant ":StorageManager" as StorageManager
+participant ":JsonAddressBookStorage" as JsonAddressBookStorage
+participant ":JsonSerializableAddressBook" as JsonSerializableAddressBook
+participant ":JsonAdaptedPerson" as JsonAdaptedPerson
+participant ":JsonAdaptedRemark" as JsonAdaptedRemark
+end box
+
+User -> RemarkCommand : execute()
+activate RemarkCommand
+
+RemarkCommand -> StorageManager : saveAddressBook(addressBook)
+activate StorageManager
+
+StorageManager -> JsonAddressBookStorage : saveAddressBook(addressBook)
+activate JsonAddressBookStorage
+
+JsonAddressBookStorage -> JsonSerializableAddressBook : new JsonSerializableAddressBook(addressBook)
+activate JsonSerializableAddressBook
+
+loop for each Person
+    JsonSerializableAddressBook -> JsonAdaptedPerson : new JsonAdaptedPerson(person)
+    activate JsonAdaptedPerson
+
+    loop for each Remark
+        JsonAdaptedPerson -> JsonAdaptedRemark : new JsonAdaptedRemark(remark)
+        activate JsonAdaptedRemark
+        JsonAdaptedRemark --> JsonAdaptedPerson
+        deactivate JsonAdaptedRemark
+    end
+
+    JsonAdaptedPerson --> JsonSerializableAddressBook
+    deactivate JsonAdaptedPerson
+end
+
+JsonSerializableAddressBook --> JsonAddressBookStorage
+deactivate JsonSerializableAddressBook
+
+JsonAddressBookStorage --> StorageManager
+deactivate JsonAddressBookStorage
+
+StorageManager --> RemarkCommand : save complete
+deactivate StorageManager
+
+RemarkCommand --> User : CommandResult
+deactivate RemarkCommand
+
+@enduml
