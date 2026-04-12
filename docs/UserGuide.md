@@ -655,6 +655,3 @@ No. For commands with prefixes such as add and filter, parameters can be entered
 
 **Q: Why did delete 1 remove a different student than I expected?**
 Because the index refers to the current displayed list. You may be referring to an outdated list.
-
-**Q: Why can't I add a person with a different name but same Email, StudentID or Telegram Username to the same CourseID?**
-As StudentIDs, Emails and Telegram Usernames are usually not repeated between different people, having the same StudentID, Email or Telegram Username would register the person as being already in the AddressBook.
