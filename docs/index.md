@@ -5,7 +5,7 @@
 # TeachAssist
 
 [![CI Status](https://github.com/AY2526S2-CS2103T-F10-3/tp/actions/workflows/gradle.yml/badge.svg)](https://github.com/AY2526S2-CS2103T-F10-3/tp/actions)
-[![codecov](https://codecov.io/gh/AY2526S2-CS2103T-F10-3/branch/master/graph/badge.svg)](https://codecov.io/gh/AY2526S2-CS2103T-F10-3)
+[![Codecov](https://codecov.io/gh/AY2526S2-CS2103T-F10-3/tp/graph/badge.svg?token=FXRR3PUODM)](https://codecov.io/gh/AY2526S2-CS2103T-F10-3/tp)
 
 ![Ui](images/Ui.png)
 
