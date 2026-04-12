@@ -194,8 +194,8 @@ public class DeleteCommandParserTest {
                 + " " + PREFIX_COURSEID.getPrefix() + ALICE.getCourseId().value
                 + " " + PREFIX_TGROUP.getPrefix() + ALICE.getTGroup().value;
 
-        ParseException thrown = org.junit.jupiter.api.Assertions.assertThrows(ParseException.class,
-                () -> parser.parse(input));
+        ParseException thrown = org.junit.jupiter.api.Assertions.assertThrows(ParseException.class, (
+                ) -> parser.parse(input));
 
         assertTrue(thrown.getMessage().contains(PREFIX_STUDENTID.toString().trim()));
     }
@@ -207,8 +207,8 @@ public class DeleteCommandParserTest {
                 + " " + PREFIX_COURSEID.getPrefix() + "CS2040S"
                 + " " + PREFIX_TGROUP.getPrefix() + ALICE.getTGroup().value;
 
-        ParseException thrown = org.junit.jupiter.api.Assertions.assertThrows(ParseException.class,
-                () -> parser.parse(input));
+        ParseException thrown = org.junit.jupiter.api.Assertions.assertThrows(ParseException.class, (
+                ) -> parser.parse(input));
 
         assertTrue(thrown.getMessage().contains(PREFIX_COURSEID.toString().trim()));
     }
@@ -220,8 +220,8 @@ public class DeleteCommandParserTest {
                 + " " + PREFIX_TGROUP.getPrefix() + ALICE.getTGroup().value
                 + " " + PREFIX_TGROUP.getPrefix() + "T01";
 
-        ParseException thrown = org.junit.jupiter.api.Assertions.assertThrows(ParseException.class,
-                () -> parser.parse(input));
+        ParseException thrown = org.junit.jupiter.api.Assertions.assertThrows(ParseException.class, (
+                ) -> parser.parse(input));
 
         assertTrue(thrown.getMessage().contains(PREFIX_TGROUP.toString().trim()));
     }
@@ -233,8 +233,8 @@ public class DeleteCommandParserTest {
                 + " " + PREFIX_COURSEID.getPrefix() + ALICE.getCourseId().value
                 + " " + PREFIX_TGROUP.getPrefix() + ALICE.getTGroup().value;
 
-        ParseException thrown = org.junit.jupiter.api.Assertions.assertThrows(ParseException.class,
-                () -> parser.parse(input));
+        ParseException thrown = org.junit.jupiter.api.Assertions.assertThrows(ParseException.class, (
+                ) -> parser.parse(input));
 
         assertTrue(thrown.getMessage().contains(DeleteCommand.MESSAGE_USAGE));
     }
