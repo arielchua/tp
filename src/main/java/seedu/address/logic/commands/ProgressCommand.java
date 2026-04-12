@@ -11,6 +11,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Progress;
+import seedu.address.model.person.Remark;
 
 /**
  * Updates the progress status of a student.
@@ -76,7 +77,7 @@ public class ProgressCommand extends Command {
     private static Person createEditedPerson(Person personToEdit, Progress updatedProgress) {
         assert personToEdit != null;
 
-        return new Person(
+        Person editedPerson = new Person(
                 personToEdit.getName(),
                 personToEdit.getCourseId(),
                 personToEdit.getEmail(),
@@ -85,6 +86,10 @@ public class ProgressCommand extends Command {
                 personToEdit.getTele(),
                 personToEdit.getWeekList(),
                 updatedProgress);
+        for (Remark remark : personToEdit.getRemarks()) {
+            editedPerson.addRemark(remark);
+        }
+        return editedPerson;
     }
 
     @Override

@@ -141,6 +141,37 @@ public class ProgressCommandTest {
     }
 
     @Test
+    public void execute_updateProgress_preservesRemarks() {
+        Person personToUpdate = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+
+        Person updatedPerson = new PersonBuilder(personToUpdate)
+                .withProgress(Progress.ON_TRACK)
+                .build();
+
+        personToUpdate.addRemark(new seedu.address.model.person.Remark(
+                "Participates actively", java.time.LocalDate.of(2026, 4, 12)));
+
+        ProgressCommand progressCommand = new ProgressCommand(INDEX_FIRST_PERSON, Progress.ON_TRACK);
+
+        String expectedMessage = String.format(
+                ProgressCommand.MESSAGE_UPDATE_PROGRESS_SUCCESS,
+                Messages.format(updatedPerson),
+                updatedPerson.getProgress());
+
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+
+        Person expectedUpdatedPerson = new PersonBuilder(personToUpdate)
+                .withProgress(Progress.ON_TRACK)
+                .build();
+        expectedUpdatedPerson.addRemark(new seedu.address.model.person.Remark(
+                "Participates actively", java.time.LocalDate.of(2026, 4, 12)));
+
+        expectedModel.setPerson(personToUpdate, expectedUpdatedPerson);
+
+        assertCommandSuccess(progressCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void equals() {
         ProgressCommand firstCommand = new ProgressCommand(INDEX_FIRST_PERSON, Progress.ON_TRACK);
         ProgressCommand firstCommandCopy = new ProgressCommand(INDEX_FIRST_PERSON, Progress.ON_TRACK);
