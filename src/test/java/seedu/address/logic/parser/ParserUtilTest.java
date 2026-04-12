@@ -18,11 +18,6 @@ import seedu.address.model.person.WeekList;
  */
 public class ParserUtilTest {
 
-    private static final String VALID_NAME = "Rachel Walker";
-    private static final String VALID_STUDENT_ID = "A1234567X";
-    private static final String VALID_COURSE = "CS2103T";
-    private static final String VALID_TG = "T01";
-
     private static final String MESSAGE_USAGE = "Usage: view INDEX";
 
     // ----------------------- INDEX PARSING -----------------------
@@ -92,6 +87,10 @@ public class ParserUtilTest {
                 -> ParserUtil.parseKeywords("Alice123"));
         assertThrows(ParseException.class, ParserUtil.MESSAGE_INVALID_KEYWORDS, ()
                 -> ParserUtil.parseKeywords("Alice@Bob"));
+        assertThrows(ParseException.class, ParserUtil.MESSAGE_INVALID_KEYWORDS, ()
+                -> ParserUtil.parseKeywords("@Alice"));
+        assertThrows(ParseException.class, ParserUtil.MESSAGE_INVALID_KEYWORDS, ()
+                -> ParserUtil.parseKeywords("Alice!"));
     }
 
     @Test
@@ -130,6 +129,13 @@ public class ParserUtilTest {
         assertEquals(13, ParserUtil.parseWeekIndex("13").getOneBased());
     }
 
+    @Test
+    public void parseWeekIndex_nonInteger_throwsParseException() {
+        // EP: Non-integer value
+        assertThrows(ParseException.class, WeekList.MESSAGE_INVALID_WEEK, ()
+                -> ParserUtil.parseWeekIndex("1.5"));
+    }
+
     // ----------------------- ABSENCE COUNT -----------------------
 
     @Test
@@ -138,9 +144,17 @@ public class ParserUtilTest {
         assertThrows(ParseException.class, ParserUtil.MESSAGE_INVALID_ABSENCE_COUNT, ()
                 -> ParserUtil.parseAbsenceCount("-1"));
 
+        // BVA: Above max
+        assertThrows(ParseException.class, ParserUtil.MESSAGE_INVALID_ABSENCE_COUNT, ()
+                -> ParserUtil.parseAbsenceCount("14"));
+
         // EP: Non-numeric
         assertThrows(ParseException.class, ParserUtil.MESSAGE_INVALID_ABSENCE_COUNT, ()
                 -> ParserUtil.parseAbsenceCount("five"));
+
+        // EP: Overflow
+        assertThrows(ParseException.class, "Absence count is too large.", ()
+                -> ParserUtil.parseAbsenceCount("100"));
     }
 
     @Test

@@ -14,6 +14,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -43,16 +44,17 @@ public class FilterCommandTest {
     public void execute_filterByCourse_success() {
         // EP: Valid Course ID exists in model
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(ALICE.getCourseId()),
+                Optional.of(BENSON.getCourseId()),
                 Optional.empty(), Optional.empty(), Optional.empty());
         assertFilterCommandSuccess(predicate);
+        assertEquals(3, model.getFilteredPersonList().size());
     }
 
     @Test
     public void execute_filterByCourse_caseInsensitiveMatch() {
         // EP: Case-insensitive match (Input lowercase, Model uppercase)
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId(ALICE.getCourseId().value.toLowerCase())),
+                Optional.of(new CourseId(BENSON.getCourseId().value.toLowerCase())),
                 Optional.empty(), Optional.empty(), Optional.empty());
         assertFilterCommandSuccess(predicate);
     }
@@ -67,12 +69,23 @@ public class FilterCommandTest {
     }
 
     @Test
-    public void execute_filterByMultipleFields_success() {
+    public void execute_filterByCourseAndTGroup_success() {
         // EP: Multiple fields combined (AND logic)
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(ALICE.getCourseId()),
-                Optional.empty(), Optional.empty(),
-                Optional.of(ALICE.getAbsenceCount()));
+                Optional.of(BENSON.getCourseId()),
+                Optional.of(BENSON.getTGroup()), Optional.empty(),
+                Optional.empty());
+        assertFilterCommandSuccess(predicate);
+    }
+
+    @Test
+    public void execute_filterByMultipleFields_success() {
+        // EP: Multiple fields combined (AND logic) - TGroup and Progress
+        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
+                Optional.empty(),
+                Optional.of(BENSON.getTGroup()),
+                Optional.of(BENSON.getProgress()),
+                Optional.empty());
         assertFilterCommandSuccess(predicate);
     }
 
@@ -105,7 +118,7 @@ public class FilterCommandTest {
 
         // different values -> false
         FilterMatchesPredicate differentPredicate = new FilterMatchesPredicate(
-                Optional.of(BENSON.getCourseId()),
+                Optional.of(new CourseId("CS1101S")),
                 Optional.empty(), Optional.empty(), Optional.empty());
         FilterCommand differentCommand = new FilterCommand(differentPredicate);
         assertNotEquals(firstCommand, differentCommand);
@@ -132,10 +145,12 @@ public class FilterCommandTest {
     private void assertFilterCommandSuccess(FilterMatchesPredicate predicate) {
         FilterCommand command = new FilterCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
+        AddressBook originalAddressBook = new AddressBook(model.getAddressBook());
 
         assertCommandSuccess(command, model,
                 String.format(FilterCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
                 expectedModel);
         assertEquals(expectedModel.getFilteredPersonList(), model.getFilteredPersonList());
+        assertEquals(originalAddressBook, model.getAddressBook());
     }
 }

@@ -23,10 +23,17 @@ import seedu.address.model.person.TGroup;
  */
 public class FilterCommandParser implements Parser<FilterCommand> {
 
-    public static final String MESSAGE_EMPTY_COURSE_ID = ParserMessages.missingPrefixValue(
-            "crs/", "Course ID cannot be empty.", FilterCommand.MESSAGE_USAGE);
     public static final String MESSAGE_NO_FILTERS =
             "At least one filter must be provided.\n" + FilterCommand.MESSAGE_USAGE;
+    /**
+     * Functional interface for a parser function that can throw ParseException.
+     * @param <T> The type of the input string.
+     * @param <R> The type of the result.
+     */
+    @FunctionalInterface
+    private interface ThrowingFunction<T, R> {
+        R apply(T t) throws ParseException;
+    }
 
     /**
      * The list of prefixes that this parser is able to handle.
@@ -51,12 +58,30 @@ public class FilterCommandParser implements Parser<FilterCommand> {
 
         validateInput(args, argMultimap);
 
-        Optional<CourseId> courseId = parseCourseId(argMultimap);
-        Optional<TGroup> tGroup = parseTGroup(argMultimap);
-        Optional<Progress> progress = parseProgress(argMultimap);
-        Optional<Integer> absenceCount = parseAbsenceCount(argMultimap);
+        Optional<CourseId> courseId = parseField(argMultimap, PREFIX_COURSEID, ParserUtil::parseCourseId);
+        Optional<TGroup> tGroup = parseField(argMultimap, PREFIX_TGROUP, ParserUtil::parseTGroup);
+        Optional<Progress> progress = parseField(argMultimap, PREFIX_PROGRESS, ParserUtil::parseProgress);
+        Optional<Integer> absenceCount = parseField(argMultimap, PREFIX_ABSENCE, ParserUtil::parseAbsenceCount);
 
         return new FilterCommand(new FilterMatchesPredicate(courseId, tGroup, progress, absenceCount));
+    }
+
+    /**
+     * A generic helper method to parse a value from the argument multimap.
+     *
+     * @param argMultimap The map of arguments.
+     * @param prefix The prefix to look for.
+     * @param parser The function to parse the string value.
+     * @return An optional containing the parsed value, or empty if the prefix is not present.
+     * @throws ParseException if the value is present but invalid.
+     */
+    private <T> Optional<T> parseField(ArgumentMultimap argMultimap, Prefix prefix,
+                                       ThrowingFunction<String, T> parser) throws ParseException {
+        Optional<String> value = argMultimap.getValue(prefix);
+        if (value.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(parser.apply(value.get()));
     }
 
     /**
@@ -87,41 +112,5 @@ public class FilterCommandParser implements Parser<FilterCommand> {
         if (!anyPresent) {
             throw new ParseException(MESSAGE_NO_FILTERS);
         }
-    }
-
-    /**
-     * Parses the CourseId field.
-     */
-    private Optional<CourseId> parseCourseId(ArgumentMultimap argMultimap) throws ParseException {
-        return argMultimap.getValue(PREFIX_COURSEID).isPresent()
-                ? Optional.of(ParserUtil.parseCourseId(argMultimap.getValue(PREFIX_COURSEID).get()))
-                : Optional.empty();
-    }
-
-    /**
-     * Parses the Tutorial Group field.
-     */
-    private Optional<TGroup> parseTGroup(ArgumentMultimap argMultimap) throws ParseException {
-        return argMultimap.getValue(PREFIX_TGROUP).isPresent()
-                ? Optional.of(ParserUtil.parseTGroup(argMultimap.getValue(PREFIX_TGROUP).get()))
-                : Optional.empty();
-    }
-
-    /**
-     * Parses the Progress status field.
-     */
-    private Optional<Progress> parseProgress(ArgumentMultimap argMultimap) throws ParseException {
-        return argMultimap.getValue(PREFIX_PROGRESS).isPresent()
-                ? Optional.of(ParserUtil.parseProgress(argMultimap.getValue(PREFIX_PROGRESS).get()))
-                : Optional.empty();
-    }
-
-    /**
-     * Parses the Absence count field.
-     */
-    private Optional<Integer> parseAbsenceCount(ArgumentMultimap argMultimap) throws ParseException {
-        return argMultimap.getValue(PREFIX_ABSENCE).isPresent()
-                ? Optional.of(ParserUtil.parseAbsenceCount(argMultimap.getValue(PREFIX_ABSENCE).get()))
-                : Optional.empty();
     }
 }

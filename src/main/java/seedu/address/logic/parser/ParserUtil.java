@@ -31,7 +31,7 @@ public class ParserUtil {
     public static final String MESSAGE_INVALID_PROGRESS =
             "Invalid progress value. Allowed values are: on_track, needs_attention, at_risk, clear.";
     public static final String MESSAGE_INVALID_ABSENCE_COUNT =
-            "Absence count must be a non-negative integer and at most 13.";
+            "Absence count must be an integer between 0 and 13 (inclusive).";
     public static final String MESSAGE_INVALID_KEYWORDS =
             "Keywords should contain alphabetic characters separated by spaces only.";
     public static final String MESSAGE_EMPTY_KEYWORDS =
@@ -197,22 +197,6 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String} into a {@code Week.Status}.
-     *
-     * @throws ParseException if the input is invalid
-     */
-    public static Week.Status parseAttendanceStatus(String status) throws ParseException {
-        requireNonNull(status);
-        String trimmed = status.trim().toUpperCase();
-
-        try {
-            return Week.Status.fromString(trimmed);
-        } catch (IllegalArgumentException e) {
-            throw new ParseException("Status must be Y, A, or N");
-        }
-    }
-
-    /**
      * Parses a {@code String} into an {@code Index} representing a week number.
      *
      * @param oneBasedWeek The input string, e.g., "1" for week 1.
@@ -297,9 +281,13 @@ public class ParserUtil {
             throw new ParseException(MESSAGE_INVALID_ABSENCE_COUNT);
         }
 
+        if (trimmed.length() > 2) { // Heuristic to catch likely overflows early
+            throw new ParseException("Absence count is too large.");
+        }
+
         try {
             int count = Integer.parseInt(trimmed);
-            if (count > 13) {
+            if (count > WeekList.NUMBER_OF_WEEKS) {
                 throw new ParseException(MESSAGE_INVALID_ABSENCE_COUNT);
             }
             return count;

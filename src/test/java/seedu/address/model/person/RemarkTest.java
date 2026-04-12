@@ -88,4 +88,19 @@ public class RemarkTest {
         Remark remark = new Remark("Met student", VALID_DATE);
         assertEquals("[2025-10-01] Met student", remark.toString());
     }
+
+    @Test
+    public void constructor_boundaryDates_success() {
+        // BVA: Leap year date (Feb 29)
+        LocalDate leapDate = LocalDate.of(2024, 2, 29);
+        Remark leapYearRemark = new Remark("Leap year test", leapDate);
+        assertEquals(leapDate, leapYearRemark.getDate());
+        assertEquals("[2024-02-29] Leap year test", leapYearRemark.toString());
+
+        // BVA: Far-future date
+        LocalDate futureDate = LocalDate.of(9999, 12, 31);
+        Remark futureRemark = new Remark("Future date test", futureDate);
+        assertEquals(futureDate, futureRemark.getDate());
+        assertEquals("[9999-12-31] Future date test", futureRemark.toString());
+    }
 }

@@ -61,12 +61,14 @@ public class ViewWindow extends UiPart<Region> {
     /**
      * Checks if the window is currently displaying information for the given {@code Person}.
      * This is used to determine if the window needs an auto-refresh after a command execution.
+     * Uses {@code isSamePerson} rather than {@code equals} so that the view persists even when
+     * identity fields (StudentId, Email, Tele) are edited.
      *
      * @param other The person to check against.
      * @return True if the current person being viewed matches the other person.
      */
     public boolean isViewing(Person other) {
-        return person != null && person.equals(other);
+        return person != null && person.isSamePerson(other);
     }
 
     /**

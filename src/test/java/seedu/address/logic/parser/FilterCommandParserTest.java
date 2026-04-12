@@ -34,11 +34,37 @@ public class FilterCommandParserTest {
     public void parse_invalidStructure_failure() {
         // EP: Unexpected preamble before prefixes
         assertParseFailure(parser, " 123 crs/CS2101",
-                ParserMessages.MESSAGE_UNEXPECTED_PREAMBLE + "\n" + FilterCommand.MESSAGE_USAGE);
+                ParserMessages.unexpectedPreamble(FilterCommand.MESSAGE_USAGE));
 
         // EP: Duplicate prefixes (Constraint: Only one value per prefix)
         assertParseFailure(parser, " crs/CS2103T crs/CS2101",
                 String.format(MESSAGE_DUPLICATE_FIELDS, PREFIX_COURSEID));
+    }
+
+    @Test
+    public void parse_emptyValues_failure() {
+        // EP: Empty value for a prefix
+        assertParseFailure(parser, " crs/",
+                "Missing value for prefix(es): crs/\n" + FilterCommand.MESSAGE_USAGE);
+
+        // EP: Multiple empty values
+        assertParseFailure(parser, " crs/ tg/ ",
+                "Missing value for prefix(es): crs/ tg/\n" + FilterCommand.MESSAGE_USAGE);
+    }
+
+    @Test
+    public void parse_invalidValues_failure() {
+        // EP: Invalid value for absence count
+        assertParseFailure(parser, " abs/abc", ParserUtil.MESSAGE_INVALID_ABSENCE_COUNT);
+
+        // BVA: Negative absence count
+        assertParseFailure(parser, " abs/-1", ParserUtil.MESSAGE_INVALID_ABSENCE_COUNT);
+
+        // BVA: Out-of-bounds absence count
+        assertParseFailure(parser, " abs/14", ParserUtil.MESSAGE_INVALID_ABSENCE_COUNT);
+
+        // EP: Invalid value for progress
+        assertParseFailure(parser, " p/unknown", ParserUtil.MESSAGE_INVALID_PROGRESS);
     }
 
     @Test
@@ -66,11 +92,11 @@ public class FilterCommandParserTest {
                 Optional.empty(), Optional.of(10));
         assertParseSuccess(parser, " tg/T05 abs/10", new FilterCommand(pred2));
 
-        // Case: All fields present
+        // Case: All fields present (BVA: Max absence count boundary check)
         FilterMatchesPredicate pred3 = new FilterMatchesPredicate(
                 Optional.of(new CourseId("MA1521")), Optional.of(new TGroup("T01")),
-                Optional.of(Progress.AT_RISK), Optional.of(0));
-        assertParseSuccess(parser, " crs/MA1521 tg/T01 p/at_risk abs/0", new FilterCommand(pred3));
+                Optional.of(Progress.AT_RISK), Optional.of(13));
+        assertParseSuccess(parser, " crs/MA1521 tg/T01 p/at_risk abs/13", new FilterCommand(pred3));
     }
 
     @Test

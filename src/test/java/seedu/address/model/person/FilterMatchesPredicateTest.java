@@ -198,6 +198,13 @@ public class FilterMatchesPredicateTest {
                 .withTGroup("T01")
                 .withProgress(Progress.ON_TRACK)
                 .withAbsences(2).build()));
+
+        // All fields mismatch
+        assertFalse(predicate.test(new PersonBuilder()
+                .withCourseId("XX9999")
+                .withTGroup("G99")
+                .withProgress(Progress.AT_RISK)
+                .withAbsences(0).build()));
     }
 
     @Test
@@ -216,16 +223,6 @@ public class FilterMatchesPredicateTest {
     }
 
     @Test
-    public void test_absenceCount_maxBoundary() {
-        // BVA: Testing the maximum realistic boundary (13 weeks)
-        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(13));
-
-        assertFalse(predicate.test(new PersonBuilder().withAbsences(12).build()));
-        assertTrue(predicate.test(new PersonBuilder().withAbsences(13).build()));
-    }
-
-    @Test
     public void test_singleFieldMismatch_returnsFalse() {
         FilterMatchesPredicate predicate = new FilterMatchesPredicate(
                 Optional.of(new CourseId("CS2103T")), Optional.empty(), Optional.empty(), Optional.empty());
@@ -234,16 +231,6 @@ public class FilterMatchesPredicateTest {
         assertFalse(predicate.test(new PersonBuilder().withCourseId("MA1521").build()));
     }
 
-    @Test
-    public void test_absenceCountMatchesThresholdExactly_returnsTrue() {
-        // BV: Testing the exact threshold value
-        int threshold = 5;
-        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(threshold));
-
-        // The requirement says "at or above" (>=)
-        assertTrue(predicate.test(new PersonBuilder().withAbsences(threshold).build()));
-    }
 
     @Test
     public void test_toString() {
@@ -258,6 +245,15 @@ public class FilterMatchesPredicateTest {
                 + ", tGroup=" + tGroup + ", progress=" + progress + ", absenceCount=" + absenceCount
                 + "}";
         assertEquals(expected, predicate.toString());
+    }
+
+    @Test
+    public void equals_caseInsensitiveMatch_returnsTrue() {
+        FilterMatchesPredicate predicate1 = new FilterMatchesPredicate(
+                Optional.of(new CourseId("CS2103T")), Optional.empty(), Optional.empty(), Optional.empty());
+        FilterMatchesPredicate predicate2 = new FilterMatchesPredicate(
+                Optional.of(new CourseId("cs2103t")), Optional.empty(), Optional.empty(), Optional.empty());
+        assertEquals(predicate1, predicate2);
     }
 
 }

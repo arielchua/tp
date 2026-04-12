@@ -64,4 +64,11 @@ public class ViewCommandParserTest {
         // Null input
         assertThrows(NullPointerException.class, () -> parser.parse(null));
     }
+
+    @Test
+    public void parse_robustness_failure() {
+        String expectedInvalidIndexMessage = MESSAGE_INVALID_INDEX + "\n" + ViewCommand.MESSAGE_USAGE;
+        // EP: Decimal value
+        assertParseFailure(parser, "1.0", expectedInvalidIndexMessage);
+    }
 }

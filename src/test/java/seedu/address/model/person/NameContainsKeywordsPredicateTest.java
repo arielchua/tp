@@ -112,4 +112,10 @@ public class NameContainsKeywordsPredicateTest {
         NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("Alice"));
         assertTrue(predicate.test(new PersonBuilder().withName("  Alice   Bob  ").build()));
     }
+
+    @Test
+    public void test_keywordMatchesMiddleOfName_returnsFalse() {
+        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("lice"));
+        assertFalse(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+    }
 }

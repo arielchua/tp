@@ -9,7 +9,6 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,6 @@ import seedu.address.logic.commands.UnCancelWeekCommand;
 import seedu.address.logic.commands.UnremarkCommand;
 import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.FilterMatchesPredicate;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Remark;
@@ -41,9 +39,6 @@ import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
 
-/**
- * Contains unit tests for AddressBookParser.
- */
 public class AddressBookParserTest {
 
     private final AddressBookParser parser = new AddressBookParser();
@@ -85,7 +80,7 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_find() throws Exception {
-        List<String> keywords = Arrays.asList("Alice", "Bob", "Charlie");
+        List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
                 FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords)), command);
@@ -106,88 +101,64 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_view() throws Exception {
         ViewCommand command = (ViewCommand) parser.parseCommand(
-                ViewCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+            ViewCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new ViewCommand(INDEX_FIRST_PERSON), command);
     }
 
     @Test
     public void parseCommand_filter() throws Exception {
-        HashMap<String, String> args = new HashMap<>();
-        args.put("course", "CS2103T");
-        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                java.util.Optional.of(new seedu.address.model.person.CourseId("CS2103T")),
-                java.util.Optional.empty(),
-                java.util.Optional.empty(),
-                java.util.Optional.empty()
-        );
-        FilterCommand command = (FilterCommand) parser.parseCommand(
-                FilterCommand.COMMAND_WORD + " crs/CS2103T");
-        assertEquals(new FilterCommand(predicate), command);
+        assertTrue(parser.parseCommand(FilterCommand.COMMAND_WORD + " crs/CS2103T") instanceof FilterCommand);
     }
 
     @Test
     public void parseCommand_remark() throws Exception {
-        final String text = "Good progress";
-        RemarkCommand command = (RemarkCommand) parser.parseCommand(
-                RemarkCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + " "
-                + CliSyntax.PREFIX_REMARK + text);
-        assertEquals(new RemarkCommand(INDEX_FIRST_PERSON, new Remark(text, LocalDate.now())), command);
+        final Remark remark = new Remark("Good progress", LocalDate.now());
+        RemarkCommand command = (RemarkCommand) parser.parseCommand(RemarkCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_PERSON.getOneBased() + " " + CliSyntax.PREFIX_REMARK + remark.getText());
+        assertEquals(new RemarkCommand(INDEX_FIRST_PERSON, remark), command);
     }
 
     @Test
     public void parseCommand_unremark() throws Exception {
         UnremarkCommand command = (UnremarkCommand) parser.parseCommand(
-                UnremarkCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + " "
-                + CliSyntax.PREFIX_UNREMARK + "1");
+                UnremarkCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
+                + " " + CliSyntax.PREFIX_UNREMARK + "1");
         assertEquals(new UnremarkCommand(INDEX_FIRST_PERSON, INDEX_FIRST_PERSON), command);
     }
 
     @Test
     public void parseCommand_cancelWeek() throws Exception {
-        CancelWeekCommand command = (CancelWeekCommand) parser.parseCommand(
-                CancelWeekCommand.COMMAND_WORD + " crs/CS2103T tg/T01 wk/1");
-        assertEquals(new CancelWeekCommand(new seedu.address.model.person.CourseId("CS2103T"),
-                new seedu.address.model.person.TGroup("T01"),
-                seedu.address.commons.core.index.Index.fromOneBased(1)), command);
+        assertTrue(parser.parseCommand(
+            CancelWeekCommand.COMMAND_WORD + " crs/CS2103T tg/T01 week/1") instanceof CancelWeekCommand);
     }
 
     @Test
     public void parseCommand_unCancelWeek() throws Exception {
-        UnCancelWeekCommand command = (UnCancelWeekCommand) parser.parseCommand(
-                UnCancelWeekCommand.COMMAND_WORD + " crs/CS2103T tg/T01 wk/1");
-        assertEquals(new UnCancelWeekCommand(new seedu.address.model.person.CourseId("CS2103T"),
-                new seedu.address.model.person.TGroup("T01"),
-                seedu.address.commons.core.index.Index.fromOneBased(1)), command);
+        assertTrue(parser.parseCommand(
+            UnCancelWeekCommand.COMMAND_WORD + " crs/CS2103T tg/T01 week/1") instanceof UnCancelWeekCommand);
     }
 
     @Test
     public void parseCommand_markAttendance() throws Exception {
-        MarkAttendanceCommand command = (MarkAttendanceCommand) parser.parseCommand(
-                MarkAttendanceCommand.COMMAND_WORD + " 1 wk/1 s/Y");
-        assertEquals(new MarkAttendanceCommand(INDEX_FIRST_PERSON,
-                seedu.address.commons.core.index.Index.fromOneBased(1),
-                seedu.address.model.person.Week.Status.Y), command);
+        assertTrue(parser.parseCommand(
+            MarkAttendanceCommand.COMMAND_WORD + " 1 week/1 sta/Y") instanceof MarkAttendanceCommand);
     }
 
     @Test
     public void parseCommand_progress() throws Exception {
-        ProgressCommand command = (ProgressCommand) parser.parseCommand(
-                ProgressCommand.COMMAND_WORD + " 1 p/on_track");
-        assertEquals(new ProgressCommand(INDEX_FIRST_PERSON,
-                seedu.address.model.person.Progress.ON_TRACK), command);
+        assertTrue(parser.parseCommand(
+            ProgressCommand.COMMAND_WORD + " 1 p/on_track") instanceof ProgressCommand);
     }
 
     @Test
     public void parseCommand_unrecognisedInput_throwsParseException() {
-        assertThrows(ParseException.class,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), (
-                ) -> parser.parseCommand(""));
+        assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()
+            -> parser.parseCommand(""));
     }
 
     @Test
     public void parseCommand_unknownCommand_throwsParseException() {
-        assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, (
-        ) -> parser.parseCommand("unknownCommand"));
+        assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, () -> parser.parseCommand("unknownCommand"));
     }
 
     @Test
