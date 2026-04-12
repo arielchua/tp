@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import javafx.application.Application;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.LogsCenter;
@@ -45,6 +47,9 @@ public class MainApp extends Application {
     protected Storage storage;
     protected Model model;
     protected Config config;
+
+    private boolean hasCorruptedDataFileWarning = false;
+    private Path corruptedDataFilePath;
 
     @Override
     public void init() throws Exception {
@@ -87,6 +92,8 @@ public class MainApp extends Application {
         } catch (DataLoadingException e) {
             logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
                     + " Will be starting with an empty AddressBook.");
+            hasCorruptedDataFileWarning = true;
+            corruptedDataFilePath = storage.getAddressBookFilePath();
             initialData = new AddressBook();
         }
 
@@ -172,6 +179,9 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         logger.info("Starting TeachAssist " + MainApp.VERSION);
         ui.start(primaryStage);
+        if (hasCorruptedDataFileWarning) {
+            showCorruptedDataFileWarning(corruptedDataFilePath);
+        }
     }
 
     @Override
@@ -182,5 +192,17 @@ public class MainApp extends Application {
         } catch (IOException e) {
             logger.severe("Failed to save preferences " + StringUtil.getDetails(e));
         }
+    }
+
+    private void showCorruptedDataFileWarning(Path filePath) {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText("Data file is corrupted or invalid");
+        alert.setContentText("TeachAssist was unable to load saved data from:\n"
+                + filePath
+                + "\n\nThe app will start with an empty list."
+                + "\nContinuing to use the app may overwrite the corrupted file and cause permanent data loss."
+                + "\nPlease restore the file from a backup or replace it with a valid copy.");
+        alert.showAndWait();
     }
 }
