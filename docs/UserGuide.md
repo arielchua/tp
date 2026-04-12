@@ -6,7 +6,7 @@ pageNav: 3
 
 # TeachAssist User Guide
 
-Are you tired of juggling multiple platforms—tracking tutorials, managing attendance and searching through endless student records? Do you find yourself struggling with clunky spreadsheets and endless menus? 
+Are you tired of juggling multiple platforms—tracking tutorials, managing attendance and searching through endless student records? Do you find yourself struggling with clunky spreadsheets and endless menus?
 
 **TeachAssist** is for you.
 
@@ -69,13 +69,13 @@ Can't wait to get TeachAssist up and running? Let’s begin!
    >   - [Mac](https://se-education.org/guides/tutorials/javaInstallationMac.html)
    >   - [Linux](https://se-education.org/guides/tutorials/javaInstallationLinux.html)
    > - After installation, restart your terminal and run `java -version` again to confirm that the correct version is installed.
-  
+
 
 2. **Download the latest `TeachAssist.jar` file** from the [Releases page](https://github.com/AY2526S2-CS2103T-F10-3/tp/releases/tag/v1.3).
 
-3. **Move the downloaded file into a folder you want to use as the TeachAssist home folder.**  
+3. **Move the downloaded file into a folder you want to use as the TeachAssist home folder.**
    This folder will be used to store the app and its data.
-   
+
    Example:
    - You may create a folder named `TeachAssist` on your Desktop.
    - Then move `TeachAssist.jar` into that folder.
@@ -92,12 +92,12 @@ Can't wait to get TeachAssist up and running? Let’s begin!
    java -jar TeachAssist.jar
    ```
 
-   After a few seconds, the GUI should appear, similar to the screenshot below.  
+   After a few seconds, the GUI should appear, similar to the screenshot below.
    Notice that the app starts with some sample data for you to try out the commands.
 
    ![Ui](images/Ui.png)
 
-6. **Try entering a command in the command box.**  
+6. **Try entering a command in the command box.**
    A good place to start is help. Type it in and press Enter to open the help window and view the list of available commands.
 
 7. **Try these example commands:**
@@ -190,7 +190,7 @@ It must be noted that when entering parameters, they should not be blank.
 * `EMAIL` should only end with valid NUS domains ("@u.nus.edu", "@u.duke.nus.edu", "@u.yale-nus.edu.sg"). The local part before the '@' should be alphanumeric and can contain these special characters: " . ", " _ ", " - ", without any spaces.
 * `TELEGRAM_USERNAME` should only contain alphanumeric characters and underscores, with no spaces and an optional '@' as a starting character.
 
-<box type="warning"> 
+<box type="warning">
 
 Warning:
 What makes an entry a duplicate?
@@ -212,7 +212,7 @@ When a student is added successfully, you will receive a confirmation message:
 
 Forgetting a student’s full name? You can use the find command to instantly search for students using the beginning of any word in their name.
 
-**Format:** 
+**Format:**
 `find KEYWORD [MORE_KEYWORDS]...`
 
 **How it works:**
@@ -226,7 +226,7 @@ Forgetting a student’s full name? You can use the find command to instantly se
 Keywords must contain only alphabetic characters (A–Z). Using numbers or symbols (e.g., `find A123`) will result in an error.
 </box>
 
-**Example:** 
+**Example:**
 
 `find jo doe` — Finds **Jo**hn **Doe** and **Jo**anne **Doe**bertson.
 
@@ -235,7 +235,7 @@ Keywords must contain only alphabetic characters (A–Z). Using numbers or symbo
 The student list updates to show only matching records, and the Result Box displays the number of matches.
 
 <box type="info">
-Note: 
+Note:
     The `find` command searches through the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
 </box>
 
@@ -252,7 +252,7 @@ filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]`
 ```
 
 <box type="warning">
-Warning: 
+Warning:
     At least one filter parameter must be provided; using no parameters will result in an error.
 </box>
 
@@ -262,7 +262,7 @@ Warning:
 * Absence count (`abs/`) matches students whose absence count is greater than or equal to the provided number.
 * When you use multiple filters at once, a student must satisfy every provided filter to be included in the results.
 <box type="info">
-Note: 
+Note:
     The `filter` command applies to the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
 </box>
 
@@ -281,7 +281,7 @@ The student list updates instantly. The Result Box will display the total count:
 `There are 5 students matching this filter.`
 
 <box type="tip">
-Tip: 
+Tip:
     If a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
 </box>
 
@@ -290,7 +290,7 @@ Tip:
 
 If there are changes to a student's information during the sem, use the `edit` command to edit the student's details accordingly.
 
-**Format:** 
+**Format:**
 ```
 edit INDEX [n/NAME] [id/STUDENT_ID] [e/EMAIL] [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [tel/TELEGRAM_USERNAME]
 ```
@@ -313,8 +313,10 @@ When the edit is successful, you will receive the following message:
 <a name="attendance"></a>
 ### Updating students' attendance
 
-After setting up your student list, the next thing you will likely do throughout the semester is keep attendance records updated. You may be marking one student's attendance for a particular week, or handling a tutorial session that was cancelled for the whole class.
-TeachAssist provides three attendance-related commands. Use `marka` to update an individual student's attendance for a specific week, `cancelw` to cancel a tutorial week for an entire class, and `uncancelw` to restore a previously cancelled week.
+Now that you have finally set up your student list here comes the part you can never avoid: keeping attendance records. 
+That maybe done by marking attendance for a particular week or canceling a tutorial session for the whole class.
+TeachAssist provides three commands to solve all you needs. Use `marka` to update an individual student's attendance for a specific week, 
+`cancelw` to cancel a tutorial week for an entire class, and `uncancelw` to restore a previously cancelled week.
 
 <box type="info">
 Note:
@@ -331,12 +333,12 @@ Supported attendance statuses:
 - `a` for absent
 - `n` for unmarked
 
-**Format:** 
+**Format:**
 ```
-marka INDEX wk/WEEK s/STATUS
+marka INDEX wk/WEEK_NUMBER s/STATUS
 ```
 
-* Updates the attendance of student at the specified `INDEX` and `WEEK` to `STATUS`.
+* Updates the attendance of student at the specified `INDEX` and `WEEK_NUMBER` to `STATUS`.
 * The index refers to the index number shown in the currently displayed student list.
 * The index **must be a positive integer** 1, 2, 3, …
 
@@ -345,16 +347,12 @@ marka INDEX wk/WEEK s/STATUS
 
 - `marka 1 wk/3 s/y` - marks the attendance of the 1st student's attendance in week 3 as present -> Green.
 
-- `marka 2 wk/6 s/a` - marks the attendance of the 2nd student's attendance in week 6 as absent -> Red.
-
-- `marka 4 wk/4 s/n` - marks the attendance of the 4th student's attendance in week 4 as unmarked -> Grey.
-
 **Expected output:**
 
 The selected student's attendance record is updated immediately in the student list, and the corresponding week is shown with the updated attendance status.
 mark
 
-The following shows week 3 marked as present for Alex Tan, week 6 marked as absent for Bernice Yu, and unmarked for everything else.
+The following shows week 3 marked as present(green) for Alex Tan, week 6 marked as absent(red) for Bernice Yu, and unmarked(default) for everything else.
 <img src="images/markattendancesuccess.png" alt="marka success" width="700">
 
 <a name="cancel-week"></a>
@@ -362,13 +360,13 @@ The following shows week 3 marked as present for Alex Tan, week 6 marked as abse
 
 Sometimes, a tutorial may not take place for a particular week, for example due to a public holiday, a make-up arrangement, or a planned cancellation. In such cases, use the `cancelw` command to mark that week as cancelled for all students in a specific course and tutorial group.
 
-**Format:** 
+**Format:**
 
-`cancelw crs/COURSE_ID tg/TUTORIAL_GROUP wk/WEEK`
+`cancelw crs/COURSE_ID tg/TUTORIAL_GROUP wk/WEEK_NUMBER`
 
-* Cancels the specified `WEEK` for **all students** in the matching `COURSE_ID` and `TUTORIAL_GROUP`.
+* Cancels the specified week for **all students** in the matching `COURSE_ID` and `TUTORIAL_GROUP`.
 * A cancelled week will be reflected in each student’s attendance record.
-* If the week is already cancelled, the command will have no additional effect.
+* If the week is already cancelled, the command will throw an error message.
 
 <box type="info">
 Note:
@@ -379,11 +377,11 @@ Note:
 
 **Example:**
 
-- `cancelw crs/CS2103T tg/T12 wk/5` — cancels week 5 for all students in course `CS2103T` and tutorial group `T12can`.
+- `cancelw crs/CS2103T tg/T12 wk/5` — cancels week 5 for all students in course `CS2103T` and tutorial group `T12`.
 
 **Expected output:**
 
-All matching students will show week 5 as cancelled (represented by an X) in their attendance records.
+All students in CS2103T, tutorial T02 will show week 5 as cancelled (represented by an X) in their attendance records.
 
 <img src="images/cancelweeksuccess.png" alt="cancelw success" width="700">
 
@@ -393,17 +391,17 @@ All matching students will show week 5 as cancelled (represented by an X) in the
 
 Use this command to restore a previously cancelled tutorial week for all students in a specific course and tutorial group.
 
-**Format:** 
+**Format:**
 ```
-uncancelw crs/COURSE_ID tg/TUTORIAL_GROUP wk/WEEK
+uncancelw crs/COURSE_ID tg/TUTORIAL_GROUP wk/WEEK_NUMBER
 ```
 
-* Removes the cancelled status for the specified `WEEK`.
+* Removes the cancelled status for the specified week.
 * The week will return to a normal attendance state for all students in the matching course and tutorial group.
 * This affects:
     * Existing students (their week status will be updated).
     * Future students (the week will no longer be auto-marked as cancelled).
-* If the week was not previously cancelled, the command will have no effect.
+* If the week was not previously cancelled, the command will throw an error message.
 
 **Example:**
 
@@ -430,7 +428,7 @@ updateprogress INDEX p/PROGRESS
 * Progress is case-insensitive, so values such as `ON_TRACK` and `on_track` are both accepted.
 
 <box type="tip">
-Tip: 
+Tip:
     To remove a student's progress tag, use `not_set`.
 </box>
 
@@ -475,7 +473,7 @@ Alex Yeoh; Student ID: A1234567X; Email: alexyeoh@u.nus.edu; Course ID: CS2103T;
 Remark: Was absent for consultation
 ```
 
-The selected student's record is updated with the new remark, and the Result Box displays a confirmation message. 
+The selected student's record is updated with the new remark, and the Result Box displays a confirmation message.
 To view all existing remarks of a student, go to [View](#view).
 Remarks are shown when you select that student, allowing you to view the newly added remark together with any existing remarks.
 
@@ -502,7 +500,7 @@ unremark INDEX r/REMARK_INDEX
 
 **Expected output:**
 ```
-Deleted remark from Person: 
+Deleted remark from Person:
 Alex Yeoh; Student ID: A1234567X; Email: alexyeoh@u.nus.edu; Course ID: CS2103T; TGroup: T12; Tele: @alexyeoh
 Deleted Remark: Usually well-prepared for tutorials
 ```
@@ -521,7 +519,7 @@ view INDEX
     You can also **click** on any student in the list with your mouse to instantly display their details in the View Window.
 </box>
 
-**Example:** 
+**Example:**
 
 `view 1` — Displays the full details of the 1st student on the currently displayed list.
 
@@ -599,7 +597,7 @@ Note:
 <a name="clear"></a>
 ### Clears all students : `clear`
 
-Deletes all students. Useful for when the semester ends and you want to prep TeachAssist for the next! 
+Deletes all students. Useful for when the semester ends and you want to prep TeachAssist for the next!
 
 Format:
 ```
@@ -667,7 +665,7 @@ Parameter             | Prefix  | Constraints                                   
 ## FAQ
 
 **Q: Do I need to enter parameters in a fixed order?**
-No. For commands with prefixes such as add and filter, parameters can be entered in any order as long as all required fields are provided.
+Excluding index parameters without the '/' prefix. No. For commands with prefixes such as add and filter, parameters can be entered in any order as long as all required fields are provided.
 
 **Q: Why did `delete 1` remove a different student than I expected?**
 The index refers to the *currently displayed* list. If you previously ran `find` or `filter`, the list may be a subset of all students. Run `list` first to see every student, then use the correct index.
@@ -689,6 +687,10 @@ No. Both commands only change which students are *displayed*. Your underlying da
 
 **Q: Why can't I mark attendance for week 14?**
 TeachAssist follows the NUS 13-week teaching schedule (weeks 1–13). Week numbers outside this range are not accepted.
+                       
+**Q: Why doesn't my uncancel week return my status before i cancelled that week?**
+Because recovering cancelled status functionality is transient, i.e if you close the app you can
+no longer recover your cancelled status.
 
 **Q: What happens if I close TeachAssist without running `exit`?**
 Your data is saved automatically after every command that changes it, so closing the window directly (e.g., clicking the × button) will not cause data loss.

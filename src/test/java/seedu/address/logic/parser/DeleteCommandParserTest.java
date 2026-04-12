@@ -14,6 +14,9 @@ import org.junit.jupiter.api.Test;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.CourseId;
+import seedu.address.model.person.StudentId;
+import seedu.address.model.person.TGroup;
 
 /**
  * Contains unit tests for {@code DeleteCommandParser}.
@@ -27,6 +30,49 @@ public class DeleteCommandParserTest {
         assertParseSuccess(parser,
                 "1",
                 new DeleteCommand(Index.fromOneBased(1)));
+    }
+
+    @Test
+    public void parse_validIndexWithWhitespace_success() {
+        assertParseSuccess(parser,
+                "   1   ",
+                new DeleteCommand(Index.fromOneBased(1)));
+    }
+
+    @Test
+    public void parse_validDetails_success() {
+        String input = "id/A1234567G crs/CS2103T tg/T08";
+
+        assertParseSuccess(parser,
+                input,
+                new DeleteCommand(
+                        new StudentId("A1234567G"),
+                        new CourseId("CS2103T"),
+                        new TGroup("T08")));
+    }
+
+    @Test
+    public void parse_validDetailsDifferentOrder_success() {
+        String input = "tg/T08 crs/CS2103T id/A1234567G";
+
+        assertParseSuccess(parser,
+                input,
+                new DeleteCommand(
+                        new StudentId("A1234567G"),
+                        new CourseId("CS2103T"),
+                        new TGroup("T08")));
+    }
+
+    @Test
+    public void parse_validDetailsWithExtraWhitespace_success() {
+        String input = "   id/A1234567G   crs/CS2103T   tg/T08   ";
+
+        assertParseSuccess(parser,
+                input,
+                new DeleteCommand(
+                        new StudentId("A1234567G"),
+                        new CourseId("CS2103T"),
+                        new TGroup("T08")));
     }
 
     @Test
@@ -79,6 +125,15 @@ public class DeleteCommandParserTest {
     }
 
     @Test
+    public void parse_indexAndDetailsTogether_failure() {
+        String input = "1 id/A1234567G crs/CS2103T tg/T08";
+
+        assertParseFailure(parser,
+                input,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+    }
+
+    @Test
     public void parse_onlyStudentIdPrefix_failure() {
         String input = PREFIX_STUDENTID.getPrefix() + ALICE.getStudentId().value;
 
@@ -104,8 +159,36 @@ public class DeleteCommandParserTest {
                 input,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
+
     @Test
-    public void parse_duplicatePrefix_failure() {
+    public void parse_missingStudentId_failure() {
+        String input = "crs/CS2103T tg/T08";
+
+        assertParseFailure(parser,
+                input,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_missingCourseId_failure() {
+        String input = "id/A1234567G tg/T08";
+
+        assertParseFailure(parser,
+                input,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_missingTGroup_failure() {
+        String input = "id/A1234567G crs/CS2103T";
+
+        assertParseFailure(parser,
+                input,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_duplicateStudentIdPrefix_failure() {
         String input = PREFIX_STUDENTID.getPrefix() + ALICE.getStudentId().value
                 + " " + PREFIX_STUDENTID.getPrefix() + "A7654321A"
                 + " " + PREFIX_COURSEID.getPrefix() + ALICE.getCourseId().value
@@ -115,6 +198,32 @@ public class DeleteCommandParserTest {
                 ) -> parser.parse(input));
 
         assertTrue(thrown.getMessage().contains(PREFIX_STUDENTID.toString().trim()));
+    }
+
+    @Test
+    public void parse_duplicateCourseIdPrefix_failure() {
+        String input = PREFIX_STUDENTID.getPrefix() + ALICE.getStudentId().value
+                + " " + PREFIX_COURSEID.getPrefix() + ALICE.getCourseId().value
+                + " " + PREFIX_COURSEID.getPrefix() + "CS2040S"
+                + " " + PREFIX_TGROUP.getPrefix() + ALICE.getTGroup().value;
+
+        ParseException thrown = org.junit.jupiter.api.Assertions.assertThrows(ParseException.class, (
+                ) -> parser.parse(input));
+
+        assertTrue(thrown.getMessage().contains(PREFIX_COURSEID.toString().trim()));
+    }
+
+    @Test
+    public void parse_duplicateTGroupPrefix_failure() {
+        String input = PREFIX_STUDENTID.getPrefix() + ALICE.getStudentId().value
+                + " " + PREFIX_COURSEID.getPrefix() + ALICE.getCourseId().value
+                + " " + PREFIX_TGROUP.getPrefix() + ALICE.getTGroup().value
+                + " " + PREFIX_TGROUP.getPrefix() + "T01";
+
+        ParseException thrown = org.junit.jupiter.api.Assertions.assertThrows(ParseException.class, (
+                ) -> parser.parse(input));
+
+        assertTrue(thrown.getMessage().contains(PREFIX_TGROUP.toString().trim()));
     }
 
     @Test
@@ -135,6 +244,15 @@ public class DeleteCommandParserTest {
         String input = "sid/" + ALICE.getStudentId().value
                 + " " + PREFIX_COURSEID.getPrefix() + ALICE.getCourseId().value
                 + " " + PREFIX_TGROUP.getPrefix() + ALICE.getTGroup().value;
+
+        assertParseFailure(parser,
+                input,
+                ParserMessages.invalidPrefix("id/, crs/, tg/", DeleteCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_validDetailsWithExtraUnknownPrefix_failure() {
+        String input = "id/A1234567G crs/CS2103T tg/T08 x/extra";
 
         assertParseFailure(parser,
                 input,

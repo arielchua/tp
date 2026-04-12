@@ -22,7 +22,7 @@ public class UnremarkCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deleted a remark for a person in the address book. "
             + "Parameters: "
-            + "STUDENT INDEX (must be a valid index in the list) "
+            + "INDEX (must be a valid index in the list) "
             + PREFIX_UNREMARK + "REMARK_INDEX (must be a positive integer) \n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_UNREMARK + "1 \n";

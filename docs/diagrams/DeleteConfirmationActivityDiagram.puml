@@ -1,0 +1,53 @@
+@startuml
+!include style.puml
+skinparam ActivityBackgroundColor LOGIC_COLOR
+skinparam ActivityFontColor #FFFFFF
+skinparam ActivityBorderColor LOGIC_COLOR_T4
+skinparam DiamondBackgroundColor LOGIC_COLOR_T1
+skinparam DiamondBorderColor LOGIC_COLOR_T4
+skinparam DiamondFontColor #000000
+skinparam ArrowColor LOGIC_COLOR_T4
+
+title Delete Command — Confirmation Flow
+
+start
+
+:User enters delete command;
+
+:LogicManager parses command
+via AddressBookParser;
+
+:DeleteCommand resolves target
+student from model;
+
+if (Student found?) then ([yes])
+    :Create ConfirmedDeleteCommand
+    with resolved Person;
+    :Store as pending confirmation
+    command in LogicManager;
+    :Show confirmation prompt to user;
+
+    :User enters next input;
+
+    if (Input is "yes"?) then ([yes])
+        :Execute ConfirmedDeleteCommand;
+        :Delete person from Model;
+        :Save to Storage;
+        :Show success message;
+    elseif (Input is "no"?) then ([yes])
+        :Clear pending command;
+        :Show cancellation message;
+    else ([other input])
+        :Clear pending command;
+        :Parse and execute input
+        as a new command;
+    endif
+else ([no])
+    :Throw CommandException;
+    :Show error message;
+endif
+
+stop
+
+@enduml
+

@@ -1,0 +1,67 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":MarkAllCommand" as MarkAllCommand LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+participant "p:Person" as Person MODEL_COLOR
+participant "wl:WeekList" as WeekList MODEL_COLOR
+end box
+
+[-> LogicManager : execute("markall crs/CS2103T\ntg/T01 week/3 sta/Y")
+activate LogicManager
+
+LogicManager -> MarkAllCommand : execute(model)
+activate MarkAllCommand
+
+MarkAllCommand -> Model : getFullPersonList()
+activate Model
+Model --> MarkAllCommand : allPersons
+deactivate Model
+
+note right of MarkAllCommand
+  Filter allPersons to those matching
+  courseId == CS2103T AND tGroup == T01
+end note
+
+loop [for each matching Person p]
+
+    MarkAllCommand -> Person : getWeekList()
+    activate Person
+    Person --> MarkAllCommand : wl
+    deactivate Person
+
+    MarkAllCommand -> WeekList : getWeek(3)
+    activate WeekList
+    WeekList --> MarkAllCommand : week
+    deactivate WeekList
+
+    alt week is cancelled
+        note right of MarkAllCommand : Skip this student;\nadd to skipped list
+    else week is not cancelled
+        MarkAllCommand -> WeekList : markWeek(3, Y)
+        activate WeekList
+        WeekList --> MarkAllCommand
+        deactivate WeekList
+
+        MarkAllCommand -> Model : setPerson(p, updatedP)
+        activate Model
+        Model --> MarkAllCommand
+        deactivate Model
+    end
+
+end
+
+MarkAllCommand --> LogicManager : CommandResult\n(summary of marked / skipped)
+deactivate MarkAllCommand
+
+[<-- LogicManager
+deactivate LogicManager
+
+@enduml
+
