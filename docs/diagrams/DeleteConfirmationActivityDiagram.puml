@@ -14,36 +14,28 @@ start
 
 :User enters delete command;
 
-:LogicManager parses command
-via AddressBookParser;
+:LogicManager parses and intercepts
+DeleteCommand, calls getConfirmedCommand(model);
 
-:DeleteCommand resolves target
-student from model;
-
-if (Student found?) then ([yes])
-    :Create ConfirmedDeleteCommand
-    with resolved Person;
-    :Store as pending confirmation
-    command in LogicManager;
-    :Show confirmation prompt to user;
+if (Target student resolved?) then ([yes])
+    :Store ConfirmedDeleteCommand
+    as pending in LogicManager;
+    :Show confirmation prompt;
 
     :User enters next input;
 
     if (Input is "yes"?) then ([yes])
         :Execute ConfirmedDeleteCommand;
-        :Delete person from Model;
-        :Save to Storage;
+        :Delete person and save;
         :Show success message;
     elseif (Input is "no"?) then ([yes])
         :Clear pending command;
         :Show cancellation message;
     else ([other input])
         :Clear pending command;
-        :Parse and execute input
-        as a new command;
+        :Parse and execute as new command;
     endif
 else ([no])
-    :Throw CommandException;
     :Show error message;
 endif
 
