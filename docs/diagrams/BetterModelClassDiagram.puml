@@ -9,7 +9,7 @@ UniquePersonList -right-> "*" Person
 
 Person *--> "1" Name
 Person *--> "1" CourseId
-Person *--> "1" Email
+Person *--> "0..1" Email
 Person *--> "1" StudentId
 Person *--> "1" TGroup
 Person *--> "0..1" Tele

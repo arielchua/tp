@@ -32,9 +32,9 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
         }
 
         Prefix[] allowedPrefixes = {PREFIX_STUDENTID, PREFIX_COURSEID, PREFIX_TGROUP};
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, allowedPrefixes);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(" " + trimmedInput, allowedPrefixes);
 
-        ParserValidators.checkForUnknownPrefixTokens(args, allowedPrefixes,
+        ParserValidators.checkForUnknownPrefixTokens(trimmedInput, allowedPrefixes,
                 "id/, crs/, tg/", DeleteCommand.MESSAGE_USAGE);
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_STUDENTID, PREFIX_COURSEID, PREFIX_TGROUP);
@@ -57,7 +57,6 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
 
             return new DeleteCommand(studentId, courseId, tGroup);
         }
-
 
         if (trimmedInput.matches("[1-9]\\d*\\s+.+")) {
             throw new ParseException(DeleteCommand.MESSAGE_UNEXPECTED_TEXT_AFTER_INDEX
