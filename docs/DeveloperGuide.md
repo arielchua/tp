@@ -692,7 +692,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 
 ### Use cases
+<help>
 
+<Add student>
 **Use Case: UC01 – Add Student**<br>
 **Actor:** User<br>
 **MSS:**
@@ -714,6 +716,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3b2. TeachAssist informs the user that the student already exists.
     * Use case ends.
 
+<find student>
+
+<filter student>
+
+<edit student>
 **Use Case: UC02 – Edit Student**<br>
 **Actor:** User<br>
 **MSS:**
@@ -732,6 +739,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2b1. TeachAssist informs the user that the specified student could not be found.
     * Use case ends.
 
+<mark attendance>
 **Use Case: UC05 – Mark Attendance**<br>
 **Actor:** User<br>
 **MSS:**
@@ -750,6 +758,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2b1. TeachAssist informs the user and aborts the operation.
     * Use case ends.
 
+<cancelweek>
+
+<uncancelweek>
+
+<updateprogress>
+
+<add remark>
 **Use Case: UC06 – Add remark to student**<br>
 **Actor:** User<br>
 **MSS:**
@@ -771,6 +786,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2c1. TeachAssist shows an error message.
     * Use case ends. 
 
+<delete remark>
 
 **Use Case: UC08 – Update Student Progress Status**<br>
 **Actor:** User<br>
@@ -793,6 +809,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 1c1. TeachAssist informs the user of the valid progress statuses.
     * Use case ends.
 
+<view student>
 **Use Case: UC09 – View Student Details**<br>
 **Actor:** User<br>
 **MSS:**
@@ -817,6 +834,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 4. User reviews the available commands.
 5. Use case ends
 
+<delete student>
 **Use Case: UC11 – Delete Student** <br>
 **Actor:** User <br>
 **MSS:**
@@ -934,12 +952,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 Given below are instructions to test the app manually.
 
-<box type="info" seamless></box>
+<box type="info" seamless>
 
 **Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
 
-</box></box>
+</box>
 
 ### Launch and shutdown
 
