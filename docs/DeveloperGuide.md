@@ -256,12 +256,12 @@ This is useful in TeachAssist because student records are identified by student-
 
 TeachAssist supports the following delete modes:
 
-- **Delete by displayed index**  
-  The user deletes a student using the index shown in the current displayed student list.  
+- **Delete by displayed index**
+  The user deletes a student using the index shown in the current displayed student list.
   Example: `delete 1`
 
-- **Delete by exact student details**  
-  The user deletes a student by specifying the student’s `StudentId`, `CourseId`, and `TGroup`.  
+- **Delete by exact student details**
+  The user deletes a student by specifying the student’s `StudentId`, `CourseId`, and `TGroup`.
   Example: `delete id/A1234567X crs/CS2103T tg/T01`
 
 This identity-based deletion mode is useful when the user wants to target a specific student directly, rather than relying on the current displayed index.
@@ -535,7 +535,7 @@ If the week is not currently cancelled, the command throws a `CommandException` 
 ### Feature: Remark Command
 #### Overview
 
-The `remark` command allows a teaching assistant to attach a short note to a specific student. This is useful for recording contextual observations that are not captured by the standard student fields (e.g class participation, submission behaviour, consultation follow-ups, or other teaching-related comments)
+The `remark` command allows a teaching assistant to attach a remark to a specific student. This is useful for recording contextual observations that are not captured by the standard student fields (e.g, class participation, submission behaviour, consultation follow-ups, or other teaching-related comments)
 
 The command targets a student by their displayed student index in the current person list and adds a remark to that student. The remark is intended to help TAs keep track of student-specific context across multiple interactions. The command word is `remark`, and its expected format is:
 
@@ -551,65 +551,21 @@ In the model, a remark is represented as a dedicated `Remark` object rather than
 
 This design allows each remark to carry basic metadata in addition to its content. In the current implementation, the creation date is automatically assigned using `LocalDate.now()` when the command is parsed. This means the user only provides the text of the remark, while the system records the date implicitly.
 
-- Remarks are associated with a `Person` as a list of remark objects. 
+- Remarks are stored in each `Person` as a `List<Remark>`.
 - In storage, `JsonAdaptedPerson` stores `remarks` as a `List<JsonAdaptedRemark>`.
 - Each `JsonAdaptedRemark` contains a `text` field and a `date` field.
 - During deserialization, each adapted remark is converted back into a model-level `Remark` object and reattached to the corresponding person.
 
 #### Implementation
 
-The `remark` feature is implemented using the `RemarkCommand` and `RemarkCommandParser` classes. The parser is responsible for extracting the target student index and the remark text from user input. It tokenizes the input using the `txt/` prefix, validates that both the preamble and the remark body are present, parses the preamble as an `Index`, trims the remark text, and constructs a new `Remark` object with the supplied text and the current date. It then returns a `RemarkCommand` containing the parsed index and newly created remark.
+When `RemarkCommand#execute` is called, the command first retrieves the currently filtered person list from the model. It checks whether the provided index is within bounds; if not, it throws a `CommandException` using `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX`. Otherwise, it retrieves the target `Person` from the displayed list, constructs a copy of that person, adds the new remark to the copied person, and updates the model using `model.setPerson(personToEdit, editedPerson)`. A success message is then returned to the user.
 
-When `RemarkCommand#execute` is called, the command first retrieves the currently filtered person list from the model. It checks whether the provided index is within bounds; if not, it throws a `CommandException` using `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX`. Otherwise, it retrieves the target `Person` from the displayed list and adds the new remark to that person using `personToEdit.addRemark(remark)`. A success message is then returned to the user.
+An important implementation detail is that the command does not mutate the original `Person` object in place. Instead, it works on a copied `Person` instance and replaces the old person in the model using `setPerson(...)`. This makes the update explicit and aligns the remark feature with the application's general update pattern.
 
-An important implementation detail is that the current version modifies the retrieved `Person` object directly by invoking `addRemark` on it. In other words, the command does not construct a replacement `Person` and does not call a model-level replacement method such as `setPerson(...)`. In the current implementation, the command adds the new `Remark` directly to the selected `Person` object using `addRemark(remark)`.
+The following sequence diagram provides a simplified view of how the updated address book state is persisted through the storage layer after execution of the `remark` command.
 
-The parsing and execution flow can therefore be summarized as follows:
-1. User enters a `remark` command with a student index and remark text.
-2. `RemarkCommandParser` validates the format and creates a `Remark` with the current date.
-3. A `RemarkCommand` is created with the parsed index and remark.
-4. `RemarkCommand#execute` checks that the student index is valid.
-5. The target student's remark list is updated by adding the new remark.
-6. A success result is returned.
+![Remark command sequence diagram](images/RemarkSequenceDiagram.png)
 
-#### Design Considerations
-
-Using a dedicated `Remark` object instead of a raw string makes the feature more extensible. Since each remark already stores both text and date, the design can be extended in future to support richer metadata such as author, category, or edit history without changing the overall remark-management structure. The storage layer already supports this object-based design through `JsonAdaptedRemark`.
-
-### Feature: Unremark Command
-
-#### Overview
-
-The `unremark` command allows a teaching assistant to delete an existing remark from a specific student record. This is useful when a remark is no longer relevant, was added by mistake, or needs to be removed to keep the student’s record concise and up to date.
-
-The command targets a student by their displayed index in the current person list, and then targets a specific remark belonging to that student by its remark index. The command word is `unremark`, and its expected format is:
-
-`unremark INDEX r/REMARK_INDEX`
-
-For example, `unremark 1 r/2` removes the second remark from the first student in the displayed list.
-
-#### Unremark Representation
-
-The `unremark` command operates on the same `Remark` representation described in the `remark` feature. Each `Person` maintains a list of `Remark` objects, and `unremark` removes one existing remark from that list based on its remark index.
-
-#### Implementation
-
-The `unremark` feature is implemented using the `UnremarkCommand` and `UnremarkCommandParser` classes. The parser tokenizes user input using the `r/` prefix, validates that both the student index and the remark index are present, parses both values as `Index` objects, and constructs an `UnremarkCommand` containing the parsed student index and remark index.
-
-When `UnremarkCommand#execute` is called, the command first retrieves the currently filtered person list from the model. It checks whether the provided student index is within bounds; if not, it throws a `CommandException` using `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX`. It then retrieves the target `Person` from the displayed list and checks whether the provided remark index is valid for that person’s remark list. If the remark index is out of bounds, the command throws a `CommandException` with `MESSAGE_INVALID_REMARK_INDEX`. Otherwise, the command deletes the selected remark by calling `personToEdit.deleteRemark(remarkIndex)`, and returns a success message.
-
-The execution flow can therefore be summarized as follows:
-1. User enters an `unremark` command with a student index and a remark index.
-2. `UnremarkCommandParser` validates the format and parses both indices.
-3. An `UnremarkCommand` is created with the parsed student index and remark index.
-4. `UnremarkCommand#execute` checks that the student index is valid.
-5. The command checks that the remark index is valid for the selected student.
-6. The specified remark is removed from the student’s remark list.
-7. A success result is returned.
-
-#### Design Considerations
-
-Using a separate `unremark` command allows remark deletion to remain explicit and precise. Since a student may have multiple remarks, requiring both the student index and the remark index ensures that the command targets exactly one stored remark. This avoids ambiguity and keeps remark management consistent with the object-based remark representation used in the model and storage layers.
 
 ### Feature: View Command
 
@@ -662,7 +618,7 @@ TeachAssist is specifically optimized for a distinct niche of academic administr
 * Technical Proficiency: Reasonably comfortable with Command Line Interface (CLI) applications and values the precision of text-based input.
 * Performance: A fast typist who finds traditional Mouse/GUI interactions cumbersome and "slow" for repetitive data entry.
 
-**Value proposition**: 
+**Value proposition**:
 TeachAssist provides a high-speed, structured student management system that bridges the gap between disorganized spreadsheets and overly complex enterprise software. By utilizing a typing-based interface, it allows TAs to execute administrative tasks—such as updating student details or logging consultation notes—significantly faster than a typical mouse-driven application.
 
 
