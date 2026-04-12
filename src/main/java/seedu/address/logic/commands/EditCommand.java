@@ -161,11 +161,11 @@ public class EditCommand extends Command {
          * Returns true if at least one field is different from the corresponding field value in the given person.
          */
         public boolean isFieldChanged(Person personToEdit) {
-            return (name.equals(personToEdit.getName()))
-                    || (studentId.equals(personToEdit.getStudentId()))
+            return (Objects.equals(name, personToEdit.getName()))
+                    || (Objects.equals(studentId, personToEdit.getStudentId()))
                     || (Objects.equals(email, personToEdit.getEmail()))
-                    || (courseId.equals(personToEdit.getCourseId()))
-                    || (tGroup.equals(personToEdit.getTGroup()))
+                    || (Objects.equals(courseId, personToEdit.getCourseId()))
+                    || (Objects.equals(tGroup, personToEdit.getTGroup()))
                     || (Objects.equals(tele, personToEdit.getTele()));
         }
 

@@ -14,13 +14,13 @@ public class Email {
             + "1. The local-part should only contain alphanumeric characters and these special characters, excluding "
             + "the parentheses, (" + SPECIAL_CHARACTERS + "). The local-part may not start or end with any special "
             + "characters.\n"
-            + "2. This is followed by a '@' and then the NUS domain: u.nus.edu\n"
+            + "2. This is followed by a '@' and then the NUS domain: u.nus.edu / u.duke.nus.edu / u.yale-nus.edu.sg\n"
             + "Example: e1234567@u.nus.edu";
     // alphanumeric and special characters
     private static final String ALPHANUMERIC_NO_UNDERSCORE = "[^\\W_]+"; // alphanumeric characters except underscore
     private static final String LOCAL_PART_REGEX = "^" + ALPHANUMERIC_NO_UNDERSCORE + "([" + SPECIAL_CHARACTERS + "]"
             + ALPHANUMERIC_NO_UNDERSCORE + ")*";
-    private static final String DOMAIN_REGEX = "u\\.nus\\.edu$";
+    private static final String DOMAIN_REGEX = "(u\\.nus\\.edu|u\\.duke\\.nus\\.edu|u\\.yale-nus\\.edu\\.sg)$";
     public static final String VALIDATION_REGEX = LOCAL_PART_REGEX + "@" + DOMAIN_REGEX;
 
     public final String value;
