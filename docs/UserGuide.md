@@ -188,8 +188,8 @@ It must be noted that when entering parameters, they should not be blank.
 Warning:
 What makes an entry a duplicate?
 
-* When a student that already exists in TeachAssist is being added,
- they must be of a different `COURSE_ID` and `TUTORIAL_GROUP`. 
+* When a student that already exists in TeachAssist is being added (same StudentID, Email or Tele),
+ they must be of a different `COURSE_ID` and `TUTORIAL_GROUP`.
 
 **Examples:**
 ```
