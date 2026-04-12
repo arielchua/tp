@@ -525,7 +525,7 @@ An important implementation detail is that the command does not mutate the origi
 
 The following sequence diagram provides a simplified view of how the updated address book state is persisted through the storage layer after execution of the `remark` command.
 
-![Remark command sequence diagram](images/RemarkSequenceDiagram.png)
+![Remark command sequence diagram](images/RemarkSequenceDiagram.puml)
 
 
 ### Feature: View Command
@@ -657,7 +657,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `***` | TA tracking student performance | update a student’s progress status | quickly identify which students are on track or need support |
 | `**` | TA preparing for class | view a student’s progress status in the UI | understand the student’s standing at a glance |
 | `***` | TA taking tutorial attendance | mark attendance for a student | keep a record of who attended class |
-| `***` | TA who conducts consultations | add remarks to a student’s record | remember important discussion points and follow-up actions |
+| `***` | TA managing multiple students | add remarks to a student’s record | keep track of important observations, follow-up actions, and teaching-related context |
+| `***` | TA managing multiple students | delete a remark from a student’s record | remove outdated, incorrect, or no longer relevant remarks |
 | `***` | TA who conducts consultations | view a student’s remarks and details | prepare for future consultations more effectively |
 | `**` | TA managing many students | keep remarks together with each student record | avoid scattering notes across separate apps or documents |
 | `**` | TA managing multiple tutorial groups | keep all students across different courses and tutorial groups in one application | avoid maintaining multiple spreadsheets or lists |
