@@ -960,7 +960,7 @@ testers are expected to do more *exploratory* testing.
 
 1. Adding a student with valid fields
 
-    1. **Test case:** `add n/John Doe sid/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01 tele/@johndoe`
+    1. **Test case:** `add n/John Doe id/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01 tel/@johndoe`
 
     2. **Expected behaviour:** A new student is added to the list. Success message shown: `"New person added: John Doe; Student ID: A0123456X; Email: johnd@u.nus.edu; Course ID: CS2103T; TGroup: T01; Tele: @johndoe"`.
 
@@ -968,11 +968,11 @@ testers are expected to do more *exploratory* testing.
 
     1. **Test case:** `add n/John Doe id/A0123456X` (missing email, course, and tutorial group)
 
-    2. **Expected behaviour:** Command rejected with an error message showing the correct usage format. All of `n/`, `sid/`, `e/`, `crs/`, `tg/` are required.
+    2. **Expected behaviour:** Command rejected with an error message showing the correct usage format. All of `n/`, `id/`, `e/`, `crs/`, `tg/` are required.
 
 3. Adding a student with invalid field values
 
-    1. **Test case:** `add n/John123 sid/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01`
+    1. **Test case:** `add n/John123 id/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01`
 
     2. **Expected behaviour:** Command rejected with an error message indicating the name constraint (names should only contain alphabetical characters and spaces).
 
@@ -1013,120 +1013,114 @@ testers are expected to do more *exploratory* testing.
 
 1. Opening the Help Window
 
-**Test case:** Type help and press Enter.
+    1. **Test case:** Type `help` and press Enter.
 
-**Expected:** The Help window opens.
+    2. **Expected behaviour:** The Help window opens. Result box shows message: `"Opened help window."`.
 
-**Test case:** Press the F1 key (or fn + F1 on Mac).
+    3. **Test case:** Press the F1 key (or fn + F1 on Mac).
 
-**Expected:** The Help window opens.
+    4. **Expected behaviour:** The Help window opens. Result box shows message: `"Opened help window."`.
 
-**Test case:** Type help extra_text (invalid parameters) eg-help icecream.
+    5. **Test case:** Type `help icecream` (with extra text after `help`).
 
-**Expected:** The Help window still opens (parameters are ignored).
+    6. **Expected behaviour:** The Help window still opens (extra text is ignored). Result box shows message: `"Opened help window."`.
 
 2. Window Focus Behavior
 
-Prerequisite: The Help window is already open but not minimized.
+    1. **Prerequisite:** The Help window is already open but not minimized.
 
-Test case: Type help or press F1 again while the main window has focus.
+    2. **Test case:** Type `help` or press F1 again while the main window has focus.
 
-Expected: The existing Help window is brought to the front/focus. No duplicate window is created.
+    3. **Expected behaviour:** The existing Help window is brought to the front/focus. No duplicate window is created.
 
 
-3. Content correctness
-
-    1. Test case: Inspect help content and verify the `find`, `filter`, `view`, and `help` entries match the documented usage and examples.
-
-    2. Expected: Command words and sample usages are accurate and executable.
-
-### Find command (`find`) — manual tests
+### Find command (`find`) 
 
 1. Single-keyword search
 
-    1. Test case: Enter `find Alice` where "Alice" exists in sample data.
+    1. **Test case:** Enter `find Alice` where "Alice" exists in sample data.
 
-    2. Expected: Displayed list shows students whose names contain a word starting with "Alice" (case-insensitive). Result count shown matches number of displayed rows.
+    2. **Expected behaviour:** Displayed list shows students whose names contain a word starting with "Alice" (case-insensitive). Result box shows message: `"X students listed!"` where X is the number of matching students.
 
 2. Multiple-keyword search
 
-    1. Test case: Enter `find Al Bob` where both keywords match different students.
+    1. **Test case:** Enter `find Al Bob` where both keywords match different students.
 
-    2. Expected: Displayed list contains students matching any of the keywords (OR across keywords). No duplicates; count is correct.
+    2. **Expected behaviour:** Displayed list contains students matching any of the keywords (OR across keywords). No duplicates. Result box shows message: `"X students listed!"` where X is the number of matching students.
 
 3. Case and prefix matching
 
-    1. Test case: Enter `find ann` to match "Annabelle" and `find ANN`.
+    1. **Test case:** Enter `find ann` to match "Annabelle" and `find ANN`.
 
-    2. Expected: Matching is case-insensitive and supports prefix matching as documented.
+    2. **Expected behaviour:** Both commands produce the same results. Matching is case-insensitive and supports prefix matching (e.g., "ann" matches any name word starting with "ann").
 
 4. Empty or whitespace-only query
 
-    1. Test case: Enter `find` with no keywords or only whitespace.
+    1. **Test case:** Enter `find` with no keywords or only whitespace.
 
-    2. Expected: Command rejected with a usage/error message; displayed list remains unchanged.
+    2. **Expected behaviour:** Command rejected with error message: `"Find command requires at least one keyword."` followed by the `find` command usage. Displayed list remains unchanged.
 
-5. Invalid Special Characters
+5. Invalid special characters
 
-    1. Test case: `find A123` or `find @@@`.
+    1. **Test case:** `find A123` or `find @@@`.
 
-    2. Expected: Command rejected with error message: `"Keywords should contain alphabetic characters separated by spaces only."` followed by the `find` command usage.
+    2. **Expected behaviour:** Command rejected with error message: `"Keywords should contain alphabetic characters separated by spaces only."` followed by the `find` command usage.
 
 ### Filter command (`filter`) 
 
 1. Single criterion filtering
 
-    1. Test case: `filter crs/CS2103T`
+    1. **Test case:** `filter crs/CS2103T`
 
-    2. Expected: List displays only students in course CS2103T. Result box shows message: `"There are X students matching this filter."` where X is the number of matching students.
+    2. **Expected behaviour:** List displays only students in course CS2103T. Result box shows message: `"There are X students matching this filter."` where X is the number of matching students.
 
-    3. Test case: `filter p/on_track`
+    3. **Test case:** `filter p/on_track`
 
-    4. Expected: List displays only students with progress `on_track`. Result box shows message: `"There are X students matching this filter."`.
+    4. **Expected behaviour:** List displays only students with progress `on_track`. Result box shows message: `"There are X students matching this filter."`.
 
 2. Multiple criteria filtering
 
-    1. Test case: `filter crs/CS2103T tg/T01 abs/2`
+    1. **Test case:** `filter crs/CS2103T tg/T01 abs/2`
 
-    2. Expected: List displays only students who satisfy all criteria — course is CS2103T AND tutorial group is T01 AND absence count ≥ 2 (AND logic). Result box shows message: `"There are X students matching this filter."`.
+    2. **Expected behaviour:** List displays only students who satisfy all criteria — course is CS2103T AND tutorial group is T01 AND absence count ≥ 2 (AND logic). Result box shows message: `"There are X students matching this filter."`.
 
 3. No matches for filter
 
-    1. Test case: `filter crs/CS9999` (a non-existent course).
+    1. **Test case:** `filter crs/CS9999` (a non-existent course).
 
-    2. **Expected:** List becomes empty; result box shows: `"There are 0 students matching this filter."`.
+    2. **Expected behaviour:** List becomes empty; result box shows: `"There are 0 students matching this filter."`.
 
 4. Absence threshold checks
 
-    1. Test case: `filter abs/0`
+    1. **Test case:** `filter abs/0`
 
-    2. Expected: Matches everyone (since all students have 0 or more absences). Result box shows: `"There are X students matching this filter."`.
+    2. **Expected behaviour:** Matches everyone (since all students have 0 or more absences). Result box shows: `"There are X students matching this filter."`.
 
-    3. Test case: `filter abs/5`
+    3. **Test case:** `filter abs/5`
 
-    4. Expected: Matches only students with at least 5 absences. Result box shows: `"There are X students matching this filter."`.
+    4. **Expected behaviour:** Matches only students with at least 5 absences. Result box shows: `"There are X students matching this filter."`.
 
-    5. Test case: `filter abs/99`
+    5. **Test case:** `filter abs/99`
 
-    6. Expected: Command rejected with error message: `"Absence count must be an integer between 0 and 13 (inclusive)."`. The absence count must be an integer between 0 and 13 (inclusive).
+    6. **Expected behaviour:** Command rejected with error message: `"Absence count must be an integer between 0 and 13 (inclusive)."`.
 
 5. Invalid inputs and error handling
 
-    1. Test case: `filter` (empty command, no filter criteria).
+    1. **Test case:** `filter` (empty command, no filter criteria).
 
-    2. Expected: Command rejected with error message: `"At least one filter must be provided."` followed by the filter command usage.
+    2. **Expected behaviour:** Command rejected with error message: `"At least one filter must be provided."` followed by the filter command usage.
 
-    3. Test case: `filter crs/` (missing value for course).
+    3. **Test case:** `filter crs/` (missing value for course).
 
-    4. Expected: Command rejected with error message: `"Course ID cannot be empty."`.
+    4. **Expected behaviour:** Command rejected with error message: `"Course ID cannot be empty."`.
 
-    5. Test case: `filter abs/xyz`
+    5. **Test case:** `filter abs/xyz`
 
-    6. Expected: Command rejected with error message: `"Absence count must be an integer between 0 and 13 (inclusive)."`.
+    6. **Expected behaviour:** Command rejected with error message: `"Absence count must be an integer between 0 and 13 (inclusive)."`.
 
-    7. Test case: `filter p/invalid_status`
+    7. **Test case:** `filter p/invalid_status`
 
-    8. Expected: Command rejected with error message: `"Invalid progress value. Allowed values are: on_track, needs_attention, at_risk, clear."`.
+    8. **Expected behaviour:** Command rejected with error message: `"Invalid progress value. Allowed values are: on_track, needs_attention, at_risk, clear."`.
 
 ### Deleting a student
 
@@ -1174,7 +1168,7 @@ Expected: The existing Help window is brought to the front/focus. No duplicate w
 
 8. Deleting a non-existent student by details
 
-    1. **Prerequisite:** Ensure that no student in the currently displayed list matches these 3 fields: `id/A0000000Z crs/CS9999 tg/T99`
+    1. **Prerequisite:** Ensure that no student in the address book matches these 3 fields: `id/A0000000Z crs/CS9999 tg/T99`
 
     2. **Test case:** `delete id/A0000000Z crs/CS9999 tg/T99`
 
@@ -1216,90 +1210,91 @@ Expected: The existing Help window is brought to the front/focus. No duplicate w
 
 1. Marking attendance with valid input
 
-   1. Test case: `markattendance 1 week/3 sta/Y`
+    1. **Test case:** `markattendance 1 week/3 sta/Y`
 
-   2. Expected: Student at index 1 has week 3 marked as attended. Success message: `"Week 3 marked as Attended for: <student name> (<student ID>)"`.
+    2. **Expected behaviour:** Student at index 1 has week 3 marked as attended. Success message: `"Week 3 marked as Y (Present) for: <student name> (<student ID>)"`.
 
 2. Marking attendance with invalid week
 
-   1. Test case: `markattendance 1 week/20 sta/Y`
+    1. **Test case:** `markattendance 1 week/20 sta/Y`
 
-   2. Expected: Command rejected with error message: `"Invalid week number. Valid range: 1 to 13."`.
+    2. **Expected behaviour:** Command rejected with error message: `"Invalid week number. Valid range: 1 to 13."`.
 
 3. Marking attendance with cancelled week
 
-   1. Test case:
-      `cancelweek crs/CS2103T tg/T01 week/3`
-      `markattendance 1 week/3 sta/Y`
+    1. **Test case:**
+       `cancelweek crs/CS2103T tg/T01 week/3`
+       `markattendance 1 week/3 sta/Y`
 
-   2. Expected: Command rejected with error message: `"Week 3 is cancelled and cannot be marked."`.
+    2. **Expected behaviour:** Command rejected with error message: `"Week 3 is cancelled and cannot be marked."`.
 
 4. Marking attendance duplicate status
 
-   1. Test case:
-      `markattendance 1 week/2 sta/Y`
-      `markattendance 1 week/2 sta/Y`
+    1. **Test case:**
+       `markattendance 1 week/2 sta/Y`
+       `markattendance 1 week/2 sta/Y`
 
-   2. Expected: Second command rejected with error message: `"Week 2 already has status 'Y' for <student name> (<student ID>)."`.
+    2. **Expected behaviour:** Second command rejected with error message: `"Week 2 already has status 'Y' for <student name> (<student ID>)."`.
 
 5. Marking attendance for non-existent student
 
-   1. Test case: `markattendance 999 week/2 sta/Y`
+    1. **Test case:** `markattendance 999 week/2 sta/Y`
 
-   2. Expected: Command rejected with error message: `"The person index provided is invalid."`.
+    2. **Expected behaviour:** Command rejected with error message: `"The person index provided is invalid."`.
 
 ### Cancelling a week
 
 1. Cancelling a week with valid input
 
-   1. Test case: `cancelweek crs/CS2103T tg/T01 week/5`
+    1. **Test case:** `cancelweek crs/CS2103T tg/T01 week/5`
 
-   2. Expected: Week 5 cancelled for all students in CS2103T T01. Success message: `"Week 5 cancelled for course CS2103T tutorial T01."`.
+    2. **Expected behaviour:** Week 5 cancelled for all students in CS2103T T01. Success message: `"Week 5 cancelled for course CS2103T tutorial T01."`.
 
 2. Cancelling already cancelled week
 
-   1. Test case: Run `cancelweek crs/CS2103T tg/T01 week/5` twice.
+    1. **Test case:** Run `cancelweek crs/CS2103T tg/T01 week/5` twice.
 
-   2. Expected: Second command rejected with error message: `"Week 5 is already cancelled for course CS2103T tutorial T01."`.
+    2. **Expected behaviour:** Second command rejected with error message: `"Week 5 is already cancelled for course CS2103T tutorial T01."`.
 
 3. Cancelling invalid week
 
-   1. Test case: `cancelweek crs/CS2103T tg/T01 week/20`
+    1. **Test case:** `cancelweek crs/CS2103T tg/T01 week/20`
 
-   2. Expected: Command rejected with error message: `"Invalid week number. Valid range: 1 to 13."`.
+    2. **Expected behaviour:** Command rejected with error message: `"Invalid week number. Valid range: 1 to 13."`.
 
 4. Cancelling non-existent course/tutorial
 
-   1. Test case: `cancelweek crs/CS9999 tg/T99 week/2`
+    1. **Test case:** `cancelweek crs/CS9999 tg/T99 week/2`
 
-   2. Expected: Command rejected with error message: `"Course CS9999 with tutorial T99 does not exist and cannot be cancelled."`.
+    2. **Expected behaviour:** Command rejected with error message: `"Course CS9999 with tutorial T99 does not exist and cannot be cancelled."`.
 
 ### Uncancelling a week
 
 1. Uncancelling valid week
 
-   1. Test case:
-      `cancelweek crs/CS2103T tg/T01 week/4`
-      `uncancelweek crs/CS2103T tg/T01 week/4`
+    1. **Test case:**
+       `cancelweek crs/CS2103T tg/T01 week/4`
+       `uncancelweek crs/CS2103T tg/T01 week/4`
 
-   2. Expected: Week 4 restored for all students. Success message: `"Week 4 uncancelled for course CS2103T tutorial T01."`.
+    2. **Expected behaviour:** Week 4 restored for all students. Success message: `"Week 4 uncancelled for course CS2103T tutorial T01."`.
 
 2. Uncancelling non-cancelled week
 
-   1. Test case: `uncancelweek crs/CS2103T tg/T01 week/3` (where week 3 has not been cancelled)
+    1. **Test case:** `uncancelweek crs/CS2103T tg/T01 week/3` (where week 3 has not been cancelled)
 
-   2. Expected: Command rejected with error message: `"Week 3 is not cancelled for course CS2103T tutorial T01."`.
+    2. **Expected behaviour:** Command rejected with error message: `"Week 3 is not cancelled for course CS2103T tutorial T01."`.
 
 3. Uncancelling invalid week
 
-   1. Test case: `uncancelweek crs/CS2103T tg/T01 week/20`
+    1. **Test case:** `uncancelweek crs/CS2103T tg/T01 week/20`
 
-   2. Expected: Command rejected with error message: `"Invalid week number. Valid range: 1 to 13."`.
+    2. **Expected behaviour:** Command rejected with error message: `"Invalid week number. Valid range: 1 to 13."`.
 
 4. Uncancelling non-existent course/tutorial
 
-   1. Test case: `uncancelweek crs/CS9999 tg/T99 week/1`
-   2. Expected: Command rejected with error message: `"Course CS9999 with tutorial T99 does not exist and cannot be uncancelled."`.
+    1. **Test case:** `uncancelweek crs/CS9999 tg/T99 week/1`
+
+    2. **Expected behaviour:** Command rejected with error message: `"Course CS9999 with tutorial T99 does not exist and cannot be uncancelled."`.
 
 ### Adding a remark
 
@@ -1307,7 +1302,7 @@ Expected: The existing Help window is brought to the front/focus. No duplicate w
 
     1. **Test case:** `remark 1 txt/Participates actively in class`
 
-    2. **Expected behaviour:** A remark with the text "Participates actively in class" and the current date is added to the student at index 1. Success message shown: `"Added remark to Person: <student details>"`.
+    2. **Expected behaviour:** A remark with the text "Participates actively in class" and the current date is added to the student at index 1. Success message shown: `"Added remark to Person: <student details> Remark: Participates actively in class"`.
 
 2. Adding a remark with invalid input
 
@@ -1329,15 +1324,15 @@ Expected: The existing Help window is brought to the front/focus. No duplicate w
 
 1. Viewing a student with valid input
 
-    1. Test case: Ensure a student is visible in the current displayed list, then enter `view 1` and press Enter.
+    1. **Test case:** Ensure a student is visible in the current displayed list, then enter `view 1` and press Enter.
 
-    2. Expected: The detail pane displays the selected student's full information (name, student ID, course, tutorial group, email, tele), attendance summary and remark entries. Success message shown: `"Viewing student: <student details>"`. All fields render correctly; long text wraps or scrolls.
+    2. **Expected behaviour:** The detail pane displays the selected student's full information (name, student ID, course, tutorial group, email, tele), attendance summary and remark entries. Success message shown: `"Viewing student: <student details>"`. All fields render correctly; long text wraps or scrolls.
 
 2. Viewing a non-existent / out-of-range index
 
-    1. Test case: Enter `view 9999` (index greater than displayed list size) or `view 0`.
+    1. **Test case:** Enter `view 9999` (index greater than displayed list size) or `view 0`.
 
-    2. Expected: Command rejected with error message: `"The student index provided is invalid"`; detail pane remains unchanged.
+    2. **Expected behaviour:** Command rejected with error message: `"The student index provided is invalid"`; detail pane remains unchanged.
 
 
 ### Listing students
@@ -1382,7 +1377,7 @@ Note: There is no dedicated `clearfilter` command. To reset any active filter an
 
 1. Data persistence after normal usage
 
-    1. **Test case:** Add a student (e.g., `add n/Test Student sid/A9999999Z e/test@u.nus.edu crs/CS2103T tg/T01`), then close the app using `exit` and relaunch it.
+    1. **Test case:** Add a student (e.g., `add n/Test Student id/A9999999Z e/test@u.nus.edu crs/CS2103T tg/T01`), then close the app using `exit` and relaunch it.
 
     2. **Expected behaviour:** The newly added student appears in the list after relaunching. All data modifications (adds, edits, deletes) are persisted to `data/addressbook.json`.
 
