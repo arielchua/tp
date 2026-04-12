@@ -6,9 +6,11 @@ pageNav: 3
 
 # TeachAssist User Guide
 
-Are you tired of juggling multiple platforms—tracking tutorials, managing attendance and progress, and keeping track of endless student records? Do you find yourself struggling with clunky spreadsheets and endless menus? TeachAssist is for you.
+Are you tired of juggling multiple platforms—tracking tutorials, managing attendance and searching through endless student records? Do you find yourself struggling with clunky spreadsheets and endless menus? 
 
-TeachAssist is a desktop application designed for full-time University Teaching Assistants (TAs) at NUS who manage multiple classes and tutorials each semester.If you're a fast typist, TeachAssist can help you quickly filter student lists, track attendance, and log important notes using straightforward keyboard commands, all while offering an easy-to-navigate visual interface.
+**TeachAssist** is for you.
+
+TeachAssist is a desktop application designed for **full-time University Teaching Assistants (TAs) at NUS** who manage multiple classes and tutorials each semester.If you're a fast typist, TeachAssist can help you quickly filter student lists, track attendance, and log important notes using straightforward keyboard commands, all while offering an easy-to-navigate visual interface.
 
 And the best part? No technical expertise needed—just basic computer skills like installing software and navigating files.
 
@@ -40,6 +42,7 @@ And the best part? No technical expertise needed—just basic computer skills li
 - [Command Summary](#command-summary)
 - [Parameter Summary](#parameter-summary)
 - [FAQ](#faq)
+- [Glossary](#glossary)
 ---
 ## Quick start
 
@@ -116,23 +119,28 @@ You’re all set! From here, head to the Features section to learn what TeachAss
 <a name="help"></a>
 ### Viewing help : `help`
 
-Need a quick reminder of how TeachAssist works? Use the `help` command to open the Help Window, which gives you a summary of available commands and a direct link to the User Guide.
+Need a quick reminder of the command syntax or prefixes? Use the `help` command to open a dedicated Help Window.
 
 **Format:**
 ```
 help
 ```
 
-The following pop-up should show:
+**Expected Outcome:**
+A Help Window pops up with a summary of commands and a link to the full User Guide.
 
 <img src="images/helpWindow.png" alt="help window" width="600">
 
+The main TeachAssist window remains active in the background.
+
 <box type="tip">
+
 Tip:
-    You can also press `F1` to open the Help Window.
+Press `F1` to open the Help Window. On some Mac keyboards, you may need to press `fn + F1`.
 </box>
 
 <a name="list"></a>
+
 ### Listing all students: `list`
 
 If you want to see every student currently stored in TeachAssist, use the `list` command to display the full student list in alphabetical order.
@@ -143,8 +151,6 @@ This is especially useful after using commands such as [`find`](#find) or [`filt
 ```
 list
 ```
-
-
 
 <a name="add"></a>
 ### Adding a student: `add`
@@ -189,20 +195,21 @@ i.e. If you use an email domain that isnt @u.nus.edu:
 <a name="find"></a>
 ### Finding students by name: `find`
 
-Let's be real, the list of students gets long, and it's tough to keep scrolling to find a student.
-That's why we have the `find` command! It helps you instantly locate students using the **beginning of any word in their name**.
+Forgetting a student’s full name? You can use the find command to instantly search for students using the beginning of any word in their name.
 
-Format: `find KEYWORD [MORE_KEYWORDS]...`
+**Format:** 
+`find KEYWORD [MORE_KEYWORDS]...`
 
-**Search Rules:**
-* The search is case-insensitive. e.g. `hans` matches `Hans`
-* The order of keywords does not matter. e.g. `Hans Bo` matches `Bo Hans`
+**How it works:**
+* **Case-insensitive:** You can type in lowercase or uppercase; hans will match Hans
+* **Prefix matching:** Your keyword matches the **start** of a word.Partial matches within words are not supportedFor example, Han finds Hans, but an will not find Hans.
+* **Flexible order:** The order of your keywords doesn't matter; Hans Bo finds Bo Hans
+* **Multi-match (OR logic)**: If you provide multiple keywords, you will see students matching any of them. For example, find Al Bob finds both Albert and Bobby.
 * Only the name field is searched
-* Keywords match the **start of words** in names (prefix matching).Substrings in the middle of words are not matched.
-    * e.g. `Han` matches `Hans`
-    * `an` will not match `Hans`
-* If you provide multiple keywords, TeachAssist will find students that match any of them (e.g., find Al Bob finds both Albert and Bobby)
-* Keywords must be **alphabetic only (A–Z)**. Using numbers or symbols (e.g., `find A123`) will result in an error.
+
+<box type="warning">
+Keywords must contain only alphabetic characters (A–Z). Using numbers or symbols (e.g., `find A123`) will result in an error.
+</box>
 
 **Example:** 
 
@@ -210,7 +217,7 @@ Format: `find KEYWORD [MORE_KEYWORDS]...`
 
 **Expected Output:**
 
-The student list updates instantly to show only matching records, and the Result Box (see Figure X) displays the total count of students found.
+The student list updates to show only matching records, and the Result Box displays the number of matches.
 
 <box type="info">
 Note: 
@@ -222,7 +229,7 @@ Note:
 <a name="filter"></a>
 ### Filtering students: `filter`
 
-Narrow down your student list by Course ID, Tutorial Group, Progress, or Absence count. This is the most efficient way to identify "at-risk" students or specific tutorial sections.
+Need to quickly identify "at-risk" students or view a specific tutorial section? The filter command allows you to narrow down your student list by Course ID, Tutorial Group, Progress status, or Absence count.
 
 **Format:**
 ```
@@ -234,12 +241,11 @@ Warning:
     At least one filter parameter must be provided; using no parameters will result in an error.
 </box>
 
-**Behaviour:**
+**How it works:**
 * Course ID (`crs/`) and tutorial group (`tg/`) are matched case-insensitively.
 * Progress (`p/`) must be one of the following(case-insensitive): `on_track`, `needs_attention`, `at_risk`, or `clear` (alias `not_set`).
 * Absence count (`abs/`) matches students whose absence count is greater than or equal to the provided number.
-* Multiple filters combine with AND semantics — a student must satisfy every provided filter to be included in the results.
-
+* When you use multiple filters at once, a student must satisfy every provided filter to be included in the results.
 <box type="info">
 Note: 
     The `filter` command applies to the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
@@ -480,19 +486,23 @@ unremark INDEX r/REMARK_INDEX
 <a name="view"></a>
 ### Viewing a student: `view`
 
-When you want to see a student's full details, including their remarks, use the `view` command to display that student's information in the View Window. You can also click on a student in the list to view their details.
+When you want to see a student's full details, including their past remarks, you can use the `view` command.
 
 **Format:**
 ```
 view INDEX
 ```
+<box type="info" name="Note">
+    You can also **click** on any student in the list with your mouse to instantly display their details in the View Window.
+</box>
+
 **Example:** 
 
 `view 1` — Displays the full details of the 1st student on the currently displayed list.
 
 **Expected Output:**
 
-The **View Window** on the right side of the application updates to show the selected student's details. A confirmation message also appears in the Result Box:
+The **View Window** on the right side of the application updates to show the student's past remarks in a tabular format .
 
 <img src="images/viewsuccess.png" alt="view success" width="900">
 
@@ -585,13 +595,6 @@ exit
 
 TeachAssist data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
-### Known issues
-
-1. Cancelled-week recovery is transient: When a week is cancelled, the app stores previous per-student attendance statuses in memory to allow in-session recovery. However, this transient state is not persisted to disk. As a result, after the application is closed and restarted, recovering the pre-cancellation Y/A/N statuses may not be possible. Consider this when cancelling weeks; if you need to retain historical statuses across restarts, avoid relying on the transient recovery mechanism.
-
-
---------------------------------------------------------------------------------------------------------------------
-
 ## Command Summary
 
 Action | Format, Examples
@@ -632,11 +635,57 @@ Parameter             | Prefix  | Constraints                                   
 **REMARK_INDEX**      | `r/`    | Positive integer; must not exceed the number of remarks the student currently has.                                             | `1`, `2`
 
 --------------------------------------------------------------------------------------------------------------------
+### Known issues
+1. Cancelled-week recovery is transient: When a week is cancelled, the app stores previous per-student attendance statuses in memory to allow in-session recovery. However, this transient state is not persisted to disk. As a result, after the application is closed and restarted, recovering the pre-cancellation Y/A/N statuses may not be possible. Consider this when cancelling weeks; if you need to retain historical statuses across restarts, avoid relying on the transient recovery mechanism.
+2. If you minimize the Help Window and then run the help command (or use the Help menu, or the keyboard shortcut F1) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
 
 ## FAQ
 
 **Q: Do I need to enter parameters in a fixed order?**
 No. For commands with prefixes such as add and filter, parameters can be entered in any order as long as all required fields are provided.
 
-**Q: Why did delete 1 remove a different student than I expected?**
-Because the index refers to the current displayed list. You may be referring to an outdated list.
+**Q: Why did `delete 1` remove a different student than I expected?**
+The index refers to the *currently displayed* list. If you previously ran `find` or `filter`, the list may be a subset of all students. Run `list` first to see every student, then use the correct index.
+
+**Q: How do I transfer my data to another computer?**
+Install TeachAssist on the other computer and replace the new `data/addressbook.json` file with the one from your previous TeachAssist home folder.
+
+**Q: I accidentally ran `clear` — can I undo it?**
+No. TeachAssist does not support an undo feature. The `clear` command permanently removes all student records. Consider backing up `data/addressbook.json` before running destructive commands.
+
+**Q: Can two students have the same Student ID?**
+Yes, as long as they differ in **Course ID** or **Tutorial Group**. TeachAssist treats the combination of Student ID + Course ID + Tutorial Group as the unique identifier for a student record. This means the same student (e.g., `A0123456X`) can appear once for CS2103T/T01 and once for CS2101/T08.
+
+**Q: Why does `filter` show no results even though I have matching students?**
+Double-check the values you entered. Course ID and Tutorial Group are case-insensitive, but Progress must be one of the exact tokens: `on_track`, `needs_attention`, `at_risk`, or `not_set`. Also note that `abs/` filters by *minimum* absences — `filter abs/3` shows students with 3 **or more** absences, not exactly 3.
+
+**Q: Does `find` or `filter` change my data?**
+No. Both commands only change which students are *displayed*. Your underlying data is never modified. Run `list` to go back to the full list.
+
+**Q: Why can't I mark attendance for week 14?**
+TeachAssist follows the NUS 13-week teaching schedule (weeks 1–13). Week numbers outside this range are not accepted.
+
+**Q: What happens if I close TeachAssist without running `exit`?**
+Your data is saved automatically after every command that changes it, so closing the window directly (e.g., clicking the × button) will not cause data loss.
+
+--------------------------------------------------------------------------------------------------------------------
+
+## Glossary
+
+Term | Meaning
+-----|--------
+**CLI (Command Line Interface)** | A text-based way to interact with the application by typing commands into the command box, as opposed to clicking buttons.
+**GUI (Graphical User Interface)** | The visual part of TeachAssist — the windows, student cards, attendance bars, and buttons you see on screen.
+**Command Box** | The text field at the top of the TeachAssist window where you type commands.
+**Result Box** | The area directly below the Command Box that displays feedback messages after each command (e.g., success or error messages).
+**View Window** | The panel on the right side of the TeachAssist window that shows a selected student's detailed information and remarks.
+**Index** | The number shown to the left of each student in the currently displayed list. Used by commands like `delete`, `edit`, `view`, and `markattendance` to identify a student.
+**Prefix** | A short tag ending with `/` that tells TeachAssist which parameter you are providing (e.g., `n/` for name, `crs/` for course ID). See the [Parameter Summary](#parameter-summary) for the full list.
+**Student ID** | The NUS matriculation number (e.g., `A0123456X`). Starts with `A`, followed by 7 digits, ending with a letter.
+**Course ID** | The NUS module code (e.g., `CS2103T`, `MA1521`). Must be alphanumeric with no spaces.
+**Tutorial Group** | The class section identifier within a course (e.g., `T01`, `B03`). Must be alphanumeric.
+**Progress** | A label indicating a student's current academic standing. One of: `on_track`, `needs_attention`, `at_risk`, or `not_set`.
+**Absence Count** | The total number of weeks a student has been marked absent (`a`). Ranges from 0 to 13.
+**Remark** | A free-text note (up to 100 characters) attached to a student's record, automatically tagged with the date it was added.
+**JSON (JavaScript Object Notation)** | The file format TeachAssist uses to store your data (`data/addressbook.json`). It is a human-readable text format.
+**Home Folder** | The folder where you placed `TeachAssist.jar`. TeachAssist creates a `data/` subfolder here to store your student data.

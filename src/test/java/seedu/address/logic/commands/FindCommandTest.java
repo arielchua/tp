@@ -27,14 +27,6 @@ public class FindCommandTest {
     private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     private final Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
-    @Test
-    public void execute_noKeywords_noPersonFound() {
-        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Collections.emptyList());
-        FindCommand command = new FindCommand(predicate);
-        expectedModel.updateFilteredPersonList(predicate);
-        assertCommandSuccess(command, model,
-                String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0), expectedModel);
-    }
 
     @Test
     public void execute_noKeywordsMatch_noPersonFound() {

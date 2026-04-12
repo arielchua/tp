@@ -2,12 +2,9 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
-
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.Model;
 import seedu.address.model.person.FilterMatchesPredicate;
-import seedu.address.model.person.Person;
 
 /**
  * Filters the student list by course ID, tutorial group, progress, and/or absence count.
@@ -48,8 +45,8 @@ public class FilterCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredPersonList(predicate);
-        List<Person> filteredList = model.getFilteredPersonList();
-        return new CommandResult(String.format(MESSAGE_SUCCESS, filteredList.size()));
+        return new CommandResult(
+                String.format(MESSAGE_SUCCESS, model.getFilteredPersonList().size()));
     }
 
     /**
