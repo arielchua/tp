@@ -129,19 +129,19 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_cancelWeek() throws Exception {
         assertTrue(parser.parseCommand(
-            CancelWeekCommand.COMMAND_WORD + " crs/CS2103T tg/T01 week/1") instanceof CancelWeekCommand);
+            CancelWeekCommand.COMMAND_WORD + " crs/CS2103T tg/T01 wk/1") instanceof CancelWeekCommand);
     }
 
     @Test
     public void parseCommand_unCancelWeek() throws Exception {
         assertTrue(parser.parseCommand(
-            UnCancelWeekCommand.COMMAND_WORD + " crs/CS2103T tg/T01 week/1") instanceof UnCancelWeekCommand);
+            UnCancelWeekCommand.COMMAND_WORD + " crs/CS2103T tg/T01 wk/1") instanceof UnCancelWeekCommand);
     }
 
     @Test
     public void parseCommand_markAttendance() throws Exception {
         assertTrue(parser.parseCommand(
-            MarkAttendanceCommand.COMMAND_WORD + " 1 week/1 sta/Y") instanceof MarkAttendanceCommand);
+            MarkAttendanceCommand.COMMAND_WORD + " 1 wk/1 s/Y") instanceof MarkAttendanceCommand);
     }
 
     @Test
