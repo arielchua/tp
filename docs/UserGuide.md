@@ -113,6 +113,25 @@ You’re all set! From here, head to the Features section to learn what TeachAss
 
 ## Features
 
+<div markdown="block" class="alert alert-info">
+
+**:information_source: Notes about the command format:**<br>
+
+* Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
+  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+
+* Items in square brackets are optional.<br>
+  e.g `n/NAME [tel/TELEGRAM_USERNAME]` can be used as `n/John Doe tel/johndoe` or as `n/John Doe`.
+
+* Parameters can be in any order.<br>
+  e.g. if the command specifies `n/NAME id/STUDENT_ID`, `id/STUDENT_ID n/NAME` is also acceptable.
+
+* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
+  e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+
+* If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
+</div>
+
 <a name="help"></a>
 ### Viewing help : `help`
 
@@ -149,24 +168,28 @@ list
 <a name="add"></a>
 ### Adding a student: `add`
 
-Let's begin adding students! 
-
-Use the `add` command to create a student record with their key details, such as name, student ID, email, course, and tutorial group. This is useful when setting up your class list at the start of the semester or when adding students later on.
+Use the `add` command to create an entry of a student with their key details, such as name, student ID, course, and tutorial group. This is useful when setting up your class list at the start of the semester or when adding students later on.
 
 **Format:**
 ```
-add n/NAME id/STUDENT_ID e/EMAIL crs/COURSE_ID tg/TUTORIAL_GROUP [tel/TELEGRAM_USERNAME]
+add n/NAME id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP [e/EMAIL] [tel/TELEGRAM_USERNAME]
 ```
 
 Parameter Constraints:
-* `NAME` should ...
-* ..... add on
+It must be noted that when entering parameters, they should not be blank.
+* `NAME` should only have alphabets and spaces. No special characters allowed.
+* `STUDENT_ID` should start with an 'A', followed by 7 digits, ending with a letter.
+* `COURSE_ID` should be alphanumeric, with no spaces.
+* `TUTORIAL_GROUP` should be alphanumeric, with no spaces.
+* `EMAIL` should only end with valid NUS domains ("@u.nus.edu", "@u.duke.nus.edu", "@u.yale-nus.edu.sg"). The local part before the '@' should be alphanumeric and can contain these special characters: " . ", " _ ", " - ", without any spaces.
+* `TELEGRAM_USERNAME` should only contain alphanumeric characters and underscores, with no spaces and an optional '@' as a starting character.
 
 <box type="warning"> 
 Warning:
-    What makes a student a duplicate?
-    A student cannot be added if another student with the same 3 parameters `STUDENT_ID`, `COURSE_ID`, and `TUTORIAL_GROUP` already exists in TeachAssist. 
-</box>
+What makes an entry a duplicate?
+
+* When a student that already exists in TeachAssist is being added,
+ they must be of a different `COURSE_ID` and `TUTORIAL_GROUP`. 
 
 **Examples:**
 ```
@@ -176,15 +199,6 @@ add n/JOHN DOE id/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01 tel/@JOHNDOE
 When a student is added successfully, you will receive a confirmation message:
 
 > New person added: John Doe; Student ID: A0123456X; Email: johnd@u.nus.edu; Course ID: CS2103T; TGroup: T01; Tele: @JOHNDOE
-
-If any required fields are missing or the index is wrong, an error will be shown:
-
-i.e. If you use an email domain that isnt @u.nus.edu:
-
-> Emails should be of the format local-part@domain and adhere to the following constraints:
-> 1.The local-part should only contain alphanumeric characters and these special characters, excluding the parentheses, (+_.-). The local-part may not start or end with any special characters.
-> 2.This is followed by a '@' and then the NUS domain: u.nus.edu
->      Example: e1234567@u.nus.edu
 
 <a name="find"></a>
 ### Finding students by name: `find`
@@ -267,7 +281,7 @@ Tip:
 <a name="edit"></a>
 ### Editing a student: `edit`
 
-Use this command to update one or more details of an existing student based on their index in the currently displayed list.
+If there are changes to a student's information during the sem, use the `edit` command to edit the student's details accordingly.
 
 **Format:** 
 ```
@@ -281,12 +295,13 @@ edit INDEX [n/NAME] [id/STUDENT_ID] [e/EMAIL] [crs/COURSE_ID] [tg/TUTORIAL_GROUP
 **Examples:**
 
 - `edit 1 n/John Hoe` — updates the name of the 1st student to `John Hoe`.
-- `edit 2 e/johnd@example.com tg/T02` — updates the email and tutorial group of the 2nd student.
 - `edit 3 n/Alex Yeoh id/A1234567X tel/alexyeoh` — updates the name, student ID, and Telegram username of the 3rd student.
 
 The student list updates immediately to reflect the changes. The Result Box will confirm the edit with the updated student's details.
 
-<img src="images/editSuccess.png" alt="edit success" width="700">
+When the edit is successful, you will receive the following message:
+
+> Edited Person: John Hoe; Student ID: A0123456X; Email: johnd@u.nus.edu; Course ID: CS2103T; TGroup: T01; Tele: @JOHNDOE
 
 <a name="attendance"></a>
 ### Updating students' attendance
