@@ -97,7 +97,7 @@ Can't wait to get TeachAssist up and running? Let’s begin!
    After a few seconds, the GUI should appear, similar to the screenshot below.
    Notice that the app starts with some sample data for you to try out the commands.
 
-    <img src="images/UiAnnotated.png" alt="help window" width="800">
+    <img src="images/UiAnnotated.png" alt="help window" width="650">
 
 6. **Try entering a command in the command box.**
    A good place to start is help. Type it in and press Enter to open the help window and view the list of available commands.
@@ -320,6 +320,8 @@ When the edit is successful, you will receive the following message:
 
 > Edited Person: John Hoe; Student ID: A0123456X; Email: johnd@u.nus.edu; Course ID: CS2103T; TGroup: T01; Tele: @JOHNDOE
 
+<div style="page-break-before: always; break-before: page;"></div>
+
 <a name="attendance"></a>
 ### Updating students' attendance
 
@@ -363,7 +365,7 @@ The selected student's attendance record is updated immediately in the student l
 
 The following shows week 3 marked as absent(red) for Alex Yeoh.
 
-<img src="images/markattendancesuccess.png" alt="marka success" width="500">
+<img src="images/markattendancesuccess.png" alt="marka success" width="400">
 
 <a name="cancel-week"></a>
 #### Cancelling a tutorial's week: `cancelw`
@@ -395,7 +397,7 @@ Mark a whole week as cancelled for an entire class — handy for public holidays
 
 All students in CS2103T, tutorial T12 will show week 5 as cancelled (represented by an X) in their attendance records, all other students remain unchanged.
 
-<img src="images/cancelweeksuccess.png" alt="cancelw success" width="500">
+<img src="images/cancelweeksuccess.png" alt="cancelw success" width="400">
 
 
 <a name="uncancel-week"></a>
@@ -542,7 +544,7 @@ view INDEX
 
 The **View Window** on the right side of the application updates to show the student's past remarks in a tabular format.
 
-<img src="images/viewsuccess.png" alt="view success" width="900">
+<img src="images/viewsuccess.png" alt="view success" width="650">
 
 
 <a name="delete"></a>
@@ -668,6 +670,7 @@ Action | Format
 **Exit** | `exit`
 
 --------------------------------------------------------------------------------------------------------------------
+<div style="page-break-before: always; break-before: page;"></div>
 
 ## Parameter Summary
 Parameter             | Prefix  | Constraints                                                                                                                                                                                                                           | Examples
@@ -686,6 +689,7 @@ Parameter             | Prefix  | Constraints                                   
 **REMARK_INDEX**      | `r/`    | Positive integer; must not exceed the number of remarks the student currently has.                                                                                                                                                    | `1`, `2`
 
 --------------------------------------------------------------------------------------------------------------------
+<div style="page-break-before: always; break-before: page;"></div>
 
 ## Known issues
 1. If you minimize the Help Window and then run the help command (or use the Help menu, or the keyboard shortcut F1) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
