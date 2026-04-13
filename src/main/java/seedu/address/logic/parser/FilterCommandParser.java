@@ -22,8 +22,6 @@ import seedu.address.model.person.TGroup;
  */
 public class FilterCommandParser implements Parser<FilterCommand> {
 
-    public static final String MESSAGE_NO_FILTERS =
-            "At least one filter must be provided.\n" + FilterCommand.MESSAGE_USAGE;
     /**
      * Functional interface for a parser function that can throw ParseException.
      * @param <T> The type of the input string.
@@ -73,6 +71,8 @@ public class FilterCommandParser implements Parser<FilterCommand> {
      * @param parser The function to parse the string value.
      * @return An optional containing the parsed value, or empty if the prefix is not present.
      * @throws ParseException if the value is present but invalid.
+     * Note: This method was generated with the assistance of GitHub Copilot to
+     *    handle generic functional parsing of CLI arguments.
      */
     private <T> Optional<T> parseField(ArgumentMultimap argMultimap, Prefix prefix,
                                        ThrowingFunction<String, T> parser) throws ParseException {
