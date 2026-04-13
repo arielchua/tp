@@ -71,7 +71,7 @@
               <VBox styleClass="command-card" spacing="8.0">
                 <Label text="Command: delete" styleClass="command-title"/>
                 <Label text="Format 1: delete INDEX" wrapText="true" styleClass="command-format"/>
-                <Label text="Format 2: delete id/STUDENT_ID crs/COURSE_ID tg/TGROUP" wrapText="true"
+                <Label text="Format 2: delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP" wrapText="true"
                        styleClass="command-format"/>
                 <Label text="Deletes a student. Requires confirmation ('yes' or 'no')." wrapText="true"
                        styleClass="command-description"/>
