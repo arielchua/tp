@@ -65,14 +65,13 @@ public class FilterCommandParser implements Parser<FilterCommand> {
 
     /**
      * A generic helper method to parse a value from the argument multimap.
-     *
+     * Note: This method was generated with the assistance of GitHub Copilot to
+     * handle generic functional parsing of CLI arguments.
      * @param argMultimap The map of arguments.
      * @param prefix The prefix to look for.
      * @param parser The function to parse the string value.
      * @return An optional containing the parsed value, or empty if the prefix is not present.
      * @throws ParseException if the value is present but invalid.
-     * Note: This method was generated with the assistance of GitHub Copilot to
-     *    handle generic functional parsing of CLI arguments.
      */
     private <T> Optional<T> parseField(ArgumentMultimap argMultimap, Prefix prefix,
                                        ThrowingFunction<String, T> parser) throws ParseException {
