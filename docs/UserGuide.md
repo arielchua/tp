@@ -46,8 +46,6 @@ And the best part? No technical expertise needed—just basic computer skills li
 - [Glossary](#glossary)
 ---
 
-<div style="page-break-before: always; break-before: page;"></div>
-
 ## Quick start
 
 Can't wait to get TeachAssist up and running? Let’s begin!
@@ -196,7 +194,6 @@ It must be noted that when entering parameters, they should not be blank.
 * `EMAIL` is optional and should only end with valid NUS domains ("@u.nus.edu", "@u.duke.nus.edu", "@u.yale-nus.edu.sg"). The local part before the '@' should be alphanumeric and can contain these special characters: " . ", " _ ", " - ", without any spaces.
 * `TELEGRAM_USERNAME` is optional and should only contain alphanumeric characters and underscores, with no spaces and an optional '@' as a starting character.
 
-<div style="page-break-before: always; break-before: page;"></div>
 
 <box type="warning">
 
@@ -335,7 +332,6 @@ TeachAssist gives you three commands for attendance: `marka` for individual stud
     In line with the NUS academic calendar, each student added to TeachAssist starts with a default attendance record covering 13 teaching weeks. These weekly records can then be updated, cancelled, or restored using the attendance commands below.
 </box>
 
-<div style="page-break-before: always; break-before: page;"></div>
 
 <a name="mark-attendance"></a>
 #### Marking a student's attendance: `marka`
@@ -638,7 +634,6 @@ exit
 
 TeachAssist data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually or when you exit the app.
 
-<div style="page-break-before: always; break-before: page;"></div>
 
 ### Editing the data
 
@@ -698,7 +693,6 @@ Parameter             | Prefix  | Constraints                                   
 3. Cancelled-week recovery is transient: When a week is cancelled, the app stores previous per-student attendance statuses in memory to allow in-session recovery. However, this transient state is not persisted to disk. As a result, after the application is closed and restarted, recovering the pre-cancellation Y/A/N statuses may not be possible. Consider this when cancelling weeks; if you need to retain historical statuses across restarts, avoid relying on the transient recovery mechanism.
 
 --------------------------------------------------------------------------------------------------------------------
-<div style="page-break-before: always; break-before: page;"></div>
 
 ## FAQ
 
