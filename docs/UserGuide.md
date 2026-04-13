@@ -335,6 +335,8 @@ TeachAssist gives you three commands for attendance: `marka` for individual stud
     In line with the NUS academic calendar, each student added to TeachAssist starts with a default attendance record covering 13 teaching weeks. These weekly records can then be updated, cancelled, or restored using the attendance commands below.
 </box>
 
+<div style="page-break-before: always; break-before: page;"></div>
+
 <a name="mark-attendance"></a>
 #### Marking a student's attendance: `marka`
 
@@ -635,6 +637,8 @@ exit
 ### Saving the data
 
 TeachAssist data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually or when you exit the app.
+
+<div style="page-break-before: always; break-before: page;"></div>
 
 ### Editing the data
 
