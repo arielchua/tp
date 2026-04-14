@@ -555,8 +555,10 @@ The serialization process ensures that all metadata is preserved. The use of `Js
 **Copy-on-Write:**
 The command does not mutate the original `Person` object. Instead, it creates a copy, adds the remark, and updates the model using `setPerson(...)`. This aligns with the application's immutability pattern.
 
+#### Sequence diagram
 
-![Remark command sequence diagram](images/RemarkSequenceDiagram.puml)
+The following diagram shows how remarks are converted into storage representations during the address book save operation
+<puml src="images/RemarkSequenceDiagram.puml" />
 
 ### Feature: View Command
 

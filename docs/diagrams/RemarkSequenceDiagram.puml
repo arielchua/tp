@@ -1,48 +1,18 @@
 @startuml
-!theme plain
+!include style.puml
 
-skinparam BackgroundColor #F4F4F4
-skinparam Shadowing false
-skinparam RoundCorner 0
-skinparam SequenceMessageAlign center
-skinparam ResponseMessageBelowArrow true
-skinparam MaxMessageSize 80
-
-skinparam sequence {
-    ArrowColor #222222
-    LifeLineBorderColor #666666
-    LifeLineBackgroundColor #F4F4F4
-    ParticipantBorderColor #1E2AA8
-    ParticipantBackgroundColor #2D36C9
-    ParticipantFontColor white
-    ActorBorderColor #1E2AA8
-    ActorBackgroundColor #2D36C9
-    ActorFontColor white
-    GroupBorderColor #888888
-    GroupBackgroundColor #C9C6F2
-    GroupHeaderFontColor white
-    GroupHeaderBackgroundColor #B7B2E8
-    BoxBorderColor #888888
-    BoxBackgroundColor #C9C6F2
-    DividerBorderColor #888888
-    DividerBackgroundColor #DDDDDD
-}
-
-actor User
-
-box "Logic" #C9C6F2
-participant "rc:RemarkCommand" as RemarkCommand
+box "Logic" LOGIC_COLOR_T1
+participant "rc:RemarkCommand" as RemarkCommand LOGIC_COLOR
 end box
 
-box "Storage" #C9C6F2
-participant ":StorageManager" as StorageManager
-participant ":JsonAddressBookStorage" as JsonAddressBookStorage
-participant ":JsonSerializableAddressBook" as JsonSerializableAddressBook
-participant ":JsonAdaptedPerson" as JsonAdaptedPerson
-participant ":JsonAdaptedRemark" as JsonAdaptedRemark
+box "Storage" STORAGE_COLOR_T1
+participant ":StorageManager" as StorageManager STORAGE_COLOR
+participant ":JsonAddressBookStorage" as JsonAddressBookStorage STORAGE_COLOR
+participant ":JsonSerializableAddressBook" as JsonSerializableAddressBook STORAGE_COLOR
+participant ":JsonAdaptedPerson" as JsonAdaptedPerson STORAGE_COLOR
+participant ":JsonAdaptedRemark" as JsonAdaptedRemark STORAGE_COLOR
 end box
 
-User -> RemarkCommand : execute()
 activate RemarkCommand
 
 RemarkCommand -> StorageManager : saveAddressBook(addressBook)
@@ -78,7 +48,6 @@ deactivate JsonAddressBookStorage
 StorageManager --> RemarkCommand : save complete
 deactivate StorageManager
 
-RemarkCommand --> User : CommandResult
 deactivate RemarkCommand
 
 @enduml
