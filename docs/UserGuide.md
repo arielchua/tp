@@ -491,6 +491,7 @@ If successful, the selected student's record is updated with the new remark, and
 
 To view all existing remarks of a student, go to [View](#view).
 
+<div style="page-break-before: always; break-before: page;"></div>
 
 <a name="unremark"></a>
 #### Removing a remark : `unremark`
@@ -546,6 +547,7 @@ The **View Window** on the right side of the application updates to show the stu
 
 <img src="images/viewsuccess.png" alt="view success" width="650">
 
+<div style="page-break-before: always; break-before: page;"></div>
 
 <a name="delete"></a>
 ### Deleting a student: `delete`
