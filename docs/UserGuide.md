@@ -320,8 +320,6 @@ When the edit is successful, you will receive the following message:
 
 > Edited Person: John Hoe; Student ID: A0123456X; Email: johnd@u.nus.edu; Course ID: CS2103T; TGroup: T01; Tele: @JOHNDOE
 
-<div style="page-break-before: always; break-before: page;"></div>
-
 <a name="attendance"></a>
 ### Updating students' attendance
 
