@@ -123,39 +123,48 @@ mark {
     display: none;
   }
 }
+
 /* Hide site navigation when printing */
 @media print {
-  #site-nav,
-  #site-nav *,
-  #page-nav,
-  #page-nav *,
-  .nav-component,
-  .nav-component *,
-  .site-nav-top,
-  .site-nav-top * {
-    display: none !important;
+  #site-nav {
+    display: none;
   }
 
-  #flex-body {
-    display: block !important;
+  #page-nav {
+    display: none;
   }
 
-  #content-wrapper {
-    max-width: none !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: visible !important;
+  /* Reduce font size when printing */
+  h1 {
+      font-size: 1.2rem !important;
   }
+  h2 {
+      font-size: 1.0rem !important;
+  }
+  h3 {
+      font-size: 0.9rem !important;
+  }
+  h4 {
+      font-size: 0.8rem !important;
+  }
+  h5 {
+      font-size: 0.7rem !important;
+  }
+  body {
+      font-size: 0.65rem !important;
+  }
+  .btn {
+      font-size: 0.65rem !important;
+  }
+  img {
+      zoom: 0.8;  /* might not work on some browsers */
+  }
+}
 
-  body,
-  #content-wrapper,
-  #content-wrapper p,
-  #content-wrapper li,
-  #content-wrapper a,
-  #content-wrapper span,
-  #content-wrapper td,
-  #content-wrapper th {
-    font-size: 1rem !important;
-  }
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #e46c0a;
 }

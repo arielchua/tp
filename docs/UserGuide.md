@@ -73,7 +73,7 @@ Can't wait to get TeachAssist up and running? Let’s begin!
    > - After installation, restart your terminal and run `java -version` again to confirm that the correct version is installed.
 
 
-2. **Download the latest `TeachAssist.jar` file** from the [Releases page](https://github.com/AY2526S2-CS2103T-F10-3/tp/releases/tag/v1.3).
+2. **Download the latest `TeachAssist.jar` file** from the [Releases page](https://github.com/AY2526S2-CS2103T-F10-3/tp/releases/tag/v1.6).
 
 3. **Move the downloaded file into a folder you want to use as the TeachAssist home folder.**
    This folder will be used to store the app and its data.
@@ -320,8 +320,6 @@ When the edit is successful, you will receive the following message:
 
 > Edited Person: John Hoe; Student ID: A0123456X; Email: johnd@u.nus.edu; Course ID: CS2103T; TGroup: T01; Tele: @JOHNDOE
 
-<div style="page-break-before: always; break-before: page;"></div>
-
 <a name="attendance"></a>
 ### Updating students' attendance
 
@@ -400,8 +398,6 @@ Mark a whole week as cancelled for an entire class — handy for public holidays
 All students in CS2103T, tutorial T12 will show week 5 as cancelled (represented by an X) in their attendance records, all other students remain unchanged.
 
 <img src="images/cancelweeksuccess.png" alt="cancelw success" width="400">
-
-<div style="page-break-before: always; break-before: page;"></div>
 
 
 <a name="uncancel-week"></a>
@@ -495,6 +491,7 @@ If successful, the selected student's record is updated with the new remark, and
 
 To view all existing remarks of a student, go to [View](#view).
 
+<div style="page-break-before: always; break-before: page;"></div>
 
 <a name="unremark"></a>
 #### Removing a remark : `unremark`
@@ -550,6 +547,7 @@ The **View Window** on the right side of the application updates to show the stu
 
 <img src="images/viewsuccess.png" alt="view success" width="650">
 
+<div style="page-break-before: always; break-before: page;"></div>
 
 <a name="delete"></a>
 ### Deleting a student: `delete`
