@@ -463,6 +463,8 @@ Finally, the updated state is persisted.
 **Scalability:**
 The approach is robust for session-based workflows and avoids long-term state bloat.
 
+<div style="page-break-before: always; break-before: page;"></div>
+
 ### Feature: Remark Command
 
 #### Technical Overview
