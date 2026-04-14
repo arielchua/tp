@@ -268,7 +268,6 @@ In the UI, `NOT_SET` is intentionally not rendered as a visible label. This keep
 ### Feature: Mark Attendance Command
 
 #### Overview
-The `marka` command updates a student’s attendance for a specific week. Attendance is represented in the model using `Week` and `WeekList`. Each `Person` stores a `WeekList`, which models attendance across the teaching semester, while each `Week` object captures the attendance status and cancellation state for a single week.
 
 The `marka` command allows tutors to record or update a student’s attendance for a specific week. This feature enables per-week attendance tracking instead of aggregate counts, providing finer control over tutorial participation records.
 The command targets a student by their displayed index in the current person list and applies an attendance status to a specified week.
@@ -310,7 +309,7 @@ Then attendance status is used to update Weeklist:
 - `A` → `WeekList#markWeekAsAbsent`
 - `N` → `WeekList#markWeekAsDefault`
 
-If the requested status is already set, the command rejects the operation to prevent redundant updates.
+If the requested status is already set, the operation is rejected to prevent redundant updates.
 
 After the update, a new `Person` object is created with the modified `WeekList`, and the model is updated using `model.setPerson(personToEdit, editedPerson)`. A success message is then returned to the user.
 
@@ -346,11 +345,6 @@ Validation (e.g., for cancelled weeks) is performed at the command layer before 
 
 **Scalability:**
 The copy-on-write approach is robust for moderate data sizes and aligns with functional programming best practices.
-
-**Aspect: Responsibility separation**
-* **Command:** Handles semantic validation and business rules
-* **Model:** Performs state updates only after validation
-* This separation ensures clear layering and maintainability of the system.
 
 #### Sequence diagram
 
