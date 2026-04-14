@@ -191,8 +191,8 @@ It must be noted that when entering parameters, they should not be blank.
 * `STUDENT_ID` should start with an 'A', followed by 7 digits, ending with a letter.
 * `COURSE_ID` should be alphanumeric, with no spaces.
 * `TUTORIAL_GROUP` should be alphanumeric, with no spaces.
-* `EMAIL` is optional and should only end with valid NUS domains ("@u.nus.edu", "@u.duke.nus.edu", "@u.yale-nus.edu.sg"). The local part before the '@' should be alphanumeric and can contain these special characters: " . ", " _ ", " - ", without any spaces.
-* `TELEGRAM_USERNAME` is optional and should only contain alphanumeric characters and underscores, with no spaces and an optional '@' as a starting character.
+* `EMAIL` is optional and should only end with valid NUS domains (`@u.nus.edu`, `@u.duke.nus.edu`, `@u.yale-nus.edu.sg`). The local part before the '@' should be alphanumeric and can contain these special characters: `.`, `_`, `-` , without any spaces.
+* `TELEGRAM_USERNAME` is optional and should only contain alphanumeric characters and underscores, with no spaces and an optional `@` as a starting character.
 
 
 <box type="warning">

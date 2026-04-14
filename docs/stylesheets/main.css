@@ -123,23 +123,39 @@ mark {
     display: none;
   }
 }
-
 /* Hide site navigation when printing */
 @media print {
-  #site-nav {
-    display: none;
+  #site-nav,
+  #site-nav *,
+  #page-nav,
+  #page-nav *,
+  .nav-component,
+  .nav-component *,
+  .site-nav-top,
+  .site-nav-top * {
+    display: none !important;
   }
 
-  #page-nav {
-    display: none;
+  #flex-body {
+    display: block !important;
   }
 
-  body {
-    font-size: 1rem !important;
+  #content-wrapper {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
   }
 
-  .table-of-contents,
-  .table-of-contents * {
+  body,
+  #content-wrapper,
+  #content-wrapper p,
+  #content-wrapper li,
+  #content-wrapper a,
+  #content-wrapper span,
+  #content-wrapper td,
+  #content-wrapper th {
     font-size: 1rem !important;
   }
 }

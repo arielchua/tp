@@ -13,6 +13,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Isha Sovasaria
 <img src="images/isha-sovasaria.png" width="200px">
+
 [[github](https://github.com/Isha-Sovasaria)]
 
 
@@ -54,4 +55,4 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/arielchua)]
 
 * Role: Developer
-* Responsibilities: User Guide, In-charge of Logic component
+* Responsibilities: User Guide, In-charge of Logic component, Scheduling and Tracking
