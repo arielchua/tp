@@ -161,6 +161,7 @@ The `Model` component,
 
 </box>
 
+<div style="page-break-before: always; break-before: page;"></div>
 
 ### Storage component
 
