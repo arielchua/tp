@@ -271,7 +271,7 @@ The use of an enum centralizes the set of valid progress states and makes the mo
 
 In the UI, `NOT_SET` is intentionally not rendered as a visible label. This keeps the interface uncluttered while allowing the model to remain expressive. This separation of concerns ensures that the model captures the full state of a student’s progress, while the UI decides how much of that state should be shown to the user.
 
-//@@author
+//@@author poaoaooa
 
 ### Feature: Mark Attendance Command
 
@@ -467,7 +467,7 @@ Finally, the updated state is persisted.
 
 **Scalability:**
 The approach is robust for session-based workflows and avoids long-term state bloat.
-
+//@@author
 ### Feature: Remark Command
 
 #### Technical Overview
@@ -716,7 +716,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
 * 1b. The specified student does not exist.
     * 1b1. TeachAssist informs the user that the student could not be found.
     * Use case ends.
-
+//@@author poaoaooa
 **Use Case: UC06 – Mark Student Attendance**<br>
 **Actor:** User<br>
 **Preconditions:**
@@ -783,7 +783,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
 * 1c. The week is invalid or was not cancelled.
     * 1c1. TeachAssist informs the user that the week cannot be restored.
     * Use case ends.
-
+//@@author
 
 **Use Case: UC09 – Update Student Progress Status**<br>
 **Actor:** User<br>
@@ -1157,7 +1157,7 @@ testers are expected to do more *exploratory* testing.
     **Test case:** `updateprogress p/on_track` (missing index)
 
     **Expected behaviour:** The command is rejected because the required student index is missing, no student record is updated, and an error message is shown with the correct usage format.
-
+//@@author poaoaooa
 ### Marking a student's attendance (`marka`)
 
 1. Marking attendance with valid input
@@ -1250,7 +1250,7 @@ testers are expected to do more *exploratory* testing.
     **Test case:** `uncancelw crs/CS9999 tg/T99 wk/1`
 
     **Expected behaviour:** Command rejected with error message: `"Course CS9999 with tutorial T99 does not exist and cannot be uncancelled."`.
-
+//@@author
 ### Adding a remark (`remark`)
 
 1. Adding a remark with valid input
