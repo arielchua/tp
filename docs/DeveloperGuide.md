@@ -228,7 +228,7 @@ The design uses a single predicate class (`FilterMatchesPredicate`) with all log
 The single-predicate approach scales well for AND-based filtering but would require refactoring for more advanced query logic (e.g., OR, NOT).
 
 //@@author
-
+//@@author ariel-chua
 ### Feature: Delete Student
 
 
@@ -257,6 +257,7 @@ The `delete` feature is implemented as a two-stage confirmation workflow to prev
 
 **The diagram below illustrates the delete command and confirmation check workflow:** Delete confirmation workflow.
 <puml src="diagrams/DeleteConfirmationActivityDiagram.puml" width="600" />
+//@@author
 
 //@@author Isha-Sovasaria
 ### Feature: Update Progress
@@ -785,6 +786,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
     * Use case ends.
 //@@author
 
+//@@author ariel-chua
 **Use Case: UC09 – Update Student Progress Status**<br>
 **Actor:** User<br>
 **Main Success Scenario:**
@@ -804,7 +806,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
 * 1c. The progress status is invalid.
     * 1c1. TeachAssist informs the user of valid statuses.
     * Use case ends.
-
+//@@author
 
 **Use Case: UC10 – Add Remark to Student**<br>
 **Actor:** User<br>
@@ -820,7 +822,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
     * 1a1. TeachAssist displays an error and requests correction.
     * Use case ends.
 
-
+//@@author ariel-chua
 **Use Case: UC11 – Delete Remark from Student**<br>
 **Actor:** User<br>
 **Main Success Scenario:**
@@ -840,6 +842,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
 * 1c. The specified remark does not exist.
     * 1c1. TeachAssist informs the user that the remark could not be found.
     * Use case ends.
+//@@author
 
 //@@author Isha-Sovasaria
 **Use Case: UC12 – View Student Details**<br>
@@ -858,6 +861,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
     * Use case ends.
 
 //@@author
+//@@author ariel-chua
 **Use Case: UC13 – Delete Student**<br>
 **Actor:** User<br>
 **Main Success Scenario:**
@@ -878,6 +882,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
 * 3a. The user cancels the deletion or enters another command.
     * 3a1. TeachAssist cancels the pending deletion and processes the new input if applicable.
     * Use case ends.
+//@@author
 
 //@@author Isha-Sovasaria
 ### Non-Functional Requirements
@@ -1074,6 +1079,7 @@ testers are expected to do more *exploratory* testing.
 
     **Expected behaviour:** Command rejected with error message: `"At least one prefix must be provided."` followed by the filter command usage.
 //@@author
+//@@author ariel-chua
 ### Deleting a student (`delete`)
 
 1. Deleting a student by index
@@ -1157,6 +1163,7 @@ testers are expected to do more *exploratory* testing.
     **Test case:** `updateprogress p/on_track` (missing index)
 
     **Expected behaviour:** The command is rejected because the required student index is missing, no student record is updated, and an error message is shown with the correct usage format.
+//@@author
 //@@author poaoaooa
 ### Marking a student's attendance (`marka`)
 

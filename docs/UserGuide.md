@@ -14,6 +14,7 @@ TeachAssist is a desktop application designed for **full-time University Teachin
 
 And the best part? No technical expertise needed—just basic computer skills like installing software and navigating files.
 //@@author
+//@@author ariel-chua
 ## Table of contents
 - [Quick start](#quick-start)
 - [Features](#features)
@@ -116,6 +117,7 @@ Can't wait to get TeachAssist up and running? Let’s begin!
 You’re all set! From here, head to the Features section to learn what TeachAssist can do.
 
 ---
+//@@author
 
 ## Features
 
@@ -422,6 +424,7 @@ uncancelw crs/COURSE_ID tg/TUTORIAL_GROUP wk/WEEK_NUMBER
 
 - `uncancelw crs/CS2103T tg/T12 wk/5` — restores week 5 as a normal week for all students in course `CS2103T` and tutorial group `T12`.
 
+//@@author ariel-chua
 <a name="update-progress"></a>
 ### Updating a student's progress : `updateprogress`
 
@@ -458,6 +461,8 @@ If progress has been successfully updated, you should see the success message:
 > Updated progress for student: Bernice Yu; Student ID: A7654321X; Email: berniceyu@u.nus.edu; Course ID: CS2103T; TGroup: T12; Tele: @berniceyu.
 > New progress: AT_RISK
 and a red "At Risk" label.
+
+//@@author
 
 ### Remarks
 
@@ -550,6 +555,8 @@ The **View Window** on the right side of the application updates to show the stu
 
 <div style="page-break-before: always; break-before: page;"></div>
 //@@author 
+
+//@@author ariel-chua
 <a name="delete"></a>
 ### Deleting a student: `delete`
 
@@ -615,6 +622,8 @@ delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP
     This method searches the entire TeachAssist list, not just the students currently displayed. This means a student can still be deleted even if they are currently hidden by a filter.
 </box>
 
+//@@author
+
 <a name="clear"></a>
 ### Clears all students : `clear`
 
@@ -634,6 +643,8 @@ Format:
 ```
 exit
 ```
+
+//@@author ariel-chua
 
 ### Saving the data
 
@@ -692,6 +703,8 @@ Parameter             | Prefix  | Constraints                                   
 **ABSENCE_COUNT**     | `abs/`  | Integer from `0` to `13` inclusive.                                                                                                                                                                                                   | `0`, `2`, `13`
 **REMARK**            | `txt/`  | Any text up to 100 characters; must not be blank.                                                                                                                                                                                     | `Needs help with finals`
 **REMARK_INDEX**      | `r/`    | Positive integer; must not exceed the number of remarks the student currently has.                                                                                                                                                    | `1`, `2`
+
+//@@author
 
 --------------------------------------------------------------------------------------------------------------------
 //@@author Isha-Sovasaria
